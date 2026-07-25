@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giscus 博客</title>
+    <title>我的博客</title>
     <style>
         /* ============================================================
                主题 1：暖深色（默认）
@@ -94,20 +94,10 @@
         }
 
         /* ===== 滚动条 ===== */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--scrollbar-track);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--border-light);
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
 
         /* ===== 动态粒子画布 ===== */
         #particles-canvas {
@@ -122,11 +112,7 @@
         }
 
         /* ===== 全局 ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -143,23 +129,11 @@
             overflow-x: hidden;
         }
 
-        .container {
-            max-width: 900px;
-            width: 100%;
-            position: relative;
-            z-index: 2;
-        }
+        .container { max-width: 900px; width: 100%; position: relative; z-index: 2; }
 
         /* ===== 链接 ===== */
-        a {
-            color: var(--link-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        a:hover {
-            color: var(--link-hover);
-            text-decoration: underline;
-        }
+        a { color: var(--link-color); text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: var(--link-hover); text-decoration: underline; }
 
         /* ===== 头部 ===== */
         header {
@@ -178,9 +152,7 @@
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        [data-theme="dark"] header {
-            background: rgba(8, 12, 20, 0.3);
-        }
+        [data-theme="dark"] header { background: rgba(8, 12, 20, 0.3); }
 
         header .header-left h1 {
             font-size: 2.2rem;
@@ -253,38 +225,10 @@
             border-color: var(--accent-primary);
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         }
-        .theme-toggle .icon {
-            display: inline-block;
-            transition: transform 0.6s ease;
-        }
-        .theme-toggle:hover .icon {
-            transform: rotate(30deg);
-        }
+        .theme-toggle .icon { display: inline-block; transition: transform 0.6s ease; }
+        .theme-toggle:hover .icon { transform: rotate(30deg); }
 
-        /* ===== 加载状态 ===== */
-        .loading-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-muted);
-        }
-        .loading-state .spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border-color);
-            border-top-color: var(--loading-color);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-bottom: 1rem;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .loading-state p {
-            font-size: 1rem;
-        }
-
-        /* ===== 文章列表 ===== */
+        /* ===== 文章 ===== */
         .blog-post {
             margin-bottom: 2.5rem;
             padding: 1.5rem 2rem;
@@ -300,9 +244,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             transform: translateY(-2px);
         }
-        .blog-post:last-child {
-            margin-bottom: 0;
-        }
+        .blog-post:last-child { margin-bottom: 0; }
 
         .blog-post .post-date {
             font-size: 0.8rem;
@@ -319,13 +261,8 @@
             color: var(--text-heading);
             transition: color 0.5s ease;
         }
-        .blog-post .post-header h2 a {
-            color: inherit;
-            text-decoration: none;
-        }
-        .blog-post .post-header h2 a:hover {
-            color: var(--accent-primary);
-        }
+        .blog-post .post-header h2 a { color: inherit; text-decoration: none; }
+        .blog-post .post-header h2 a:hover { color: var(--accent-primary); }
 
         .blog-post .post-excerpt {
             color: var(--text-secondary);
@@ -369,19 +306,11 @@
             color: var(--text-muted);
             font-size: 0.8rem;
         }
-        .blog-post .post-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
+        .blog-post .post-meta span { display: flex; align-items: center; gap: 0.3rem; }
 
-        /* ===== 文章详情页 ===== */
-        .post-detail {
-            display: none;
-        }
-        .post-detail.active {
-            display: block;
-        }
+        /* ===== 文章详情 ===== */
+        .post-detail { display: none; }
+        .post-detail.active { display: block; }
 
         .post-detail .back-btn {
             display: inline-flex;
@@ -421,10 +350,7 @@
             line-height: 1.9;
             transition: color 0.5s ease;
         }
-        .post-detail .post-full-content img {
-            max-width: 100%;
-            border-radius: 8px;
-        }
+        .post-detail .post-full-content img { max-width: 100%; border-radius: 8px; }
         .post-detail .post-full-content blockquote {
             border-left: 3px solid var(--accent-primary);
             padding-left: 1rem;
@@ -444,8 +370,8 @@
             overflow-x: auto;
         }
 
-        /* ===== ★★★ Giscus 评论区（在文章详情页底部） ★★★ ===== */
-        .post-detail .comments-section {
+        /* ===== ★★★ Giscus 评论区 ★★★ ===== */
+        .comments-section {
             margin-top: 2.5rem;
             padding: 1.5rem 2rem;
             background: var(--bg-card);
@@ -454,10 +380,8 @@
             backdrop-filter: blur(8px);
             transition: all 0.5s ease;
         }
-        .post-detail .comments-section:hover {
-            border-color: var(--border-light);
-        }
-        .post-detail .comments-section .comments-title {
+        .comments-section:hover { border-color: var(--border-light); }
+        .comments-section .comments-title {
             font-size: 1.2rem;
             font-weight: 600;
             color: var(--text-heading);
@@ -467,17 +391,29 @@
             gap: 0.6rem;
         }
 
-        .post-detail .comments-section .giscus-wrapper {
-            min-height: 150px;
-        }
+        .giscus-wrapper { min-height: 150px; }
 
-        /* ===== 文章列表 / 详情切换 ===== */
-        .list-view {
-            display: block;
+        /* ===== 加载状态 ===== */
+        .loading-state {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
         }
-        .list-view.hidden {
-            display: none;
+        .loading-state .spinner {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--loading-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 0.8rem;
         }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== 列表/详情切换 ===== */
+        .list-view { display: block; }
+        .list-view.hidden { display: none; }
 
         /* ===== 空状态 ===== */
         .empty-state {
@@ -490,14 +426,8 @@
             border: 1px solid var(--border-color);
             backdrop-filter: blur(8px);
         }
-        .empty-state p {
-            font-size: 1.1rem;
-        }
-        .empty-state .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
+        .empty-state p { font-size: 1.1rem; }
+        .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
 
         /* ===== 页脚 ===== */
         footer {
@@ -533,58 +463,23 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(8px);
         }
-        .toast.show {
-            opacity: 1;
-        }
-        .toast.success {
-            border-color: var(--accent-green);
-            color: var(--accent-green);
-        }
-        .toast.error {
-            border-color: var(--accent-red);
-            color: var(--accent-red-hover);
-        }
-        .toast.info {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-        }
+        .toast.show { opacity: 1; }
+        .toast.success { border-color: var(--accent-green); color: var(--accent-green); }
+        .toast.error { border-color: var(--accent-red); color: var(--accent-red-hover); }
+        .toast.info { border-color: var(--accent-primary); color: var(--accent-primary); }
 
         /* ===== 响应式 ===== */
         @media (max-width: 600px) {
-            body {
-                padding: 1rem 0.8rem;
-            }
-            header {
-                padding: 0.8rem 1rem;
-                flex-direction: column;
-                align-items: stretch;
-            }
-            header .header-left h1 {
-                font-size: 1.8rem;
-            }
-            .header-actions {
-                justify-content: flex-start;
-            }
-            .blog-post {
-                padding: 1rem 1.2rem;
-            }
-            .blog-post .post-header h2 {
-                font-size: 1.3rem;
-            }
-            .header-actions .btn-sm,
-            .theme-toggle {
-                font-size: 0.7rem;
-                padding: 0.3rem 0.7rem;
-            }
-            .theme-toggle {
-                border-radius: 16px;
-            }
-            .post-detail .post-full-title {
-                font-size: 1.5rem;
-            }
-            .post-detail .comments-section {
-                padding: 1rem 1.2rem;
-            }
+            body { padding: 1rem 0.8rem; }
+            header { padding: 0.8rem 1rem; flex-direction: column; align-items: stretch; }
+            header .header-left h1 { font-size: 1.8rem; }
+            .header-actions { justify-content: flex-start; }
+            .blog-post { padding: 1rem 1.2rem; }
+            .blog-post .post-header h2 { font-size: 1.3rem; }
+            .header-actions .btn-sm, .theme-toggle { font-size: 0.7rem; padding: 0.3rem 0.7rem; }
+            .theme-toggle { border-radius: 16px; }
+            .post-detail .post-full-title { font-size: 1.5rem; }
+            .comments-section { padding: 1rem 1.2rem; }
         }
     </style>
 </head>
@@ -598,15 +493,13 @@
         <header>
             <div class="header-left">
                 <h1>🌙 夜航船</h1>
-                <div class="subtitle" id="theme-label">Giscus 驱动的博客 · 评论即发布</div>
+                <div class="subtitle" id="theme-label">写于无人之境 · 仅供同频者阅</div>
             </div>
             <div class="header-actions">
                 <button class="theme-toggle" id="theme-toggle">
                     <span class="icon">🌙</span> <span id="theme-btn-text">冷色</span>
                 </button>
-                <a class="btn-sm primary" href="https://github.com/你的用户名/你的仓库名/discussions/new?category=Announcements" target="_blank">
-                    ✏️ 写新文章
-                </a>
+                <a class="btn-sm primary" id="new-post-link" href="#" target="_blank">✏️ 写新文章</a>
             </div>
         </header>
 
@@ -644,7 +537,12 @@
     <!-- ================= Toast 提示 ================= -->
     <div class="toast" id="toast"></div>
 
-    <!-- ================= Giscus 脚本 ================= -->
+    <!-- ================= ★★★ Giscus 脚本（你需要替换配置） ★★★ ================= -->
+    <!--
+    ═══════════════════════════════════════════════════════════════
+    请到 https://giscus.app 获取你的专属配置，替换下面的参数
+    ═══════════════════════════════════════════════════════════════
+    -->
     <script src="https://giscus.app/client.js"
         data-repo="你的用户名/你的仓库名"
         data-repo-id="你的仓库ID"
@@ -668,23 +566,59 @@
             // ---------- 配置 ----------
             const THEME_KEY = 'blog_theme';
 
-            // ---------- 状态 ----------
-            let posts = [];
-            let currentPostId = null;
-            let isGiscusReady = false;
+            // ============================================================
+            //  ★★★ 请在这里替换为你的 Giscus 配置 ★★★
+            //  ⚠️ 必须和上面 script 标签中的保持一致！
+            // ============================================================
+            const GISCUS_CONFIG = {
+                repo: '你的用户名/你的仓库名',
+                repoId: '你的仓库ID',
+                category: 'Announcements',
+                categoryId: '你的分类ID'
+            };
+
+            // ---------- 文章数据 ----------
+            // 这里用示例数据，实际使用中可通过 GitHub API 获取
+            const POSTS = [{
+                id: 1,
+                title: '📦 喂喂喂资源库更新啦！',
+                date: '2026-07-25',
+                excerpt: '🎉 资源库又有新货了！新增大量学习资料，优化了资源分类。',
+                content: `🎉 <strong>资源库又有新货了！</strong><br><br>📁 本次更新内容：<br>• 新增大量学习资料<br>• 优化了资源分类<br>• 修复了部分链接失效问题<br><br>🔗 传送门：<a href="https://1838190346.share.123pan.cn/123pan/gfigTd-P1SLH?pwd=1145#" target="_blank">点击进入资源库</a><br>📌 访问密码：<code>1145</code><br><br>💡 建议收藏，持续更新中！`,
+                tags: ['资源', '更新', '分享']
+            }, {
+                id: 2,
+                title: '在算法洪流中，打捞一艘木帆船',
+                date: '2026-07-20',
+                excerpt: '当全世界都在追逐效率与增长，我选择退回书桌一角，用最原始的方式——文字，来对抗遗忘。',
+                content: '当全世界都在追逐效率与增长，我选择退回书桌一角，用最原始的方式——文字，来对抗遗忘。这篇不追求阅读量，只写给十年后的自己。',
+                tags: ['随笔', '反思', '慢生活']
+            }, {
+                id: 3,
+                title: '从 Notion 到纯文本：我的笔记回流之路',
+                date: '2026-07-13',
+                excerpt: '用了三年 Notion，最终还是回到了 .txt 和 .md 的怀抱。不是倒退，而是发现——真正的思考，不需要华丽的数据库。',
+                content: '用了三年 Notion，最终还是回到了 .txt 和 .md 的怀抱。不是倒退，而是发现——真正的思考，不需要华丽的数据库，只需要一张白纸。',
+                tags: ['工具', '工作流', '极简']
+            }, {
+                id: 4,
+                title: '深夜读《庄子》—— 关于「无用之用」的现代性体验',
+                date: '2026-07-08',
+                excerpt: '在这个每个人都在努力成为「有用」之才的时代，我突然理解了什么叫做「人皆知有用之用，而莫知无用之用也」。',
+                content: '在这个每个人都在努力成为「有用」之才的时代，我突然理解了什么叫做「人皆知有用之用，而莫知无用之用也」。无用，或许才是我们最后的庇护所。',
+                tags: ['阅读', '哲学', '庄子']
+            }];
 
             // ============================================================
-            //  动态粒子背景（跟随鼠标）
+            //  动态粒子背景
             // ============================================================
             (function initDynamicParticles() {
                 const canvas = document.getElementById('particles-canvas');
                 const ctx = canvas.getContext('2d');
                 let W, H;
                 let particles = [];
-                let mouseX = -9999;
-                let mouseY = -9999;
-                let targetMouseX = -9999;
-                let targetMouseY = -9999;
+                let mouseX = -9999, mouseY = -9999;
+                let targetMouseX = -9999, targetMouseY = -9999;
                 const PARTICLE_COUNT = 100;
                 const CONNECTION_DIST = 160;
                 const MOUSE_RADIUS = 180;
@@ -697,26 +631,19 @@
                 }
 
                 function getParticleColors() {
-                    const root = document.documentElement;
-                    const isDark = root.getAttribute('data-theme') === 'dark';
-                    if (isDark) {
-                        return { primary: '74, 138, 214', secondary: '106, 170, 255', tertiary: '50, 100, 180' };
-                    } else {
-                        return { primary: '212, 168, 83', secondary: '232, 192, 106', tertiary: '180, 140, 70' };
-                    }
+                    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    return isDark ?
+                        { primary: '74, 138, 214', secondary: '106, 170, 255', tertiary: '50, 100, 180' } :
+                        { primary: '212, 168, 83', secondary: '232, 192, 106', tertiary: '180, 140, 70' };
                 }
 
                 class Particle {
-                    constructor() {
-                        this.reset(true);
-                    }
-                    reset(forceRandom) {
+                    constructor() { this.reset(true); }
+                    reset() {
                         this.x = Math.random() * W;
                         this.y = Math.random() * H;
                         this.size = Math.random() * 2.5 + 1.2;
                         this.baseSize = this.size;
-                        this.vx = (Math.random() - 0.5) * 0.12;
-                        this.vy = (Math.random() - 0.5) * 0.12;
                         this.opacity = Math.random() * 0.4 + 0.2;
                         this.originX = this.x;
                         this.originY = this.y;
@@ -725,8 +652,7 @@
                         this.colorOffset = Math.random();
                     }
                     update() {
-                        const dx = this.x - mouseX;
-                        const dy = this.y - mouseY;
+                        const dx = this.x - mouseX, dy = this.y - mouseY;
                         const dist = Math.sqrt(dx * dx + dy * dy);
                         if (dist < MOUSE_RADIUS && dist > 0) {
                             const force = (1 - dist / MOUSE_RADIUS) * 1.0;
@@ -751,17 +677,12 @@
                     }
                     draw() {
                         const colors = getParticleColors();
-                        let color;
-                        if (this.colorOffset < 0.33) color = colors.primary;
-                        else if (this.colorOffset < 0.66) color = colors.secondary;
-                        else color = colors.tertiary;
+                        let color = this.colorOffset < 0.33 ? colors.primary :
+                            this.colorOffset < 0.66 ? colors.secondary : colors.tertiary;
                         const alpha = Math.min(0.8, this.opacity);
                         const radius = Math.max(0.5, this.size);
                         if (radius > 1.5) {
-                            const gradient = ctx.createRadialGradient(
-                                this.x, this.y, 0,
-                                this.x, this.y, radius * 2.5
-                            );
+                            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, radius * 2.5);
                             gradient.addColorStop(0, `rgba(${color}, ${alpha * 0.7})`);
                             gradient.addColorStop(0.3, `rgba(${color}, ${alpha * 0.25})`);
                             gradient.addColorStop(1, `rgba(${color}, 0)`);
@@ -806,10 +727,7 @@
                 function drawMouseGlow() {
                     if (mouseX < 0 || mouseY < 0) return;
                     const colors = getParticleColors();
-                    const gradient = ctx.createRadialGradient(
-                        mouseX, mouseY, 0,
-                        mouseX, mouseY, MOUSE_RADIUS * 1.2
-                    );
+                    const gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, MOUSE_RADIUS * 1.2);
                     gradient.addColorStop(0, `rgba(${colors.primary}, 0.05)`);
                     gradient.addColorStop(0.5, `rgba(${colors.secondary}, 0.025)`);
                     gradient.addColorStop(1, `rgba(${colors.primary}, 0)`);
@@ -827,9 +745,7 @@
 
                 function initParticles() {
                     particles = [];
-                    for (let i = 0; i < PARTICLE_COUNT; i++) {
-                        particles.push(new Particle());
-                    }
+                    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
                 }
 
                 function animate() {
@@ -837,8 +753,7 @@
                     mouseY += (targetMouseY - mouseY) * 0.08;
                     ctx.clearRect(0, 0, W, H);
                     drawMouseGlow();
-                    particles.forEach(p => { p.update();
-                        p.draw(); });
+                    particles.forEach(p => { p.update(); p.draw(); });
                     drawConnections();
                     requestAnimationFrame(animate);
                 }
@@ -853,10 +768,8 @@
                 });
                 document.addEventListener('touchmove', function(e) {
                     const touch = e.touches[0];
-                    if (touch) {
-                        targetMouseX = touch.clientX;
-                        targetMouseY = touch.clientY;
-                    }
+                    if (touch) { targetMouseX = touch.clientX;
+                        targetMouseY = touch.clientY; }
                 }, { passive: true });
                 document.addEventListener('touchend', function() {
                     targetMouseX = -9999;
@@ -866,43 +779,24 @@
                 let resizeTimeout;
                 window.addEventListener('resize', function() {
                     clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(function() {
-                        resize();
-                        initParticles();
-                    }, 300);
-                });
-
-                const themeObserver = new MutationObserver(function() {});
-                themeObserver.observe(document.documentElement, {
-                    attributes: true,
-                    attributeFilter: ['data-theme']
+                    resizeTimeout = setTimeout(function() { resize();
+                        initParticles(); }, 300);
                 });
 
                 resize();
                 initParticles();
                 animate();
-
-                window.__particlesResize = function() {
-                    resize();
-                    initParticles();
-                };
             })();
 
             // ============================================================
             //  主题管理
             // ============================================================
             function getTheme() {
-                try {
-                    return localStorage.getItem(THEME_KEY) || 'default';
-                } catch (e) {
-                    return 'default';
-                }
+                try { return localStorage.getItem(THEME_KEY) || 'default'; } catch (e) { return 'default'; }
             }
 
             function setTheme(theme) {
-                try {
-                    localStorage.setItem(THEME_KEY, theme);
-                } catch (e) {}
+                try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
                 applyTheme(theme);
             }
 
@@ -915,14 +809,13 @@
                     html.setAttribute('data-theme', 'dark');
                     btnText.textContent = '暖色';
                     icon.textContent = '☀️';
-                    label.textContent = 'Giscus 驱动的博客 · 冷蓝之境';
+                    label.textContent = '冷蓝之境 · 静夜思';
                 } else {
                     html.removeAttribute('data-theme');
                     btnText.textContent = '冷色';
                     icon.textContent = '🌙';
-                    label.textContent = 'Giscus 驱动的博客 · 评论即发布';
+                    label.textContent = '写于无人之境 · 仅供同频者阅';
                 }
-                // 更新 Giscus 主题
                 updateGiscusTheme();
             }
 
@@ -952,106 +845,39 @@
                 }
             }
 
-            // 监听主题变化
-            const themeObserverGiscus = new MutationObserver(function() {
-                updateGiscusTheme();
-            });
+            const themeObserverGiscus = new MutationObserver(function() { updateGiscusTheme(); });
             themeObserverGiscus.observe(document.documentElement, {
                 attributes: true,
                 attributeFilter: ['data-theme']
             });
 
             // ============================================================
-            //  获取 Giscus 评论数据
+            //  Toast
             // ============================================================
-            // 使用 GitHub GraphQL API 获取讨论列表
-            // 注意：需要 GitHub Token，且仓库需启用 Discussions
+            let toastTimer = null;
 
-            // 由于 Giscus 的评论数据需要通过 GitHub API 获取，
-            // 这里我们使用一个更简单的方法：直接监听 Giscus 的 iframe 消息
-
-            let giscusDiscussions = [];
-
-            // 监听来自 Giscus 的消息
-            window.addEventListener('message', function(event) {
-                if (event.origin !== 'https://giscus.app') return;
-
-                try {
-                    const data = JSON.parse(event.data);
-                    if (data.giscus && data.giscus.discussion) {
-                        // 收到讨论数据
-                        const discussion = data.giscus.discussion;
-                        console.log('收到讨论数据:', discussion);
-
-                        // 如果当前在列表页，刷新列表
-                        if (!document.getElementById('post-detail').classList.contains('active')) {
-                            // 可以在这里触发列表刷新
-                        }
-                    }
-                    if (data.giscus && data.giscus.error) {
-                        console.error('Giscus 错误:', data.giscus.error);
-                    }
-                } catch (e) {
-                    // 忽略非 JSON 消息
-                }
-            });
+            function showToast(message, type = 'info') {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.className = 'toast ' + type + ' show';
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 3000);
+            }
 
             // ============================================================
-            //  模拟数据（由于 Giscus 无法直接获取列表，用示例数据演示）
-            // ============================================================
-            // 注意：真实场景下，你需要通过 GitHub GraphQL API 获取讨论列表
-            // 这里为了演示，使用示例数据 + Giscus 评论区展示
-
-            const DEMO_POSTS = [{
-                id: 1,
-                title: '📦 喂喂喂资源库更新啦！',
-                date: '2026-07-25',
-                excerpt: '🎉 资源库又有新货了！新增大量学习资料，优化了资源分类，修复了部分链接失效问题。',
-                content: `🎉 <strong>资源库又有新货了！</strong><br><br>📁 本次更新内容：<br>• 新增大量学习资料<br>• 优化了资源分类<br>• 修复了部分链接失效问题<br><br>🔗 传送门：<a href="https://1838190346.share.123pan.cn/123pan/gfigTd-P1SLH?pwd=1145#" target="_blank">点击进入资源库</a><br>📌 访问密码：<code>1145</code><br><br>💡 建议收藏，持续更新中！`,
-                tags: ['资源', '更新', '分享'],
-                comments: 3
-            }, {
-                id: 2,
-                title: '在算法洪流中，打捞一艘木帆船',
-                date: '2026-07-20',
-                excerpt: '当全世界都在追逐效率与增长，我选择退回书桌一角，用最原始的方式——文字，来对抗遗忘。',
-                content: '当全世界都在追逐效率与增长，我选择退回书桌一角，用最原始的方式——文字，来对抗遗忘。这篇不追求阅读量，只写给十年后的自己。',
-                tags: ['随笔', '反思', '慢生活'],
-                comments: 5
-            }, {
-                id: 3,
-                title: '从 Notion 到纯文本：我的笔记回流之路',
-                date: '2026-07-13',
-                excerpt: '用了三年 Notion，最终还是回到了 .txt 和 .md 的怀抱。不是倒退，而是发现——真正的思考，不需要华丽的数据库。',
-                content: '用了三年 Notion，最终还是回到了 .txt 和 .md 的怀抱。不是倒退，而是发现——真正的思考，不需要华丽的数据库，只需要一张白纸。',
-                tags: ['工具', '工作流', '极简'],
-                comments: 8
-            }, {
-                id: 4,
-                title: '深夜读《庄子》—— 关于「无用之用」的现代性体验',
-                date: '2026-07-08',
-                excerpt: '在这个每个人都在努力成为「有用」之才的时代，我突然理解了什么叫做「人皆知有用之用，而莫知无用之用也」。',
-                content: '在这个每个人都在努力成为「有用」之才的时代，我突然理解了什么叫做「人皆知有用之用，而莫知无用之用也」。无用，或许才是我们最后的庇护所。',
-                tags: ['阅读', '哲学', '庄子'],
-                comments: 12
-            }];
-
-            // ============================================================
-            //  渲染
+            //  渲染文章列表
             // ============================================================
             function renderPostList() {
                 const container = document.getElementById('post-list');
                 if (!container) return;
 
-                const posts = DEMO_POSTS;
-
-                if (!posts || posts.length === 0) {
+                if (!POSTS || POSTS.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
                             <span class="empty-icon">📝</span>
                             <p>还没有文章</p>
                             <p style="font-size:0.9rem;color:var(--text-muted);margin-top:0.5rem;">
-                                去 GitHub Discussions 创建第一篇吧！
+                                点击右上角「写新文章」在 GitHub 上创建
                             </p>
                         </div>
                     `;
@@ -1059,10 +885,9 @@
                 }
 
                 let html = '';
-                posts.forEach(post => {
+                POSTS.forEach(post => {
                     const tagsHtml = post.tags && post.tags.length ?
-                        post.tags.map(t => `<span>#${t.trim()}</span>`).join('') :
-                        '';
+                        post.tags.map(t => `<span>#${t.trim()}</span>`).join('') : '';
                     html += `
                         <div class="blog-post" data-id="${post.id}">
                             <div class="post-header">
@@ -1072,7 +897,7 @@
                             <div class="post-excerpt">${post.excerpt || post.content.substring(0, 120) + '...'}</div>
                             ${tagsHtml ? `<div class="post-tags">${tagsHtml}</div>` : ''}
                             <div class="post-meta">
-                                <span>💬 ${post.comments || 0} 条评论</span>
+                                <span>💬 点击阅读 →</span>
                                 <span>📅 ${post.date}</span>
                             </div>
                         </div>
@@ -1084,7 +909,6 @@
                 // 绑定点击事件
                 container.querySelectorAll('.blog-post').forEach(el => {
                     el.addEventListener('click', function(e) {
-                        // 如果点击的是链接，让链接处理
                         if (e.target.tagName === 'A') return;
                         const id = parseInt(this.dataset.id);
                         openPostDetail(id);
@@ -1100,8 +924,13 @@
                 });
             }
 
+            // ============================================================
+            //  文章详情
+            // ============================================================
+            let currentPostId = null;
+
             function openPostDetail(postId) {
-                const post = DEMO_POSTS.find(p => p.id === postId);
+                const post = POSTS.find(p => p.id === postId);
                 if (!post) {
                     showToast('文章不存在', 'error');
                     return;
@@ -1109,31 +938,33 @@
 
                 currentPostId = postId;
 
-                // 切换视图
                 document.getElementById('list-view').classList.add('hidden');
                 document.getElementById('post-detail').classList.add('active');
 
-                // 填充内容
                 document.getElementById('post-full-title').textContent = post.title;
                 document.getElementById('post-full-date').textContent = post.date;
                 document.getElementById('post-full-content').innerHTML = post.content;
 
-                // ★★★ 更新 Giscus 的 discussion 映射 ★★★
-                // Giscus 使用 data-mapping="title"，会自动匹配标题
-                // 但我们需要重新加载 Giscus
-
-                // 重新加载 Giscus
+                // ★★★ 加载 Giscus 评论区 ★★★
                 loadGiscusForPost(post.title);
 
-                // 滚动到顶部
                 document.querySelector('.container').scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
 
+            function goBackToList() {
+                document.getElementById('list-view').classList.remove('hidden');
+                document.getElementById('post-detail').classList.remove('active');
+                document.querySelector('.container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // ============================================================
+            //  ★★★ ★★★ ★★★ 加载 Giscus ★★★ ★★★ ★★★
+            // ============================================================
             function loadGiscusForPost(title) {
                 const wrapper = document.getElementById('giscus-wrapper');
                 if (!wrapper) return;
 
-                // 清空并重新创建 Giscus 容器
+                // 显示加载状态
                 wrapper.innerHTML = `
                     <div class="loading-state">
                         <div class="spinner"></div>
@@ -1141,13 +972,18 @@
                     </div>
                 `;
 
-                // 创建新的 script 标签
+                // 移除旧的 script
+                const oldScripts = wrapper.querySelectorAll('script');
+                oldScripts.forEach(s => s.remove());
+
+                // ★★★ 创建新的 Giscus script ★★★
                 const script = document.createElement('script');
                 script.src = 'https://giscus.app/client.js';
-                script.setAttribute('data-repo', '你的用户名/你的仓库名');
-                script.setAttribute('data-repo-id', '你的仓库ID');
-                script.setAttribute('data-category', 'Announcements');
-                script.setAttribute('data-category-id', '你的分类ID');
+                // ⚠️ 请将下面的值替换为你的实际配置
+                script.setAttribute('data-repo', GISCUS_CONFIG.repo);
+                script.setAttribute('data-repo-id', GISCUS_CONFIG.repoId);
+                script.setAttribute('data-category', GISCUS_CONFIG.category);
+                script.setAttribute('data-category-id', GISCUS_CONFIG.categoryId);
                 script.setAttribute('data-mapping', 'title');
                 script.setAttribute('data-strict', '0');
                 script.setAttribute('data-reactions-enabled', '1');
@@ -1160,46 +996,42 @@
                 script.setAttribute('crossorigin', 'anonymous');
                 script.async = true;
 
-                // 脚本加载完成后移除 loading 状态
+                // 加载完成后移除 loading
                 script.onload = function() {
-                    // 加载完成后，Giscus 会自行渲染
                     setTimeout(() => {
                         const loading = wrapper.querySelector('.loading-state');
                         if (loading) loading.style.display = 'none';
                     }, 2000);
                 };
 
-                // 如果有旧的 script，移除
-                const oldScripts = wrapper.querySelectorAll('script');
-                oldScripts.forEach(s => s.remove());
-
                 wrapper.appendChild(script);
 
-                // 设置超时，移除 loading
+                // 5秒后自动移除 loading
                 setTimeout(() => {
                     const loading = wrapper.querySelector('.loading-state');
                     if (loading) loading.style.display = 'none';
                 }, 5000);
+
+                // ★★★ 同时更新"写新文章"链接 ★★★
+                updateNewPostLink(title);
             }
 
-            function goBackToList() {
-                document.getElementById('list-view').classList.remove('hidden');
-                document.getElementById('post-detail').classList.remove('active');
-                // 滚动到顶部
-                document.querySelector('.container').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-
-            // ---------- Toast ----------
-            let toastTimer = null;
-
-            function showToast(message, type = 'info') {
-                const toast = document.getElementById('toast');
-                toast.textContent = message;
-                toast.className = 'toast ' + type + ' show';
-                clearTimeout(toastTimer);
-                toastTimer = setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 3000);
+            // ============================================================
+            //  ★★★ 更新"写新文章"链接 ★★★
+            // ============================================================
+            function updateNewPostLink(title) {
+                const link = document.getElementById('new-post-link');
+                if (!link) return;
+                // 跳转到 GitHub 创建新 Discussion
+                const repo = GISCUS_CONFIG.repo;
+                const category = GISCUS_CONFIG.category;
+                link.href = `https://github.com/${repo}/discussions/new?category=${encodeURIComponent(category)}`;
+                link.target = '_blank';
+                // 如果有当前文章标题，可以预填
+                if (title) {
+                    // 通过 URL 参数预填标题（GitHub 支持）
+                    link.href += `&title=${encodeURIComponent(title)}`;
+                }
             }
 
             // ============================================================
@@ -1217,11 +1049,14 @@
                 // 渲染文章列表
                 renderPostList();
 
-                // 默认加载第一篇文章的评论区（可选）
-                if (DEMO_POSTS.length > 0) {
-                    // 默认选中第一篇的评论区
+                // 更新"写新文章"链接
+                updateNewPostLink('');
+
+                // 默认选中第一篇
+                if (POSTS.length > 0) {
                     setTimeout(() => {
-                        loadGiscusForPost(DEMO_POSTS[0].title);
+                        // 加载第一篇文章的评论区（作为默认）
+                        loadGiscusForPost(POSTS[0].title);
                     }, 1500);
                 }
 
