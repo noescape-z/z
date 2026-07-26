@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的博客</title>
+    <title>夜航船 · 我的博客</title>
     <style>
         /* ============================================================
                主题 1：暖深色（默认）
@@ -44,8 +44,6 @@
             --like-color-active: #ff6b6b;
             --link-color: #d4a853;
             --link-hover: #e8c06a;
-            --comment-border: #3d3229;
-            --comment-bg: rgba(42, 33, 26, 0.5);
             --loading-color: #d4a853;
         }
 
@@ -88,8 +86,6 @@
             --like-color-active: #ff6b6b;
             --link-color: #4a8ad6;
             --link-hover: #6aaaff;
-            --comment-border: #1a2a4a;
-            --comment-bg: rgba(18, 26, 42, 0.5);
             --loading-color: #4a8ad6;
         }
 
@@ -204,6 +200,15 @@
             color: var(--btn-primary-text);
             border-color: var(--btn-primary-bg);
         }
+        .header-actions .btn-sm.success {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        .header-actions .btn-sm.success:hover {
+            background: var(--accent-green);
+            color: #fff;
+            border-color: var(--accent-green);
+        }
 
         /* ===== 主题切换 ===== */
         .theme-toggle {
@@ -228,7 +233,7 @@
         .theme-toggle .icon { display: inline-block; transition: transform 0.6s ease; }
         .theme-toggle:hover .icon { transform: rotate(30deg); }
 
-        /* ===== 文章 ===== */
+        /* ===== 文章列表 ===== */
         .blog-post {
             margin-bottom: 2.5rem;
             padding: 1.5rem 2rem;
@@ -499,6 +504,7 @@
                 <button class="theme-toggle" id="theme-toggle">
                     <span class="icon">🌙</span> <span id="theme-btn-text">冷色</span>
                 </button>
+                <!-- ★★★ "写新文章"跳转到 GitHub 发帖 ★★★ -->
                 <a class="btn-sm primary" id="new-post-link" href="#" target="_blank">✏️ 写新文章</a>
             </div>
         </header>
@@ -537,14 +543,15 @@
     <!-- ================= Toast 提示 ================= -->
     <div class="toast" id="toast"></div>
 
-    <!-- ================= ★★★ Giscus 脚本（你需要替换配置） ★★★ ================= -->
+    <!-- ================= ★★★ Giscus 脚本（你的配置） ★★★ ================= -->
     <!--
     ═══════════════════════════════════════════════════════════════
     请到 https://giscus.app 获取你的专属配置，替换下面的参数
+    仓库地址：noescape-z/z
     ═══════════════════════════════════════════════════════════════
     -->
     <script src="https://giscus.app/client.js"
-        data-repo="你的用户名/你的仓库名"
+        data-repo="noescape-z/z"
         data-repo-id="你的仓库ID"
         data-category="Announcements"
         data-category-id="你的分类ID"
@@ -565,20 +572,10 @@
         (function() {
             // ---------- 配置 ----------
             const THEME_KEY = 'blog_theme';
+            const GISCUS_REPO = 'noescape-z/z';
 
-            // ============================================================
-            //  ★★★ 请在这里替换为你的 Giscus 配置 ★★★
-            //  ⚠️ 必须和上面 script 标签中的保持一致！
-            // ============================================================
-            const GISCUS_CONFIG = {
-                repo: '你的用户名/你的仓库名',
-                repoId: '你的仓库ID',
-                category: 'Announcements',
-                categoryId: '你的分类ID'
-            };
-
-            // ---------- 文章数据 ----------
-            // 这里用示例数据，实际使用中可通过 GitHub API 获取
+            // ---------- 文章数据（示例，后续可以改成从 GitHub API 获取） ----------
+            // 你可以在这里手动添加文章，也可以从 localStorage 读取
             const POSTS = [{
                 id: 1,
                 title: '📦 喂喂喂资源库更新啦！',
@@ -865,7 +862,7 @@
             }
 
             // ============================================================
-            //  渲染文章列表
+            //  ★★★ 渲染文章列表 ★★★
             // ============================================================
             function renderPostList() {
                 const container = document.getElementById('post-list');
@@ -925,7 +922,7 @@
             }
 
             // ============================================================
-            //  文章详情
+            //  ★★★ 文章详情 ★★★
             // ============================================================
             let currentPostId = null;
 
@@ -958,7 +955,7 @@
             }
 
             // ============================================================
-            //  ★★★ ★★★ ★★★ 加载 Giscus ★★★ ★★★ ★★★
+            //  ★★★ 加载 Giscus ★★★
             // ============================================================
             function loadGiscusForPost(title) {
                 const wrapper = document.getElementById('giscus-wrapper');
@@ -977,13 +974,13 @@
                 oldScripts.forEach(s => s.remove());
 
                 // ★★★ 创建新的 Giscus script ★★★
+                // 注意：你需要从 https://giscus.app 获取真实的 repo-id 和 category-id
                 const script = document.createElement('script');
                 script.src = 'https://giscus.app/client.js';
-                // ⚠️ 请将下面的值替换为你的实际配置
-                script.setAttribute('data-repo', GISCUS_CONFIG.repo);
-                script.setAttribute('data-repo-id', GISCUS_CONFIG.repoId);
-                script.setAttribute('data-category', GISCUS_CONFIG.category);
-                script.setAttribute('data-category-id', GISCUS_CONFIG.categoryId);
+                script.setAttribute('data-repo', 'noescape-z/z');
+                script.setAttribute('data-repo-id', '你的仓库ID');        // ← 请替换
+                script.setAttribute('data-category', 'Announcements');
+                script.setAttribute('data-category-id', '你的分类ID');    // ← 请替换
                 script.setAttribute('data-mapping', 'title');
                 script.setAttribute('data-strict', '0');
                 script.setAttribute('data-reactions-enabled', '1');
@@ -1012,30 +1009,28 @@
                     if (loading) loading.style.display = 'none';
                 }, 5000);
 
-                // ★★★ 同时更新"写新文章"链接 ★★★
+                // ★★★ 更新"写新文章"链接 ★★★
                 updateNewPostLink(title);
             }
 
             // ============================================================
-            //  ★★★ 更新"写新文章"链接 ★★★
+            //  ★★★ 更新"写新文章"链接（跳转 GitHub 发帖） ★★★
             // ============================================================
             function updateNewPostLink(title) {
                 const link = document.getElementById('new-post-link');
                 if (!link) return;
-                // 跳转到 GitHub 创建新 Discussion
-                const repo = GISCUS_CONFIG.repo;
-                const category = GISCUS_CONFIG.category;
-                link.href = `https://github.com/${repo}/discussions/new?category=${encodeURIComponent(category)}`;
+                // ★★★ 跳转到 GitHub 创建新 Discussion ★★★
+                // 仓库名：noescape-z/z
+                link.href = `https://github.com/noescape-z/z/discussions/new?category=Announcements`;
                 link.target = '_blank';
                 // 如果有当前文章标题，可以预填
                 if (title) {
-                    // 通过 URL 参数预填标题（GitHub 支持）
                     link.href += `&title=${encodeURIComponent(title)}`;
                 }
             }
 
             // ============================================================
-            //  初始化
+            //  ★★★ 初始化 ★★★
             // ============================================================
             function init() {
                 // 主题
@@ -1046,16 +1041,15 @@
                 // 返回按钮
                 document.getElementById('back-btn').addEventListener('click', goBackToList);
 
-                // 渲染文章列表
-                renderPostList();
-
                 // 更新"写新文章"链接
                 updateNewPostLink('');
+
+                // 渲染文章列表
+                renderPostList();
 
                 // 默认选中第一篇
                 if (POSTS.length > 0) {
                     setTimeout(() => {
-                        // 加载第一篇文章的评论区（作为默认）
                         loadGiscusForPost(POSTS[0].title);
                     }, 1500);
                 }
