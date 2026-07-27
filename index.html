@@ -1,1071 +1,758 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>夜航船 · 我的博客</title>
-    <style>
-        /* ============================================================
-               主题 1：暖深色（默认）
-               ============================================================ */
-        :root {
-            --bg-primary: #1a1410;
-            --bg-secondary: #241d17;
-            --bg-tertiary: #332a22;
-            --bg-card: rgba(42, 33, 26, 0.78);
-            --text-primary: #e8ddd0;
-            --text-secondary: #b8a99a;
-            --text-heading: #f5ede4;
-            --text-muted: #8a7a6a;
-            --border-color: #3d3229;
-            --border-light: #4d3f34;
-            --accent-primary: #d4a853;
-            --accent-hover: #e8c06a;
-            --accent-blue: #7a9bcb;
-            --accent-green: #6b9f6b;
-            --accent-red: #c0705a;
-            --accent-red-hover: #d4856e;
-            --gradient-start: #f5ede4;
-            --gradient-end: #d4a853;
-            --modal-bg: #241d17;
-            --input-bg: #1a1410;
-            --toast-bg: #241d17;
-            --shadow-color: rgba(0, 0, 0, 0.85);
-            --badge-bg: #8a6a3a;
-            --badge-text: #f5ede4;
-            --btn-primary-bg: #8a6a3a;
-            --btn-primary-hover: #a8844a;
-            --btn-primary-text: #f5ede4;
-            --tag-bg: #332a22;
-            --tag-text: #b8a99a;
-            --scrollbar-track: #1a1410;
-            --scrollbar-thumb: #3d3229;
-            --like-color: #e8c06a;
-            --like-color-active: #ff6b6b;
-            --link-color: #d4a853;
-            --link-hover: #e8c06a;
-            --loading-color: #d4a853;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOESCAPE-Z · 个人博客</title>
+  <!-- 使用 Giscus 评论组件 -->
+  <script src="https://giscus.app/client.js"
+    data-repo="noescape-z/z"
+    data-repo-id="你的仓库ID"
+    data-category="Announcements"
+    data-category-id="你的分类ID"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="transparent_dark"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+  </script>
+  <style>
+    /* ===== 全局重置 & 主题变量 ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* ============================================================
-               主题 2：冷暗色
-               ============================================================ */
-        [data-theme="dark"] {
-            --bg-primary: #080c14;
-            --bg-secondary: #0f1624;
-            --bg-tertiary: #1a2438;
-            --bg-card: rgba(18, 26, 42, 0.78);
-            --text-primary: #d6e2f0;
-            --text-secondary: #8aa0c0;
-            --text-heading: #eaf0f8;
-            --text-muted: #5a72a0;
-            --border-color: #1a2a4a;
-            --border-light: #2a3a5a;
-            --accent-primary: #4a8ad6;
-            --accent-hover: #6aaaff;
-            --accent-blue: #4a8ad6;
-            --accent-green: #3a9a7a;
-            --accent-red: #d06060;
-            --accent-red-hover: #e87878;
-            --gradient-start: #8ab0e8;
-            --gradient-end: #6a6ad4;
-            --modal-bg: #0f1624;
-            --input-bg: #080c14;
-            --toast-bg: #0f1624;
-            --shadow-color: rgba(0, 0, 0, 0.9);
-            --badge-bg: #2a4a7a;
-            --badge-text: #d6e2f0;
-            --btn-primary-bg: #2a4a7a;
-            --btn-primary-hover: #3a6aaa;
-            --btn-primary-text: #d6e2f0;
-            --tag-bg: #1a2438;
-            --tag-text: #8aa0c0;
-            --scrollbar-track: #080c14;
-            --scrollbar-thumb: #1a2a4a;
-            --like-color: #6aaaff;
-            --like-color-active: #ff6b6b;
-            --link-color: #4a8ad6;
-            --link-hover: #6aaaff;
-            --loading-color: #4a8ad6;
-        }
+    :root {
+      /* 暖深色 (默认) */
+      --bg-body: #1a1410;
+      --bg-sidebar: #0f0b08;
+      --bg-card: #2a211a;
+      --bg-input: #1a1410;
+      --text-primary: #e8ddd0;
+      --text-secondary: #b8a99a;
+      --text-muted: #8a7a6a;
+      --border-color: #3d3229;
+      --accent: #d4a853;
+      --accent-hover: #e8c06a;
+      --shadow: rgba(0, 0, 0, 0.6);
+      --radius: 12px;
+      --transition: 0.25s ease;
+    }
 
-        /* ===== 滚动条 ===== */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
+    [data-theme="dark"] {
+      /* 冷暗色 */
+      --bg-body: #080c14;
+      --bg-sidebar: #040810;
+      --bg-card: #121a2a;
+      --bg-input: #080c14;
+      --text-primary: #d6e2f0;
+      --text-secondary: #8aa0c0;
+      --text-muted: #5a72a0;
+      --border-color: #1a2a4a;
+      --accent: #4a8ad6;
+      --accent-hover: #6aaaff;
+      --shadow: rgba(0, 0, 0, 0.8);
+    }
 
-        /* ===== 动态粒子画布 ===== */
-        #particles-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            display: block;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-body);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      transition: background 0.3s, color 0.3s;
+    }
 
-        /* ===== 全局 ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ===== 侧边栏 ===== */
+    .sidebar {
+      width: 260px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color);
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      padding: 2rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      flex-shrink: 0;
+      transition: background 0.3s, border-color 0.3s;
+      overflow-y: auto;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            padding: 2rem 1rem;
-            line-height: 1.7;
-            transition: background 0.5s ease, color 0.5s ease;
-            position: relative;
-            z-index: 1;
-            overflow-x: hidden;
-        }
+    .sidebar-brand {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--accent), var(--text-heading));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+    }
 
-        .container { max-width: 900px; width: 100%; position: relative; z-index: 2; }
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
 
-        /* ===== 链接 ===== */
-        a { color: var(--link-color); text-decoration: none; transition: color 0.3s ease; }
-        a:hover { color: var(--link-hover); text-decoration: underline; }
+    .sidebar-nav button {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius);
+      text-align: left;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-weight: 500;
+      border: 1px solid transparent;
+    }
 
-        /* ===== 头部 ===== */
-        header {
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 1.5rem;
-            margin-bottom: 2.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            transition: border-color 0.5s ease;
-            backdrop-filter: blur(12px);
-            background: rgba(26, 20, 16, 0.25);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        [data-theme="dark"] header { background: rgba(8, 12, 20, 0.3); }
+    .sidebar-nav button:hover {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+    }
 
-        header .header-left h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            transition: background 0.5s ease;
-        }
-        header .header-left .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-top: 0.1rem;
-            transition: color 0.5s ease;
-        }
+    .sidebar-nav button.active {
+      background: var(--bg-card);
+      color: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
 
-        .header-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
+    /* 侧边栏底部主题切换 */
+    .sidebar-footer {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
 
-        .header-actions .btn-sm {
-            padding: 0.4rem 1rem;
-            font-size: 0.8rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(4px);
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-        .header-actions .btn-sm:hover {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border-color: var(--border-light);
-        }
-        .header-actions .btn-sm.primary {
-            border-color: var(--btn-primary-bg);
-            color: var(--accent-primary);
-        }
-        .header-actions .btn-sm.primary:hover {
-            background: var(--btn-primary-bg);
-            color: var(--btn-primary-text);
-            border-color: var(--btn-primary-bg);
-        }
-        .header-actions .btn-sm.success {
-            border-color: var(--accent-green);
-            color: var(--accent-green);
-        }
-        .header-actions .btn-sm.success:hover {
-            background: var(--accent-green);
-            color: #fff;
-            border-color: var(--accent-green);
-        }
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all var(--transition);
+    }
 
-        /* ===== 主题切换 ===== */
-        .theme-toggle {
-            padding: 0.4rem 1rem;
-            font-size: 0.8rem;
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(4px);
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.4s ease;
-            white-space: nowrap;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        .theme-toggle:hover {
-            transform: scale(1.04);
-            border-color: var(--accent-primary);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-        }
-        .theme-toggle .icon { display: inline-block; transition: transform 0.6s ease; }
-        .theme-toggle:hover .icon { transform: rotate(30deg); }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
 
-        /* ===== 文章列表 ===== */
-        .blog-post {
-            margin-bottom: 2.5rem;
-            padding: 1.5rem 2rem;
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            transition: all 0.5s ease;
-            backdrop-filter: blur(8px);
-            cursor: pointer;
-        }
-        .blog-post:hover {
-            border-color: var(--border-light);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            transform: translateY(-2px);
-        }
-        .blog-post:last-child { margin-bottom: 0; }
+    /* ===== 主内容 ===== */
+    .main {
+      flex: 1;
+      padding: 2rem 2.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+      transition: background 0.3s;
+    }
 
-        .blog-post .post-date {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 0.3rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: color 0.5s ease;
-        }
+    /* 页面区块 */
+    .page {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
 
-        .blog-post .post-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            transition: color 0.5s ease;
-        }
-        .blog-post .post-header h2 a { color: inherit; text-decoration: none; }
-        .blog-post .post-header h2 a:hover { color: var(--accent-primary); }
+    .page.active {
+      display: block;
+    }
 
-        .blog-post .post-excerpt {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-top: 0.5rem;
-            transition: color 0.5s ease;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
 
-        .blog-post .post-tags {
-            margin-top: 0.8rem;
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        .blog-post .post-tags span {
-            background: var(--tag-bg);
-            padding: 0.15rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            color: var(--tag-text);
-            border: 1px solid var(--border-color);
-            transition: all 0.4s ease;
-            font-weight: 500;
-        }
-        .blog-post .post-tags span:hover {
-            border-color: var(--accent-primary);
-            color: var(--text-primary);
-        }
+    /* ===== 首页 ===== */
+    .update-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
 
-        .blog-post .post-meta {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-top: 0.8rem;
-            padding-top: 0.8rem;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-        .blog-post .post-meta span { display: flex; align-items: center; gap: 0.3rem; }
+    .update-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      transition: all var(--transition);
+    }
 
-        /* ===== 文章详情 ===== */
-        .post-detail { display: none; }
-        .post-detail.active { display: block; }
+    .update-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px var(--shadow);
+    }
 
-        .post-detail .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.4rem 1.2rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: transparent;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-        }
-        .post-detail .back-btn:hover {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border-color: var(--border-light);
-        }
+    .update-item .time {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
 
-        .post-detail .post-full-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            margin-bottom: 0.5rem;
-            transition: color 0.5s ease;
-        }
-        .post-detail .post-full-date {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-        .post-detail .post-full-content {
-            color: var(--text-primary);
-            font-size: 1.05rem;
-            line-height: 1.9;
-            transition: color 0.5s ease;
-        }
-        .post-detail .post-full-content img { max-width: 100%; border-radius: 8px; }
-        .post-detail .post-full-content blockquote {
-            border-left: 3px solid var(--accent-primary);
-            padding-left: 1rem;
-            margin: 1rem 0;
-            color: var(--text-secondary);
-        }
-        .post-detail .post-full-content code {
-            background: var(--bg-tertiary);
-            padding: 0.1rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-        .post-detail .post-full-content pre {
-            background: var(--bg-tertiary);
-            padding: 1rem;
-            border-radius: 8px;
-            overflow-x: auto;
-        }
+    .update-item .content {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
 
-        /* ===== ★★★ Giscus 评论区 ★★★ ===== */
-        .comments-section {
-            margin-top: 2.5rem;
-            padding: 1.5rem 2rem;
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(8px);
-            transition: all 0.5s ease;
-        }
-        .comments-section:hover { border-color: var(--border-light); }
-        .comments-section .comments-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-heading);
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
+    /* ===== 文章专区 ===== */
+    .post-controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
 
-        .giscus-wrapper { min-height: 150px; }
+    .post-controls input,
+    .post-controls textarea {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border 0.2s;
+      font-family: inherit;
+      flex: 1 1 200px;
+    }
 
-        /* ===== 加载状态 ===== */
-        .loading-state {
-            text-align: center;
-            padding: 2rem 0;
-            color: var(--text-muted);
-        }
-        .loading-state .spinner {
-            display: inline-block;
-            width: 32px;
-            height: 32px;
-            border: 3px solid var(--border-color);
-            border-top-color: var(--loading-color);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-bottom: 0.8rem;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
+    .post-controls input:focus,
+    .post-controls textarea:focus {
+      border-color: var(--accent);
+    }
 
-        /* ===== 列表/详情切换 ===== */
-        .list-view { display: block; }
-        .list-view.hidden { display: none; }
+    .post-controls textarea {
+      resize: vertical;
+      min-height: 80px;
+      flex-basis: 100%;
+    }
 
-        /* ===== 空状态 ===== */
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-secondary);
-            transition: color 0.5s ease;
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(8px);
-        }
-        .empty-state p { font-size: 1.1rem; }
-        .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    .btn {
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      padding: 0.5rem 1.4rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
 
-        /* ===== 页脚 ===== */
-        footer {
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 2px solid var(--border-color);
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            transition: all 0.5s ease;
-            letter-spacing: 0.5px;
-        }
+    .btn:hover {
+      background: var(--accent-hover);
+      transform: scale(1.02);
+    }
 
-        /* ===== Toast ===== */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 0.8rem 2rem;
-            border-radius: 12px;
-            background: var(--toast-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            z-index: 2000;
-            opacity: 0;
-            transition: all 0.4s ease;
-            pointer-events: none;
-            max-width: 90%;
-            text-align: center;
-            font-weight: 500;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
-        }
-        .toast.show { opacity: 1; }
-        .toast.success { border-color: var(--accent-green); color: var(--accent-green); }
-        .toast.error { border-color: var(--accent-red); color: var(--accent-red-hover); }
-        .toast.info { border-color: var(--accent-primary); color: var(--accent-primary); }
+    .btn-danger {
+      background: #c0705a;
+    }
 
-        /* ===== 响应式 ===== */
-        @media (max-width: 600px) {
-            body { padding: 1rem 0.8rem; }
-            header { padding: 0.8rem 1rem; flex-direction: column; align-items: stretch; }
-            header .header-left h1 { font-size: 1.8rem; }
-            .header-actions { justify-content: flex-start; }
-            .blog-post { padding: 1rem 1.2rem; }
-            .blog-post .post-header h2 { font-size: 1.3rem; }
-            .header-actions .btn-sm, .theme-toggle { font-size: 0.7rem; padding: 0.3rem 0.7rem; }
-            .theme-toggle { border-radius: 16px; }
-            .post-detail .post-full-title { font-size: 1.5rem; }
-            .comments-section { padding: 1rem 1.2rem; }
-        }
-    </style>
+    .btn-danger:hover {
+      background: #d4856e;
+    }
+
+    .post-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .post-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      transition: all var(--transition);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .post-item:hover {
+      border-color: var(--accent);
+    }
+
+    .post-item .info {
+      flex: 1;
+    }
+
+    .post-item .title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .post-item .meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .post-item .actions {
+      display: flex;
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .post-item .actions button {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 0.2rem 0.7rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all var(--transition);
+    }
+
+    .post-item .actions button:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .post-item .actions .del:hover {
+      border-color: #d4856e;
+      color: #d4856e;
+    }
+
+    /* ===== 评论页 ===== */
+    .giscus-wrapper {
+      margin-top: 1rem;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      min-height: 400px;
+    }
+
+    .giscus-wrapper .giscus {
+      max-width: 100%;
+    }
+
+    /* ===== 空状态 ===== */
+    .empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+    }
+
+    .empty .icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 1rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      .sidebar-brand {
+        font-size: 1.3rem;
+        border-bottom: none;
+        padding-bottom: 0;
+        flex: 1;
+      }
+
+      .sidebar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.2rem;
+        order: 3;
+        width: 100%;
+      }
+
+      .sidebar-nav button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+      }
+
+      .sidebar-footer {
+        margin-top: 0;
+        border-top: none;
+        padding-top: 0;
+      }
+
+      .main {
+        padding: 1.2rem;
+      }
+
+      .post-controls {
+        flex-direction: column;
+      }
+
+      .post-controls input,
+      .post-controls textarea {
+        flex-basis: auto;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar-brand {
+        font-size: 1.1rem;
+      }
+
+      .sidebar-nav button {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+      }
+
+      .post-item {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .post-item .actions {
+        justify-content: flex-end;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- ================= 动态粒子画布 ================= -->
-    <canvas id="particles-canvas"></canvas>
+  <!-- ===== 侧边栏 ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">NOESCAPE-Z</div>
 
-    <!-- ================= 博客主体 ================= -->
-    <div class="container">
-        <header>
-            <div class="header-left">
-                <h1>🌙 夜航船</h1>
-                <div class="subtitle" id="theme-label">写于无人之境 · 仅供同频者阅</div>
-            </div>
-            <div class="header-actions">
-                <button class="theme-toggle" id="theme-toggle">
-                    <span class="icon">🌙</span> <span id="theme-btn-text">冷色</span>
-                </button>
-                <!-- ★★★ "写新文章"跳转到 GitHub 发帖 ★★★ -->
-                <a class="btn-sm primary" id="new-post-link" href="#" target="_blank">✏️ 写新文章</a>
-            </div>
-        </header>
+    <nav class="sidebar-nav">
+      <button class="active" data-page="home">🏠 首页</button>
+      <button data-page="posts">📄 文章专区</button>
+      <button data-page="comments">💬 评论</button>
+    </nav>
 
-        <!-- ===== 文章列表 ===== -->
-        <div id="list-view" class="list-view">
-            <div id="post-list">
-                <!-- 由 JavaScript 渲染 -->
-            </div>
-        </div>
-
-        <!-- ===== 文章详情 ===== -->
-        <div id="post-detail" class="post-detail">
-            <button class="back-btn" id="back-btn">← 返回列表</button>
-            <h1 class="post-full-title" id="post-full-title"></h1>
-            <div class="post-full-date" id="post-full-date"></div>
-            <div class="post-full-content" id="post-full-content"></div>
-
-            <!-- ★★★ Giscus 评论区 ★★★ -->
-            <div class="comments-section">
-                <div class="comments-title">💬 评论区</div>
-                <div class="giscus-wrapper" id="giscus-wrapper">
-                    <div class="loading-state">
-                        <div class="spinner"></div>
-                        <p>⏳ 加载评论区...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <p>© 2026 · 保留所有权利 · 由 Giscus 驱动</p>
-        </footer>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">🌓 切换主题</button>
     </div>
+  </aside>
 
-    <!-- ================= Toast 提示 ================= -->
-    <div class="toast" id="toast"></div>
+  <!-- ===== 主内容 ===== -->
+  <main class="main">
 
-    <!-- ================= ★★★ Giscus 脚本（你的配置） ★★★ ================= -->
-    <!--
-    ═══════════════════════════════════════════════════════════════
-    请到 https://giscus.app 获取你的专属配置，替换下面的参数
-    仓库地址：noescape-z/z
-    ═══════════════════════════════════════════════════════════════
-    -->
-    <script src="https://giscus.app/client.js"
-        data-repo="noescape-z/z"
-        data-repo-id="你的仓库ID"
-        data-category="Announcements"
-        data-category-id="你的分类ID"
-        data-mapping="title"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="transparent_dark"
-        data-lang="zh-CN"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
-    </script>
+    <!-- ===== 首页 ===== -->
+    <section id="page-home" class="page active">
+      <h2 style="margin-bottom: 1.2rem;">📌 更新动态</h2>
+      <div class="update-list" id="updateList">
+        <!-- 由 JavaScript 动态渲染 -->
+      </div>
+    </section>
 
-    <!-- ================= JavaScript ================= -->
-    <script>
-        (function() {
-            // ---------- 配置 ----------
-            const THEME_KEY = 'blog_theme';
-            const GISCUS_REPO = 'noescape-z/z';
+    <!-- ===== 文章专区 ===== -->
+    <section id="page-posts" class="page">
+      <h2 style="margin-bottom: 1.2rem;">📝 文章专区</h2>
 
-            // ---------- 文章数据（示例，后续可以改成从 GitHub API 获取） ----------
-            // 你可以在这里手动添加文章，也可以从 localStorage 读取
-            const POSTS = [{
-                id: 1,
-                title: '📦 喂喂喂资源库更新啦！',
-                date: '2026-07-25',
-                excerpt: '🎉 资源库又有新货了！新增大量学习资料，优化了资源分类。',
-                content: `🎉 <strong>资源库又有新货了！</strong><br><br>📁 本次更新内容：<br>• 新增大量学习资料<br>• 优化了资源分类<br>• 修复了部分链接失效问题<br><br>🔗 传送门：<a href="https://1838190346.share.123pan.cn/123pan/gfigTd-P1SLH?pwd=1145#" target="_blank">点击进入资源库</a><br>📌 访问密码：<code>1145</code><br><br>💡 建议收藏，持续更新中！`,
-                tags: ['资源', '更新', '分享']
-            }, {
-                id: 2,
-                title: '在算法洪流中，打捞一艘木帆船',
-                date: '2026-07-20',
-                excerpt: '当全世界都在追逐效率与增长，我选择退回书桌一角，用最原始的方式——文字，来对抗遗忘。',
-                content: '当全世界都在追逐效率与增长，我选择退回书桌一角，用最原始的方式——文字，来对抗遗忘。这篇不追求阅读量，只写给十年后的自己。',
-                tags: ['随笔', '反思', '慢生活']
-            }, {
-                id: 3,
-                title: '从 Notion 到纯文本：我的笔记回流之路',
-                date: '2026-07-13',
-                excerpt: '用了三年 Notion，最终还是回到了 .txt 和 .md 的怀抱。不是倒退，而是发现——真正的思考，不需要华丽的数据库。',
-                content: '用了三年 Notion，最终还是回到了 .txt 和 .md 的怀抱。不是倒退，而是发现——真正的思考，不需要华丽的数据库，只需要一张白纸。',
-                tags: ['工具', '工作流', '极简']
-            }, {
-                id: 4,
-                title: '深夜读《庄子》—— 关于「无用之用」的现代性体验',
-                date: '2026-07-08',
-                excerpt: '在这个每个人都在努力成为「有用」之才的时代，我突然理解了什么叫做「人皆知有用之用，而莫知无用之用也」。',
-                content: '在这个每个人都在努力成为「有用」之才的时代，我突然理解了什么叫做「人皆知有用之用，而莫知无用之用也」。无用，或许才是我们最后的庇护所。',
-                tags: ['阅读', '哲学', '庄子']
-            }];
+      <div class="post-controls">
+        <input type="text" id="postTitle" placeholder="文章标题">
+        <textarea id="postContent" placeholder="文章内容（支持 Markdown / HTML）"></textarea>
+        <button class="btn" id="publishBtn">📤 发布文章</button>
+      </div>
 
-            // ============================================================
-            //  动态粒子背景
-            // ============================================================
-            (function initDynamicParticles() {
-                const canvas = document.getElementById('particles-canvas');
-                const ctx = canvas.getContext('2d');
-                let W, H;
-                let particles = [];
-                let mouseX = -9999, mouseY = -9999;
-                let targetMouseX = -9999, targetMouseY = -9999;
-                const PARTICLE_COUNT = 100;
-                const CONNECTION_DIST = 160;
-                const MOUSE_RADIUS = 180;
+      <div class="post-list" id="postList">
+        <!-- 由 JavaScript 动态渲染 -->
+      </div>
+    </section>
 
-                function resize() {
-                    W = window.innerWidth;
-                    H = window.innerHeight;
-                    canvas.width = W;
-                    canvas.height = H;
-                }
+    <!-- ===== 评论 ===== -->
+    <section id="page-comments" class="page">
+      <h2 style="margin-bottom: 1.2rem;">💬 评论 · Giscus</h2>
+      <div class="giscus-wrapper" id="giscusWrapper">
+        <!-- Giscus 会自动挂载到这里 -->
+        <div class="giscus"></div>
+      </div>
+    </section>
 
-                function getParticleColors() {
-                    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-                    return isDark ?
-                        { primary: '74, 138, 214', secondary: '106, 170, 255', tertiary: '50, 100, 180' } :
-                        { primary: '212, 168, 83', secondary: '232, 192, 106', tertiary: '180, 140, 70' };
-                }
+  </main>
 
-                class Particle {
-                    constructor() { this.reset(true); }
-                    reset() {
-                        this.x = Math.random() * W;
-                        this.y = Math.random() * H;
-                        this.size = Math.random() * 2.5 + 1.2;
-                        this.baseSize = this.size;
-                        this.opacity = Math.random() * 0.4 + 0.2;
-                        this.originX = this.x;
-                        this.originY = this.y;
-                        this.phase = Math.random() * Math.PI * 2;
-                        this.speed = 0.005 + Math.random() * 0.01;
-                        this.colorOffset = Math.random();
-                    }
-                    update() {
-                        const dx = this.x - mouseX, dy = this.y - mouseY;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < MOUSE_RADIUS && dist > 0) {
-                            const force = (1 - dist / MOUSE_RADIUS) * 1.0;
-                            const angle = Math.atan2(dy, dx);
-                            this.x += Math.cos(angle) * force * 0.7;
-                            this.y += Math.sin(angle) * force * 0.7;
-                            this.size = this.baseSize + force * 1.8;
-                            this.opacity = Math.min(0.8, this.opacity + force * 0.25);
-                        } else {
-                            this.x += (this.originX - this.x) * 0.003;
-                            this.y += (this.originY - this.y) * 0.003;
-                            this.phase += this.speed;
-                            this.x += Math.sin(this.phase) * 0.08;
-                            this.y += Math.cos(this.phase * 0.7) * 0.08;
-                            this.size += (this.baseSize - this.size) * 0.02;
-                            this.opacity += (0.2 + Math.random() * 0.1 - this.opacity) * 0.01;
-                        }
-                        this.x = Math.max(0, Math.min(W, this.x));
-                        this.y = Math.max(0, Math.min(H, this.y));
-                        this.originX += (this.x - this.originX) * 0.001;
-                        this.originY += (this.y - this.originY) * 0.001;
-                    }
-                    draw() {
-                        const colors = getParticleColors();
-                        let color = this.colorOffset < 0.33 ? colors.primary :
-                            this.colorOffset < 0.66 ? colors.secondary : colors.tertiary;
-                        const alpha = Math.min(0.8, this.opacity);
-                        const radius = Math.max(0.5, this.size);
-                        if (radius > 1.5) {
-                            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, radius * 2.5);
-                            gradient.addColorStop(0, `rgba(${color}, ${alpha * 0.7})`);
-                            gradient.addColorStop(0.3, `rgba(${color}, ${alpha * 0.25})`);
-                            gradient.addColorStop(1, `rgba(${color}, 0)`);
-                            ctx.beginPath();
-                            ctx.arc(this.x, this.y, radius * 2.5, 0, Math.PI * 2);
-                            ctx.fillStyle = gradient;
-                            ctx.fill();
-                        }
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, radius * 0.5, 0, Math.PI * 2);
-                        ctx.fillStyle = `rgba(${color}, ${alpha * 0.9})`;
-                        ctx.fill();
-                        if (radius > 1.2) {
-                            ctx.beginPath();
-                            ctx.arc(this.x - radius * 0.12, this.y - radius * 0.12, radius * 0.18, 0, Math.PI * 2);
-                            ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.2})`;
-                            ctx.fill();
-                        }
-                    }
-                }
+  <!-- ============================================================ -->
+  <!-- ===== JavaScript ===== -->
+  <script>
+    (function() {
+      // ============================================================
+      // 1. 数据层 (localStorage)
+      // ============================================================
+      const STORAGE_KEY = 'noescapez_blog_data';
 
-                function drawConnections() {
-                    const colors = getParticleColors();
-                    for (let i = 0; i < particles.length; i++) {
-                        for (let j = i + 1; j < particles.length; j++) {
-                            const dx = particles[i].x - particles[j].x;
-                            const dy = particles[i].y - particles[j].y;
-                            const dist = Math.sqrt(dx * dx + dy * dy);
-                            if (dist < CONNECTION_DIST) {
-                                const alpha = (1 - dist / CONNECTION_DIST) * 0.2;
-                                ctx.beginPath();
-                                ctx.moveTo(particles[i].x, particles[i].y);
-                                ctx.lineTo(particles[j].x, particles[j].y);
-                                ctx.strokeStyle = `rgba(${colors.primary}, ${alpha})`;
-                                ctx.lineWidth = 0.5;
-                                ctx.stroke();
-                            }
-                        }
-                    }
-                }
+      function getDefaultData() {
+        return {
+          updates: [
+            { id: Date.now() - 3600000, text: '🎉 博客正式上线，欢迎来访！' },
+            { id: Date.now() - 7200000, text: '📦 资源库更新：新增一批学习资料' },
+          ],
+          posts: [
+            { id: Date.now() - 86400000, title: '📦 喂喂喂资源库更新啦！', content: '🎉 资源库又有新货了！<br>🔗 传送门：<a href="https://1838190346.share.123pan.cn/123pan/gfigTd-P1SLH?pwd=1145#" target="_blank">点击进入</a>', date: '2026-07-26' },
+            { id: Date.now() - 172800000, title: '在算法洪流中，打捞一艘木帆船', content: '当全世界都在追逐效率与增长，我选择退回书桌一角，用最原始的方式——文字，来对抗遗忘。', date: '2026-07-25' },
+          ]
+        };
+      }
 
-                function drawMouseGlow() {
-                    if (mouseX < 0 || mouseY < 0) return;
-                    const colors = getParticleColors();
-                    const gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, MOUSE_RADIUS * 1.2);
-                    gradient.addColorStop(0, `rgba(${colors.primary}, 0.05)`);
-                    gradient.addColorStop(0.5, `rgba(${colors.secondary}, 0.025)`);
-                    gradient.addColorStop(1, `rgba(${colors.primary}, 0)`);
-                    ctx.fillStyle = gradient;
-                    ctx.fillRect(0, 0, W, H);
-                    ctx.beginPath();
-                    ctx.arc(mouseX, mouseY, 6, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(${colors.primary}, 0.07)`;
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.arc(mouseX, mouseY, 2.5, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(${colors.primary}, 0.12)`;
-                    ctx.fill();
-                }
+      function loadData() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const data = JSON.parse(raw);
+            if (data && typeof data === 'object') return data;
+          }
+        } catch (_) {}
+        const def = getDefaultData();
+        saveData(def);
+        return def;
+      }
 
-                function initParticles() {
-                    particles = [];
-                    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
-                }
+      function saveData(data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }
 
-                function animate() {
-                    mouseX += (targetMouseX - mouseX) * 0.08;
-                    mouseY += (targetMouseY - mouseY) * 0.08;
-                    ctx.clearRect(0, 0, W, H);
-                    drawMouseGlow();
-                    particles.forEach(p => { p.update(); p.draw(); });
-                    drawConnections();
-                    requestAnimationFrame(animate);
-                }
+      // ============================================================
+      // 2. 渲染函数
+      // ============================================================
 
-                document.addEventListener('mousemove', function(e) {
-                    targetMouseX = e.clientX;
-                    targetMouseY = e.clientY;
-                });
-                document.addEventListener('mouseleave', function() {
-                    targetMouseX = -9999;
-                    targetMouseY = -9999;
-                });
-                document.addEventListener('touchmove', function(e) {
-                    const touch = e.touches[0];
-                    if (touch) { targetMouseX = touch.clientX;
-                        targetMouseY = touch.clientY; }
-                }, { passive: true });
-                document.addEventListener('touchend', function() {
-                    targetMouseX = -9999;
-                    targetMouseY = -9999;
-                });
+      // 渲染首页更新
+      function renderUpdates() {
+        const container = document.getElementById('updateList');
+        const data = loadData();
+        const updates = data.updates || [];
 
-                let resizeTimeout;
-                window.addEventListener('resize', function() {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(function() { resize();
-                        initParticles(); }, 300);
-                });
+        if (!updates.length) {
+          container.innerHTML = `<div class="empty"><span class="icon">📭</span> 暂无更新</div>`;
+          return;
+        }
 
-                resize();
-                initParticles();
-                animate();
-            })();
+        // 按时间倒序
+        const sorted = [...updates].sort((a, b) => b.id - a.id);
 
-            // ============================================================
-            //  主题管理
-            // ============================================================
-            function getTheme() {
-                try { return localStorage.getItem(THEME_KEY) || 'default'; } catch (e) { return 'default'; }
+        container.innerHTML = sorted.map(item => `
+          <div class="update-item">
+            <div class="time">${new Date(item.id).toLocaleString('zh-CN')}</div>
+            <div class="content">${item.text}</div>
+          </div>
+        `).join('');
+      }
+
+      // 渲染文章列表
+      function renderPosts() {
+        const container = document.getElementById('postList');
+        const data = loadData();
+        const posts = data.posts || [];
+
+        if (!posts.length) {
+          container.innerHTML = `<div class="empty"><span class="icon">📝</span> 还没有文章，发布第一篇吧！</div>`;
+          return;
+        }
+
+        const sorted = [...posts].sort((a, b) => b.id - a.id);
+
+        container.innerHTML = sorted.map(post => `
+          <div class="post-item" data-id="${post.id}">
+            <div class="info">
+              <div class="title">${post.title}</div>
+              <div class="meta">${post.date || new Date(post.id).toLocaleDateString('zh-CN')}</div>
+              <div style="margin-top:0.3rem;font-size:0.9rem;color:var(--text-secondary);">${post.content}</div>
+            </div>
+            <div class="actions">
+              <button class="del" data-id="${post.id}">🗑️ 删除</button>
+            </div>
+          </div>
+        `).join('');
+
+        // 绑定删除事件
+        container.querySelectorAll('.del').forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const id = parseInt(this.dataset.id);
+            if (confirm('确定要删除这篇文章吗？')) {
+              const data = loadData();
+              data.posts = data.posts.filter(p => p.id !== id);
+              saveData(data);
+              renderPosts();
+              renderUpdates(); // 首页可能也有联动，刷新
             }
+          });
+        });
+      }
 
-            function setTheme(theme) {
-                try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
-                applyTheme(theme);
-            }
+      // ============================================================
+      // 3. 发布文章
+      // ============================================================
+      function publishPost() {
+        const titleEl = document.getElementById('postTitle');
+        const contentEl = document.getElementById('postContent');
+        const title = titleEl.value.trim();
+        const content = contentEl.value.trim();
 
-            function applyTheme(theme) {
-                const html = document.documentElement;
-                const btnText = document.getElementById('theme-btn-text');
-                const icon = document.querySelector('.theme-toggle .icon');
-                const label = document.getElementById('theme-label');
-                if (theme === 'dark') {
-                    html.setAttribute('data-theme', 'dark');
-                    btnText.textContent = '暖色';
-                    icon.textContent = '☀️';
-                    label.textContent = '冷蓝之境 · 静夜思';
-                } else {
-                    html.removeAttribute('data-theme');
-                    btnText.textContent = '冷色';
-                    icon.textContent = '🌙';
-                    label.textContent = '写于无人之境 · 仅供同频者阅';
-                }
-                updateGiscusTheme();
-            }
+        if (!title) { alert('请输入文章标题'); return; }
+        if (!content) { alert('请输入文章内容'); return; }
 
-            function toggleTheme() {
-                const current = getTheme();
-                const next = current === 'dark' ? 'default' : 'dark';
-                setTheme(next);
-                showToast(next === 'dark' ? '🌙 切换到冷暗色模式' : '☀️ 切换到暖深色模式', 'info');
-            }
+        const data = loadData();
+        data.posts.push({
+          id: Date.now(),
+          title: title,
+          content: content,
+          date: new Date().toLocaleDateString('zh-CN'),
+        });
 
-            // ============================================================
-            //  Giscus 主题同步
-            // ============================================================
-            function updateGiscusTheme() {
-                const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-                const iframe = document.querySelector('.giscus-frame');
-                if (iframe && iframe.contentWindow) {
-                    try {
-                        iframe.contentWindow.postMessage({
-                            giscus: { setConfig: { theme: theme === 'dark' ? 'dark' : 'light' } }
-                        }, 'https://giscus.app');
-                    } catch (e) {}
-                }
-                const giscusScript = document.querySelector('script[src*="giscus"]');
-                if (giscusScript) {
-                    giscusScript.setAttribute('data-theme', theme === 'dark' ? 'transparent_dark' : 'light');
-                }
-            }
+        // 同时增加一条更新记录
+        data.updates.push({
+          id: Date.now(),
+          text: `📄 发布了新文章：${title}`
+        });
 
-            const themeObserverGiscus = new MutationObserver(function() { updateGiscusTheme(); });
-            themeObserverGiscus.observe(document.documentElement, {
-                attributes: true,
-                attributeFilter: ['data-theme']
-            });
+        saveData(data);
 
-            // ============================================================
-            //  Toast
-            // ============================================================
-            let toastTimer = null;
+        // 清空输入
+        titleEl.value = '';
+        contentEl.value = '';
 
-            function showToast(message, type = 'info') {
-                const toast = document.getElementById('toast');
-                toast.textContent = message;
-                toast.className = 'toast ' + type + ' show';
-                clearTimeout(toastTimer);
-                toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 3000);
-            }
+        // 刷新 UI
+        renderPosts();
+        renderUpdates();
 
-            // ============================================================
-            //  ★★★ 渲染文章列表 ★★★
-            // ============================================================
-            function renderPostList() {
-                const container = document.getElementById('post-list');
-                if (!container) return;
+        // 提示
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+          position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+          background: var(--bg-card); color: var(--text-primary);
+          padding: 0.8rem 2rem; border-radius: 12px;
+          border: 1px solid var(--accent);
+          box-shadow: 0 4px 20px var(--shadow);
+          z-index: 999; font-weight: 500;
+          transition: opacity 0.3s;
+        `;
+        toast.textContent = '✅ 文章发布成功！';
+        document.body.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2000);
+      }
 
-                if (!POSTS || POSTS.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <span class="empty-icon">📝</span>
-                            <p>还没有文章</p>
-                            <p style="font-size:0.9rem;color:var(--text-muted);margin-top:0.5rem;">
-                                点击右上角「写新文章」在 GitHub 上创建
-                            </p>
-                        </div>
-                    `;
-                    return;
-                }
+      // ============================================================
+      // 4. 页面切换 (Tab)
+      // ============================================================
+      function switchPage(pageId) {
+        // 隐藏所有 page
+        document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+        // 显示目标
+        const target = document.getElementById('page-' + pageId);
+        if (target) target.classList.add('active');
 
-                let html = '';
-                POSTS.forEach(post => {
-                    const tagsHtml = post.tags && post.tags.length ?
-                        post.tags.map(t => `<span>#${t.trim()}</span>`).join('') : '';
-                    html += `
-                        <div class="blog-post" data-id="${post.id}">
-                            <div class="post-header">
-                                <h2><a href="#" data-id="${post.id}">${post.title}</a></h2>
-                            </div>
-                            <div class="post-date">${post.date}</div>
-                            <div class="post-excerpt">${post.excerpt || post.content.substring(0, 120) + '...'}</div>
-                            ${tagsHtml ? `<div class="post-tags">${tagsHtml}</div>` : ''}
-                            <div class="post-meta">
-                                <span>💬 点击阅读 →</span>
-                                <span>📅 ${post.date}</span>
-                            </div>
-                        </div>
-                    `;
-                });
+        // 更新侧边栏按钮状态
+        document.querySelectorAll('.sidebar-nav button').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.page === pageId);
+        });
 
-                container.innerHTML = html;
+        // 如果切换到评论页，重新挂载 Giscus（可选）
+        if (pageId === 'comments') {
+          // Giscus 已经通过 script 自动加载，但需要确保容器存在
+          // 可以用一个简单的方法：如果 .giscus 为空，重新触发加载
+          const wrapper = document.querySelector('.giscus-wrapper .giscus');
+          if (wrapper && !wrapper.hasChildNodes()) {
+            // 触发重新加载：移除并重新添加 script？ 
+            // 这里简单处理：Giscus 会自动检测并渲染，无需额外操作
+          }
+        }
+      }
 
-                // 绑定点击事件
-                container.querySelectorAll('.blog-post').forEach(el => {
-                    el.addEventListener('click', function(e) {
-                        if (e.target.tagName === 'A') return;
-                        const id = parseInt(this.dataset.id);
-                        openPostDetail(id);
-                    });
-                });
+      // ============================================================
+      // 5. 主题切换
+      // ============================================================
+      function toggleTheme() {
+        const html = document.documentElement;
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? '' : 'dark';
+        if (next) {
+          html.setAttribute('data-theme', 'dark');
+        } else {
+          html.removeAttribute('data-theme');
+        }
+        // 同步 Giscus 主题
+        try {
+          const iframe = document.querySelector('.giscus-frame');
+          if (iframe && iframe.contentWindow) {
+            const theme = next === 'dark' ? 'dark' : 'light';
+            iframe.contentWindow.postMessage({
+              giscus: { setConfig: { theme: theme } }
+            }, 'https://giscus.app');
+          }
+        } catch (_) {}
+      }
 
-                container.querySelectorAll('.blog-post a').forEach(el => {
-                    el.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const id = parseInt(this.dataset.id);
-                        openPostDetail(id);
-                    });
-                });
-            }
+      // ============================================================
+      // 6. 初始化
+      // ============================================================
+      function init() {
+        // 加载数据
+        const data = loadData();
+        // 如果数据中没有 updates 或 posts，用默认值补充
+        if (!data.updates) data.updates = getDefaultData().updates;
+        if (!data.posts) data.posts = getDefaultData().posts;
+        saveData(data);
 
-            // ============================================================
-            //  ★★★ 文章详情 ★★★
-            // ============================================================
-            let currentPostId = null;
+        // 渲染
+        renderUpdates();
+        renderPosts();
 
-            function openPostDetail(postId) {
-                const post = POSTS.find(p => p.id === postId);
-                if (!post) {
-                    showToast('文章不存在', 'error');
-                    return;
-                }
+        // 侧边栏导航
+        document.querySelectorAll('.sidebar-nav button').forEach(btn => {
+          btn.addEventListener('click', function() {
+            switchPage(this.dataset.page);
+          });
+        });
 
-                currentPostId = postId;
+        // 发布按钮
+        document.getElementById('publishBtn').addEventListener('click', publishPost);
 
-                document.getElementById('list-view').classList.add('hidden');
-                document.getElementById('post-detail').classList.add('active');
+        // 主题切换
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
-                document.getElementById('post-full-title').textContent = post.title;
-                document.getElementById('post-full-date').textContent = post.date;
-                document.getElementById('post-full-content').innerHTML = post.content;
+        // 默认激活首页
+        switchPage('home');
+      }
 
-                // ★★★ 加载 Giscus 评论区 ★★★
-                loadGiscusForPost(post.title);
+      // 页面完全加载后执行
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
 
-                document.querySelector('.container').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-
-            function goBackToList() {
-                document.getElementById('list-view').classList.remove('hidden');
-                document.getElementById('post-detail').classList.remove('active');
-                document.querySelector('.container').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-
-            // ============================================================
-            //  ★★★ 加载 Giscus ★★★
-            // ============================================================
-            function loadGiscusForPost(title) {
-                const wrapper = document.getElementById('giscus-wrapper');
-                if (!wrapper) return;
-
-                // 显示加载状态
-                wrapper.innerHTML = `
-                    <div class="loading-state">
-                        <div class="spinner"></div>
-                        <p>⏳ 加载评论区...</p>
-                    </div>
-                `;
-
-                // 移除旧的 script
-                const oldScripts = wrapper.querySelectorAll('script');
-                oldScripts.forEach(s => s.remove());
-
-                // ★★★ 创建新的 Giscus script ★★★
-                // 注意：你需要从 https://giscus.app 获取真实的 repo-id 和 category-id
-                const script = document.createElement('script');
-                script.src = 'https://giscus.app/client.js';
-                script.setAttribute('data-repo', 'noescape-z/z');
-                script.setAttribute('data-repo-id', '你的仓库ID');        // ← 请替换
-                script.setAttribute('data-category', 'Announcements');
-                script.setAttribute('data-category-id', '你的分类ID');    // ← 请替换
-                script.setAttribute('data-mapping', 'title');
-                script.setAttribute('data-strict', '0');
-                script.setAttribute('data-reactions-enabled', '1');
-                script.setAttribute('data-emit-metadata', '0');
-                script.setAttribute('data-input-position', 'bottom');
-                const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-                script.setAttribute('data-theme', theme === 'dark' ? 'transparent_dark' : 'light');
-                script.setAttribute('data-lang', 'zh-CN');
-                script.setAttribute('data-loading', 'lazy');
-                script.setAttribute('crossorigin', 'anonymous');
-                script.async = true;
-
-                // 加载完成后移除 loading
-                script.onload = function() {
-                    setTimeout(() => {
-                        const loading = wrapper.querySelector('.loading-state');
-                        if (loading) loading.style.display = 'none';
-                    }, 2000);
-                };
-
-                wrapper.appendChild(script);
-
-                // 5秒后自动移除 loading
-                setTimeout(() => {
-                    const loading = wrapper.querySelector('.loading-state');
-                    if (loading) loading.style.display = 'none';
-                }, 5000);
-
-                // ★★★ 更新"写新文章"链接 ★★★
-                updateNewPostLink(title);
-            }
-
-            // ============================================================
-            //  ★★★ 更新"写新文章"链接（跳转 GitHub 发帖） ★★★
-            // ============================================================
-            function updateNewPostLink(title) {
-                const link = document.getElementById('new-post-link');
-                if (!link) return;
-                // ★★★ 跳转到 GitHub 创建新 Discussion ★★★
-                // 仓库名：noescape-z/z
-                link.href = `https://github.com/noescape-z/z/discussions/new?category=Announcements`;
-                link.target = '_blank';
-                // 如果有当前文章标题，可以预填
-                if (title) {
-                    link.href += `&title=${encodeURIComponent(title)}`;
-                }
-            }
-
-            // ============================================================
-            //  ★★★ 初始化 ★★★
-            // ============================================================
-            function init() {
-                // 主题
-                const theme = getTheme();
-                applyTheme(theme);
-                document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-
-                // 返回按钮
-                document.getElementById('back-btn').addEventListener('click', goBackToList);
-
-                // 更新"写新文章"链接
-                updateNewPostLink('');
-
-                // 渲染文章列表
-                renderPostList();
-
-                // 默认选中第一篇
-                if (POSTS.length > 0) {
-                    setTimeout(() => {
-                        loadGiscusForPost(POSTS[0].title);
-                    }, 1500);
-                }
-
-                // Giscus 主题同步延迟
-                setTimeout(updateGiscusTheme, 2000);
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', init);
-            } else {
-                init();
-            }
-
-        })();
-    </script>
+    })();
+  </script>
 
 </body>
 </html>
