@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOESCAPE-Z · 个人博客</title>
-  <!-- 使用 Giscus 评论组件 -->
+  <title>NOESCAPE-Z</title>
+  <!-- Giscus 评论组件 (需要替换 repo-id 和 category-id) -->
   <script src="https://giscus.app/client.js"
     data-repo="noescape-z/z"
     data-repo-id="你的仓库ID"
@@ -30,7 +30,6 @@
     }
 
     :root {
-      /* 暖深色 (默认) */
       --bg-body: #1a1410;
       --bg-sidebar: #0f0b08;
       --bg-card: #2a211a;
@@ -47,7 +46,6 @@
     }
 
     [data-theme="dark"] {
-      /* 冷暗色 */
       --bg-body: #080c14;
       --bg-sidebar: #040810;
       --bg-card: #121a2a;
@@ -70,7 +68,7 @@
       transition: background 0.3s, color 0.3s;
     }
 
-    /* ===== 侧边栏 ===== */
+    /* ===== 侧边栏 (桌面端) ===== */
     .sidebar {
       width: 260px;
       background: var(--bg-sidebar);
@@ -83,8 +81,9 @@
       flex-direction: column;
       gap: 2rem;
       flex-shrink: 0;
-      transition: background 0.3s, border-color 0.3s;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s ease;
       overflow-y: auto;
+      z-index: 100;
     }
 
     .sidebar-brand {
@@ -132,14 +131,20 @@
       box-shadow: 0 0 0 1px var(--accent);
     }
 
-    /* 侧边栏底部主题切换 */
     .sidebar-footer {
       margin-top: auto;
       display: flex;
-      align-items: center;
-      gap: 0.8rem;
+      flex-direction: column;
+      gap: 0.6rem;
       padding-top: 1rem;
       border-top: 1px solid var(--border-color);
+    }
+
+    .sidebar-footer .row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
     }
 
     .theme-toggle {
@@ -158,6 +163,85 @@
       color: var(--text-primary);
     }
 
+    /* ---- LY 专属按钮 ---- */
+    .ly-btn {
+      background: transparent;
+      border: 1px solid #a855f7;
+      color: #a855f7;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all var(--transition);
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .ly-btn:hover {
+      background: #a855f7;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+    }
+
+    /* ---- LY 后台模式提示条 ---- */
+    .ly-mode-banner {
+      display: none;
+      background: #a855f7;
+      color: #fff;
+      padding: 0.4rem 1.2rem;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 1.2rem;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .ly-mode-banner.active {
+      display: flex;
+    }
+
+    .ly-mode-banner .close-ly {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #fff;
+      padding: 0.1rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all var(--transition);
+      margin-left: auto;
+    }
+
+    .ly-mode-banner .close-ly:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ===== 汉堡菜单按钮 (手机端) ===== */
+    .hamburger {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.8rem;
+      padding: 0.2rem 0.6rem;
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: background 0.2s;
+      position: fixed;
+      top: 0.8rem;
+      right: 1rem;
+      z-index: 200;
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border-color);
+      line-height: 1;
+    }
+
+    .hamburger:hover {
+      background: var(--bg-card);
+    }
+
     /* ===== 主内容 ===== */
     .main {
       flex: 1;
@@ -168,7 +252,6 @@
       transition: background 0.3s;
     }
 
-    /* 页面区块 */
     .page {
       display: none;
       animation: fadeIn 0.3s ease;
@@ -183,7 +266,6 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== 首页 ===== */
     .update-list {
       display: flex;
       flex-direction: column;
@@ -214,7 +296,6 @@
       line-height: 1.6;
     }
 
-    /* ===== 文章专区 ===== */
     .post-controls {
       display: flex;
       gap: 1rem;
@@ -340,7 +421,6 @@
       color: #d4856e;
     }
 
-    /* ===== 评论页 ===== */
     .giscus-wrapper {
       margin-top: 1rem;
       background: var(--bg-card);
@@ -350,11 +430,6 @@
       min-height: 400px;
     }
 
-    .giscus-wrapper .giscus {
-      max-width: 100%;
-    }
-
-    /* ===== 空状态 ===== */
     .empty {
       text-align: center;
       padding: 3rem 1rem;
@@ -367,53 +442,203 @@
       margin-bottom: 0.5rem;
     }
 
-    /* ===== 响应式 ===== */
+    /* ===== LY 验证弹窗 ===== */
+    .ly-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ly-modal-overlay.active {
+      display: flex;
+    }
+
+    .ly-modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2rem;
+      max-width: 360px;
+      width: 90%;
+      box-shadow: 0 8px 32px var(--shadow);
+      text-align: center;
+    }
+
+    .ly-modal h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .ly-modal p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .ly-modal input {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      text-align: center;
+      letter-spacing: 4px;
+      outline: none;
+      transition: border 0.2s;
+      margin-bottom: 1rem;
+    }
+
+    .ly-modal input:focus {
+      border-color: #a855f7;
+    }
+
+    .ly-modal .btn-group {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+    }
+
+    .ly-modal .btn-group button {
+      padding: 0.4rem 1.6rem;
+      border-radius: var(--radius);
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .ly-modal .btn-group .btn-cancel {
+      background: var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .ly-modal .btn-group .btn-cancel:hover {
+      background: var(--text-muted);
+      color: #fff;
+    }
+
+    .ly-modal .btn-group .btn-confirm {
+      background: #a855f7;
+      color: #fff;
+    }
+
+    .ly-modal .btn-group .btn-confirm:hover {
+      background: #7c3aed;
+      transform: scale(1.02);
+    }
+
+    .ly-error {
+      color: #f87171;
+      font-size: 0.85rem;
+      min-height: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ===== Toast 提示 ===== */
+    .custom-toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      padding: 0.8rem 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--accent);
+      box-shadow: 0 4px 20px var(--shadow);
+      z-index: 999;
+      font-weight: 500;
+      transition: opacity 0.3s;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    /* ============================================================ */
+    /* ===== 响应式 - 移动端 ===== */
     @media (max-width: 768px) {
       body {
         flex-direction: column;
       }
 
+      /* 汉堡菜单显示 */
+      .hamburger {
+        display: block;
+      }
+
+      /* 侧边栏默认隐藏，通过 JS 控制显示 */
       .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100vh;
+        transform: translateX(-100%);
+        border-right: 1px solid var(--border-color);
+        border-bottom: none;
+        padding: 1.5rem 1.2rem;
+        gap: 1.5rem;
+        z-index: 150;
+        box-shadow: 4px 0 20px var(--shadow);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      /* 侧边栏打开时，加一个遮罩 */
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-        height: auto;
-        position: relative;
-        padding: 1rem;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.8rem;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 140;
+      }
+
+      .sidebar-overlay.active {
+        display: block;
       }
 
       .sidebar-brand {
         font-size: 1.3rem;
-        border-bottom: none;
-        padding-bottom: 0;
-        flex: 1;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.5rem;
       }
 
       .sidebar-nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0.2rem;
-        order: 3;
-        width: 100%;
+        flex-direction: column;
+        gap: 0.3rem;
       }
 
       .sidebar-nav button {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.95rem;
       }
 
       .sidebar-footer {
-        margin-top: 0;
-        border-top: none;
-        padding-top: 0;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .sidebar-footer .row {
+        flex-wrap: wrap;
       }
 
       .main {
         padding: 1.2rem;
+        margin-top: 0.5rem;
       }
 
       .post-controls {
@@ -425,17 +650,6 @@
         flex-basis: auto;
         width: 100%;
       }
-    }
-
-    @media (max-width: 480px) {
-      .sidebar-brand {
-        font-size: 1.1rem;
-      }
-
-      .sidebar-nav button {
-        font-size: 0.75rem;
-        padding: 0.3rem 0.6rem;
-      }
 
       .post-item {
         flex-direction: column;
@@ -445,13 +659,56 @@
       .post-item .actions {
         justify-content: flex-end;
       }
+
+      .ly-mode-banner {
+        font-size: 0.8rem;
+        padding: 0.3rem 1rem;
+      }
+
+      .ly-mode-banner .close-ly {
+        font-size: 0.7rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        width: 260px;
+        padding: 1rem;
+      }
+
+      .sidebar-brand {
+        font-size: 1.1rem;
+      }
+
+      .sidebar-nav button {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.7rem;
+      }
+
+      .main {
+        padding: 0.8rem;
+      }
+
+      .post-item {
+        padding: 0.8rem 1rem;
+      }
+
+      .giscus-wrapper {
+        padding: 0.8rem;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- ===== 侧边栏遮罩 (手机端) ===== -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ===== 汉堡菜单按钮 (手机端) ===== -->
+  <button class="hamburger" id="hamburgerBtn" aria-label="切换菜单">☰</button>
+
   <!-- ===== 侧边栏 ===== -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">NOESCAPE-Z</div>
 
     <nav class="sidebar-nav">
@@ -461,12 +718,36 @@
     </nav>
 
     <div class="sidebar-footer">
-      <button class="theme-toggle" id="themeToggle">🌓 切换主题</button>
+      <div class="row">
+        <button class="theme-toggle" id="themeToggle">🌓 切换主题</button>
+        <button class="ly-btn" id="lyToggle">✦ LY</button>
+      </div>
+      <!-- 已移除 "⚡ 仅LY可点 · 生日验证" 提示 -->
     </div>
   </aside>
 
+  <!-- ===== LY 验证弹窗 ===== -->
+  <div class="ly-modal-overlay" id="lyModal">
+    <div class="ly-modal">
+      <h3>🔐 验证身份</h3>
+      <p>请输入 LY 的生日 <span style="color:var(--accent);font-weight:600;">(MMDD)</span></p>
+      <input type="password" id="lyPassword" placeholder="例: 0811" maxlength="4" inputmode="numeric">
+      <div class="ly-error" id="lyError"></div>
+      <div class="btn-group">
+        <button class="btn-cancel" id="lyCancel">取消</button>
+        <button class="btn-confirm" id="lyConfirm">确认</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ===== 主内容 ===== -->
   <main class="main">
+
+    <!-- LY 模式提示条 -->
+    <div class="ly-mode-banner" id="lyBanner">
+      <span>🔓 当前为 <strong>LY 管理模式</strong> — 你可以发布/删除文章</span>
+      <button class="close-ly" id="lyExit">退出管理</button>
+    </div>
 
     <!-- ===== 首页 ===== -->
     <section id="page-home" class="page active">
@@ -480,7 +761,7 @@
     <section id="page-posts" class="page">
       <h2 style="margin-bottom: 1.2rem;">📝 文章专区</h2>
 
-      <div class="post-controls">
+      <div class="post-controls" id="postControls">
         <input type="text" id="postTitle" placeholder="文章标题">
         <textarea id="postContent" placeholder="文章内容（支持 Markdown / HTML）"></textarea>
         <button class="btn" id="publishBtn">📤 发布文章</button>
@@ -495,7 +776,6 @@
     <section id="page-comments" class="page">
       <h2 style="margin-bottom: 1.2rem;">💬 评论 · Giscus</h2>
       <div class="giscus-wrapper" id="giscusWrapper">
-        <!-- Giscus 会自动挂载到这里 -->
         <div class="giscus"></div>
       </div>
     </section>
@@ -510,6 +790,7 @@
       // 1. 数据层 (localStorage)
       // ============================================================
       const STORAGE_KEY = 'noescapez_blog_data';
+      const LY_SESSION_KEY = 'ly_mode_active';
 
       function getDefaultData() {
         return {
@@ -542,10 +823,94 @@
       }
 
       // ============================================================
-      // 2. 渲染函数
+      // 2. LY 模式管理
+      // ============================================================
+      let isLyMode = false;
+
+      function checkLySession() {
+        try {
+          return sessionStorage.getItem(LY_SESSION_KEY) === 'true';
+        } catch (_) { return false; }
+      }
+
+      function setLySession(active) {
+        try {
+          if (active) {
+            sessionStorage.setItem(LY_SESSION_KEY, 'true');
+          } else {
+            sessionStorage.removeItem(LY_SESSION_KEY);
+          }
+        } catch (_) {}
+        isLyMode = active;
+        updateLyUI();
+      }
+
+      function updateLyUI() {
+        const banner = document.getElementById('lyBanner');
+        const controls = document.getElementById('postControls');
+        const publishBtn = document.getElementById('publishBtn');
+
+        if (isLyMode) {
+          banner.classList.add('active');
+          controls.style.display = 'flex';
+          publishBtn.style.display = 'inline-block';
+          document.querySelectorAll('.post-item .actions .del').forEach(el => {
+            el.style.display = 'inline-block';
+          });
+        } else {
+          banner.classList.remove('active');
+          controls.style.display = 'none';
+          publishBtn.style.display = 'none';
+          document.querySelectorAll('.post-item .actions .del').forEach(el => {
+            el.style.display = 'none';
+          });
+        }
+      }
+
+      function handleLyConfirm() {
+        const input = document.getElementById('lyPassword');
+        const error = document.getElementById('lyError');
+        const val = input.value.trim();
+
+        if (val === '0811') {
+          error.textContent = '';
+          setLySession(true);
+          document.getElementById('lyModal').classList.remove('active');
+          input.value = '';
+          renderPosts();
+          renderUpdates();
+          showToast('✅ LY 验证通过，已进入管理模式');
+        } else {
+          error.textContent = '❌ 生日不正确，请重试';
+          input.value = '';
+          input.focus();
+        }
+      }
+
+      function exitLyMode() {
+        setLySession(false);
+        renderPosts();
+        renderUpdates();
+        showToast('已退出 LY 管理模式');
+      }
+
+      // ============================================================
+      // 3. Toast 提示
+      // ============================================================
+      function showToast(msg) {
+        const old = document.querySelector('.custom-toast');
+        if (old) old.remove();
+        const toast = document.createElement('div');
+        toast.className = 'custom-toast';
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2000);
+      }
+
+      // ============================================================
+      // 4. 渲染函数
       // ============================================================
 
-      // 渲染首页更新
       function renderUpdates() {
         const container = document.getElementById('updateList');
         const data = loadData();
@@ -556,7 +921,6 @@
           return;
         }
 
-        // 按时间倒序
         const sorted = [...updates].sort((a, b) => b.id - a.id);
 
         container.innerHTML = sorted.map(item => `
@@ -567,7 +931,6 @@
         `).join('');
       }
 
-      // 渲染文章列表
       function renderPosts() {
         const container = document.getElementById('postList');
         const data = loadData();
@@ -575,12 +938,15 @@
 
         if (!posts.length) {
           container.innerHTML = `<div class="empty"><span class="icon">📝</span> 还没有文章，发布第一篇吧！</div>`;
+          updateLyUI();
           return;
         }
 
         const sorted = [...posts].sort((a, b) => b.id - a.id);
 
-        container.innerHTML = sorted.map(post => `
+        container.innerHTML = sorted.map(post => {
+          const showDelete = isLyMode ? 'inline-block' : 'none';
+          return `
           <div class="post-item" data-id="${post.id}">
             <div class="info">
               <div class="title">${post.title}</div>
@@ -588,38 +954,49 @@
               <div style="margin-top:0.3rem;font-size:0.9rem;color:var(--text-secondary);">${post.content}</div>
             </div>
             <div class="actions">
-              <button class="del" data-id="${post.id}">🗑️ 删除</button>
+              <button class="del" data-id="${post.id}" style="display:${showDelete}">🗑️ 删除</button>
             </div>
           </div>
-        `).join('');
+        `}).join('');
 
-        // 绑定删除事件
         container.querySelectorAll('.del').forEach(btn => {
           btn.addEventListener('click', function(e) {
             e.stopPropagation();
+            if (!isLyMode) {
+              showToast('⚠️ 请先通过 LY 验证');
+              return;
+            }
             const id = parseInt(this.dataset.id);
             if (confirm('确定要删除这篇文章吗？')) {
               const data = loadData();
               data.posts = data.posts.filter(p => p.id !== id);
               saveData(data);
               renderPosts();
-              renderUpdates(); // 首页可能也有联动，刷新
+              renderUpdates();
+              showToast('🗑️ 文章已删除');
             }
           });
         });
+
+        updateLyUI();
       }
 
       // ============================================================
-      // 3. 发布文章
+      // 5. 发布文章
       // ============================================================
       function publishPost() {
+        if (!isLyMode) {
+          showToast('⚠️ 请先通过 LY 验证');
+          return;
+        }
+
         const titleEl = document.getElementById('postTitle');
         const contentEl = document.getElementById('postContent');
         const title = titleEl.value.trim();
         const content = contentEl.value.trim();
 
-        if (!title) { alert('请输入文章标题'); return; }
-        if (!content) { alert('请输入文章内容'); return; }
+        if (!title) { showToast('请输入文章标题'); return; }
+        if (!content) { showToast('请输入文章内容'); return; }
 
         const data = loadData();
         data.posts.push({
@@ -629,7 +1006,6 @@
           date: new Date().toLocaleDateString('zh-CN'),
         });
 
-        // 同时增加一条更新记录
         data.updates.push({
           id: Date.now(),
           text: `📄 发布了新文章：${title}`
@@ -637,59 +1013,32 @@
 
         saveData(data);
 
-        // 清空输入
         titleEl.value = '';
         contentEl.value = '';
 
-        // 刷新 UI
         renderPosts();
         renderUpdates();
-
-        // 提示
-        const toast = document.createElement('div');
-        toast.style.cssText = `
-          position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-          background: var(--bg-card); color: var(--text-primary);
-          padding: 0.8rem 2rem; border-radius: 12px;
-          border: 1px solid var(--accent);
-          box-shadow: 0 4px 20px var(--shadow);
-          z-index: 999; font-weight: 500;
-          transition: opacity 0.3s;
-        `;
-        toast.textContent = '✅ 文章发布成功！';
-        document.body.appendChild(toast);
-        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2000);
+        showToast('✅ 文章发布成功！');
       }
 
       // ============================================================
-      // 4. 页面切换 (Tab)
+      // 6. 页面切换
       // ============================================================
       function switchPage(pageId) {
-        // 隐藏所有 page
         document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-        // 显示目标
         const target = document.getElementById('page-' + pageId);
         if (target) target.classList.add('active');
 
-        // 更新侧边栏按钮状态
         document.querySelectorAll('.sidebar-nav button').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.page === pageId);
         });
 
-        // 如果切换到评论页，重新挂载 Giscus（可选）
-        if (pageId === 'comments') {
-          // Giscus 已经通过 script 自动加载，但需要确保容器存在
-          // 可以用一个简单的方法：如果 .giscus 为空，重新触发加载
-          const wrapper = document.querySelector('.giscus-wrapper .giscus');
-          if (wrapper && !wrapper.hasChildNodes()) {
-            // 触发重新加载：移除并重新添加 script？ 
-            // 这里简单处理：Giscus 会自动检测并渲染，无需额外操作
-          }
-        }
+        // 手机端切换页面后自动关闭侧边栏
+        closeSidebar();
       }
 
       // ============================================================
-      // 5. 主题切换
+      // 7. 主题切换
       // ============================================================
       function toggleTheme() {
         const html = document.documentElement;
@@ -700,7 +1049,6 @@
         } else {
           html.removeAttribute('data-theme');
         }
-        // 同步 Giscus 主题
         try {
           const iframe = document.querySelector('.giscus-frame');
           if (iframe && iframe.contentWindow) {
@@ -713,19 +1061,41 @@
       }
 
       // ============================================================
-      // 6. 初始化
+      // 8. 汉堡菜单 (手机端)
+      // ============================================================
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const hamburger = document.getElementById('hamburgerBtn');
+
+      function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+        hamburger.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+      }
+
+      function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        hamburger.textContent = '☰';
+      }
+
+      // ============================================================
+      // 9. 初始化
       // ============================================================
       function init() {
         // 加载数据
         const data = loadData();
-        // 如果数据中没有 updates 或 posts，用默认值补充
         if (!data.updates) data.updates = getDefaultData().updates;
         if (!data.posts) data.posts = getDefaultData().posts;
         saveData(data);
 
+        // 检查 LY 会话
+        isLyMode = checkLySession();
+
         // 渲染
         renderUpdates();
         renderPosts();
+        updateLyUI();
 
         // 侧边栏导航
         document.querySelectorAll('.sidebar-nav button').forEach(btn => {
@@ -740,11 +1110,65 @@
         // 主题切换
         document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
+        // LY 按钮
+        document.getElementById('lyToggle').addEventListener('click', function() {
+          if (isLyMode) {
+            if (confirm('当前已是 LY 管理模式，是否退出？')) {
+              exitLyMode();
+            }
+            return;
+          }
+          document.getElementById('lyModal').classList.add('active');
+          document.getElementById('lyPassword').value = '';
+          document.getElementById('lyError').textContent = '';
+          setTimeout(() => document.getElementById('lyPassword').focus(), 100);
+        });
+
+        // LY 弹窗 - 确认
+        document.getElementById('lyConfirm').addEventListener('click', handleLyConfirm);
+
+        // LY 弹窗 - 取消
+        document.getElementById('lyCancel').addEventListener('click', function() {
+          document.getElementById('lyModal').classList.remove('active');
+          document.getElementById('lyPassword').value = '';
+          document.getElementById('lyError').textContent = '';
+        });
+
+        // LY 弹窗 - 回车
+        document.getElementById('lyPassword').addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            handleLyConfirm();
+          }
+        });
+
+        // LY 弹窗 - 点击遮罩关闭
+        document.getElementById('lyModal').addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.classList.remove('active');
+            document.getElementById('lyPassword').value = '';
+            document.getElementById('lyError').textContent = '';
+          }
+        });
+
+        // LY 退出按钮
+        document.getElementById('lyExit').addEventListener('click', exitLyMode);
+
+        // ★★★ 汉堡菜单事件 ★★★
+        hamburger.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        // 窗口尺寸变化时，如果宽度 > 768px 自动关闭侧边栏
+        window.addEventListener('resize', function() {
+          if (window.innerWidth > 768) {
+            closeSidebar();
+          }
+        });
+
         // 默认激活首页
         switchPage('home');
       }
 
-      // 页面完全加载后执行
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
       } else {
