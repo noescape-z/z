@@ -570,12 +570,10 @@
         flex-direction: column;
       }
 
-      /* 汉堡菜单显示 */
       .hamburger {
         display: block;
       }
 
-      /* 侧边栏默认隐藏，通过 JS 控制显示 */
       .sidebar {
         position: fixed;
         top: 0;
@@ -595,7 +593,6 @@
         transform: translateX(0);
       }
 
-      /* 侧边栏打开时，加一个遮罩 */
       .sidebar-overlay {
         display: none;
         position: fixed;
@@ -722,7 +719,6 @@
         <button class="theme-toggle" id="themeToggle">🌓 切换主题</button>
         <button class="ly-btn" id="lyToggle">✦ LY</button>
       </div>
-      <!-- 已移除 "⚡ 仅LY可点 · 生日验证" 提示 -->
     </div>
   </aside>
 
@@ -731,7 +727,8 @@
     <div class="ly-modal">
       <h3>🔐 验证身份</h3>
       <p>请输入 LY 的生日 <span style="color:var(--accent);font-weight:600;">(MMDD)</span></p>
-      <input type="password" id="lyPassword" placeholder="例: 0811" maxlength="4" inputmode="numeric">
+      <!-- placeholder 已清空，不再显示 "例: 0811" -->
+      <input type="password" id="lyPassword" placeholder="" maxlength="4" inputmode="numeric">
       <div class="ly-error" id="lyError"></div>
       <div class="btn-group">
         <button class="btn-cancel" id="lyCancel">取消</button>
@@ -1033,7 +1030,6 @@
           btn.classList.toggle('active', btn.dataset.page === pageId);
         });
 
-        // 手机端切换页面后自动关闭侧边栏
         closeSidebar();
       }
 
@@ -1083,34 +1079,27 @@
       // 9. 初始化
       // ============================================================
       function init() {
-        // 加载数据
         const data = loadData();
         if (!data.updates) data.updates = getDefaultData().updates;
         if (!data.posts) data.posts = getDefaultData().posts;
         saveData(data);
 
-        // 检查 LY 会话
         isLyMode = checkLySession();
 
-        // 渲染
         renderUpdates();
         renderPosts();
         updateLyUI();
 
-        // 侧边栏导航
         document.querySelectorAll('.sidebar-nav button').forEach(btn => {
           btn.addEventListener('click', function() {
             switchPage(this.dataset.page);
           });
         });
 
-        // 发布按钮
         document.getElementById('publishBtn').addEventListener('click', publishPost);
 
-        // 主题切换
         document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
-        // LY 按钮
         document.getElementById('lyToggle').addEventListener('click', function() {
           if (isLyMode) {
             if (confirm('当前已是 LY 管理模式，是否退出？')) {
@@ -1124,17 +1113,14 @@
           setTimeout(() => document.getElementById('lyPassword').focus(), 100);
         });
 
-        // LY 弹窗 - 确认
         document.getElementById('lyConfirm').addEventListener('click', handleLyConfirm);
 
-        // LY 弹窗 - 取消
         document.getElementById('lyCancel').addEventListener('click', function() {
           document.getElementById('lyModal').classList.remove('active');
           document.getElementById('lyPassword').value = '';
           document.getElementById('lyError').textContent = '';
         });
 
-        // LY 弹窗 - 回车
         document.getElementById('lyPassword').addEventListener('keydown', function(e) {
           if (e.key === 'Enter') {
             e.preventDefault();
@@ -1142,7 +1128,6 @@
           }
         });
 
-        // LY 弹窗 - 点击遮罩关闭
         document.getElementById('lyModal').addEventListener('click', function(e) {
           if (e.target === this) {
             this.classList.remove('active');
@@ -1151,21 +1136,17 @@
           }
         });
 
-        // LY 退出按钮
         document.getElementById('lyExit').addEventListener('click', exitLyMode);
 
-        // ★★★ 汉堡菜单事件 ★★★
         hamburger.addEventListener('click', toggleSidebar);
         overlay.addEventListener('click', closeSidebar);
 
-        // 窗口尺寸变化时，如果宽度 > 768px 自动关闭侧边栏
         window.addEventListener('resize', function() {
           if (window.innerWidth > 768) {
             closeSidebar();
           }
         });
 
-        // 默认激活首页
         switchPage('home');
       }
 
