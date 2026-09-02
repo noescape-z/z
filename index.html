@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOESCAPE-Z</title>
-  <!-- Giscus 评论组件 (需要替换 repo-id 和 category-id) -->
+  <title>cavez的小窝 · 毛玻璃</title>
+  <!-- Giscus 评论组件（需替换为你的仓库信息） -->
   <script src="https://giscus.app/client.js"
-    data-repo="noescape-z/z"
+    data-repo="你的用户名/仓库名"
     data-repo-id="你的仓库ID"
     data-category="Announcements"
     data-category-id="你的分类ID"
     data-mapping="title"
     data-strict="0"
     data-reactions-enabled="1"
-    data-emit-metadata="0"
+    data-emit-metadata="1"
     data-input-position="bottom"
     data-theme="transparent_dark"
     data-lang="zh-CN"
@@ -22,239 +22,130 @@
     async>
   </script>
   <style>
-    /* ===== 全局重置 & 主题变量 ===== */
+    /* ===== 全局重置 ===== */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-    }
-
-    :root {
-      --bg-body: #1a1410;
-      --bg-sidebar: #0f0b08;
-      --bg-card: #2a211a;
-      --bg-input: #1a1410;
-      --text-primary: #e8ddd0;
-      --text-secondary: #b8a99a;
-      --text-muted: #8a7a6a;
-      --border-color: #3d3229;
-      --accent: #d4a853;
-      --accent-hover: #e8c06a;
-      --shadow: rgba(0, 0, 0, 0.6);
-      --radius: 12px;
-      --transition: 0.25s ease;
-    }
-
-    [data-theme="dark"] {
-      --bg-body: #080c14;
-      --bg-sidebar: #040810;
-      --bg-card: #121a2a;
-      --bg-input: #080c14;
-      --text-primary: #d6e2f0;
-      --text-secondary: #8aa0c0;
-      --text-muted: #5a72a0;
-      --border-color: #1a2a4a;
-      --accent: #4a8ad6;
-      --accent-hover: #6aaaff;
-      --shadow: rgba(0, 0, 0, 0.8);
+      cursor: none !important;
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: var(--bg-body);
-      color: var(--text-primary);
       min-height: 100vh;
-      display: flex;
-      transition: background 0.3s, color 0.3s;
+      background: #0a0a0f;
+      color: #f0ece4;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    /* ===== 侧边栏 (桌面端) ===== */
-    .sidebar {
-      width: 260px;
-      background: var(--bg-sidebar);
-      border-right: 1px solid var(--border-color);
-      height: 100vh;
-      position: sticky;
+    /* ===== 自定义光标 ===== */
+    .custom-cursor {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(245, 87, 108, 0.85);
+      box-shadow: 0 0 20px rgba(245, 87, 108, 0.4), 0 0 60px rgba(245, 87, 108, 0.15);
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+      will-change: transform;
+      mix-blend-mode: difference;
+    }
+
+    .custom-cursor.hover {
+      width: 36px;
+      height: 36px;
+      background: rgba(168, 85, 247, 0.7);
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+    }
+
+    /* ===== 动态粒子背景 ===== */
+    #particles-canvas {
+      position: fixed;
       top: 0;
-      padding: 2rem 1.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      flex-shrink: 0;
-      transition: background 0.3s, border-color 0.3s, transform 0.3s ease;
-      overflow-y: auto;
-      z-index: 100;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
     }
 
-    .sidebar-brand {
-      font-size: 1.6rem;
+    /* ===== 毛玻璃主容器 ===== */
+    .glass-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 2rem 1.5rem;
+      min-height: 100vh;
+      backdrop-filter: blur(14px) saturate(1.4);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      background: rgba(20, 18, 28, 0.45);
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ===== 头部 ===== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 2rem;
+    }
+
+    .logo a {
+      font-size: 2rem;
       font-weight: 700;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, var(--accent), var(--text-heading));
+      text-decoration: none;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--border-color);
+      letter-spacing: -0.5px;
     }
 
-    .sidebar-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .sidebar-nav button {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 1rem;
-      padding: 0.6rem 1rem;
-      border-radius: var(--radius);
-      text-align: left;
-      cursor: pointer;
-      transition: all var(--transition);
-      font-weight: 500;
-      border: 1px solid transparent;
-    }
-
-    .sidebar-nav button:hover {
-      background: var(--bg-card);
-      color: var(--text-primary);
-      border-color: var(--border-color);
-    }
-
-    .sidebar-nav button.active {
-      background: var(--bg-card);
-      color: var(--accent);
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px var(--accent);
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border-color);
-    }
-
-    .sidebar-footer .row {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
-
-    .theme-toggle {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      transition: all var(--transition);
-    }
-
-    .theme-toggle:hover {
-      border-color: var(--accent);
-      color: var(--text-primary);
-    }
-
-    /* ---- LY 专属按钮 ---- */
-    .ly-btn {
-      background: transparent;
-      border: 1px solid #a855f7;
-      color: #a855f7;
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 0.75rem;
-      transition: all var(--transition);
-      font-weight: 500;
-      letter-spacing: 0.3px;
-    }
-
-    .ly-btn:hover {
-      background: #a855f7;
-      color: #fff;
-      box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
-    }
-
-    /* ---- LY 后台模式提示条 ---- */
-    .ly-mode-banner {
-      display: none;
-      background: #a855f7;
-      color: #fff;
-      padding: 0.4rem 1.2rem;
-      border-radius: var(--radius);
+    .logo small {
       font-size: 0.85rem;
-      font-weight: 500;
-      margin-bottom: 1.2rem;
-      align-items: center;
-      gap: 0.8rem;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.4);
+      -webkit-text-fill-color: rgba(255, 255, 255, 0.4);
+      margin-left: 0.3rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
       flex-wrap: wrap;
     }
 
-    .ly-mode-banner.active {
-      display: flex;
+    nav a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 500;
+      padding: 0.3rem 0;
+      border-bottom: 2px solid transparent;
+      transition: all 0.25s ease;
+      font-size: 0.95rem;
+      cursor: none;
     }
 
-    .ly-mode-banner .close-ly {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.4);
+    nav a:hover,
+    nav a.active {
       color: #fff;
-      padding: 0.1rem 0.6rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.75rem;
-      transition: all var(--transition);
-      margin-left: auto;
+      border-bottom-color: #f5576c;
     }
 
-    .ly-mode-banner .close-ly:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    /* ===== 汉堡菜单按钮 (手机端) ===== */
-    .hamburger {
-      display: none;
-      background: transparent;
-      border: none;
-      color: var(--text-primary);
-      font-size: 1.8rem;
-      padding: 0.2rem 0.6rem;
-      cursor: pointer;
-      border-radius: var(--radius);
-      transition: background 0.2s;
-      position: fixed;
-      top: 0.8rem;
-      right: 1rem;
-      z-index: 200;
-      background: var(--bg-sidebar);
-      border: 1px solid var(--border-color);
-      line-height: 1;
-    }
-
-    .hamburger:hover {
-      background: var(--bg-card);
-    }
-
-    /* ===== 主内容 ===== */
-    .main {
-      flex: 1;
-      padding: 2rem 2.5rem;
-      max-width: 1000px;
-      margin: 0 auto;
-      width: 100%;
-      transition: background 0.3s;
-    }
-
+    /* ===== 页面容器 ===== */
     .page {
       display: none;
-      animation: fadeIn 0.3s ease;
+      animation: fadeIn 0.4s ease;
     }
 
     .page.active {
@@ -262,38 +153,125 @@
     }
 
     @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(10px); }
+      0% { opacity: 0; transform: translateY(12px); }
       100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Hero（首页专用） ===== */
+    .hero {
+      padding: 1.5rem 0 0.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 0.2rem;
+    }
+
+    /* ===== 快速导航卡片（首页专用） ===== */
+    .quick-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.2rem;
+      margin: 2rem 0 3rem;
+    }
+
+    .quick-nav a {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.2rem 0.5rem;
+      text-align: center;
+      text-decoration: none;
+      color: #f0ece4;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      cursor: none;
+    }
+
+    .quick-nav a:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(245, 87, 108, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .quick-nav a .icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    /* ===== 更新动态 & 文章列表（毛玻璃卡片） ===== */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 1.2rem 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.1);
     }
 
     .update-list {
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
+      gap: 1rem;
     }
 
     .update-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 1.2rem 1.5rem;
-      transition: all var(--transition);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      border-left: 3px solid rgba(245, 87, 108, 0.3);
+      transition: all 0.2s;
     }
 
     .update-item:hover {
-      border-color: var(--accent);
-      box-shadow: 0 4px 16px var(--shadow);
+      background: rgba(255, 255, 255, 0.06);
+      border-left-color: #f5576c;
     }
 
     .update-item .time {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 0.3rem;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 0.2rem;
     }
 
     .update-item .content {
-      font-size: 1rem;
+      font-size: 0.95rem;
       line-height: 1.6;
+    }
+
+    /* ===== 文章专区 ===== */
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.3px;
+      color: rgba(255, 255, 255, 0.8);
     }
 
     .post-controls {
@@ -306,21 +284,24 @@
 
     .post-controls input,
     .post-controls textarea {
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
-      padding: 0.6rem 1rem;
-      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f0ece4;
+      padding: 0.7rem 1rem;
+      border-radius: 12px;
       font-size: 0.95rem;
       outline: none;
-      transition: border 0.2s;
+      transition: all 0.25s;
       font-family: inherit;
       flex: 1 1 200px;
     }
 
     .post-controls input:focus,
     .post-controls textarea:focus {
-      border-color: var(--accent);
+      border-color: rgba(245, 87, 108, 0.4);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .post-controls textarea {
@@ -330,44 +311,49 @@
     }
 
     .btn {
-      background: var(--accent);
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
       border: none;
       color: #fff;
-      padding: 0.5rem 1.4rem;
-      border-radius: var(--radius);
+      padding: 0.6rem 1.6rem;
+      border-radius: 30px;
       font-weight: 600;
-      cursor: pointer;
-      transition: all var(--transition);
+      cursor: none;
+      transition: all 0.3s ease;
       font-size: 0.9rem;
       white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(245, 87, 108, 0.25);
     }
 
     .btn:hover {
-      background: var(--accent-hover);
-      transform: scale(1.02);
+      transform: scale(1.04);
+      box-shadow: 0 8px 30px rgba(245, 87, 108, 0.4);
     }
 
-    .btn-danger {
-      background: #c0705a;
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: none;
     }
 
-    .btn-danger:hover {
-      background: #d4856e;
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+      box-shadow: none;
     }
 
     .post-list {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
     }
 
     .post-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
       padding: 1.2rem 1.5rem;
-      transition: all var(--transition);
+      transition: all 0.3s ease;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -376,7 +362,9 @@
     }
 
     .post-item:hover {
-      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
     }
 
     .post-item .info {
@@ -385,13 +373,24 @@
 
     .post-item .title {
       font-weight: 600;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       margin-bottom: 0.2rem;
     }
 
+    .post-item .title a {
+      color: #f0ece4;
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: none;
+    }
+
+    .post-item .title a:hover {
+      color: #f5576c;
+    }
+
     .post-item .meta {
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.35);
     }
 
     .post-item .actions {
@@ -401,39 +400,69 @@
     }
 
     .post-item .actions button {
-      background: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      padding: 0.2rem 0.7rem;
-      border-radius: 6px;
-      cursor: pointer;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.5);
+      padding: 0.2rem 0.8rem;
+      border-radius: 8px;
+      cursor: none;
       font-size: 0.75rem;
-      transition: all var(--transition);
+      transition: all 0.2s;
     }
 
     .post-item .actions button:hover {
-      border-color: var(--accent);
-      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
     }
 
     .post-item .actions .del:hover {
-      border-color: #d4856e;
-      color: #d4856e;
+      background: rgba(245, 87, 108, 0.2);
+      color: #f5576c;
+      border-color: rgba(245, 87, 108, 0.3);
     }
 
+    /* ===== 评论专区 ===== */
     .giscus-wrapper {
-      margin-top: 1rem;
-      background: var(--bg-card);
-      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 16px;
       padding: 1.5rem;
-      border: 1px solid var(--border-color);
-      min-height: 400px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      min-height: 450px;
     }
 
+    .giscus-wrapper .coming-soon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      color: rgba(255, 255, 255, 0.3);
+      text-align: center;
+    }
+
+    .giscus-wrapper .coming-soon .icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .giscus-wrapper .coming-soon h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .giscus-wrapper .coming-soon p {
+      font-size: 0.95rem;
+      max-width: 400px;
+    }
+
+    /* ===== 空状态 ===== */
     .empty {
       text-align: center;
-      padding: 3rem 1rem;
-      color: var(--text-muted);
+      padding: 2.5rem 1rem;
+      color: rgba(255, 255, 255, 0.3);
     }
 
     .empty .icon {
@@ -442,200 +471,81 @@
       margin-bottom: 0.5rem;
     }
 
-    /* ===== LY 验证弹窗 ===== */
-    .ly-modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .ly-modal-overlay.active {
-      display: flex;
-    }
-
-    .ly-modal {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 2rem;
-      max-width: 360px;
-      width: 90%;
-      box-shadow: 0 8px 32px var(--shadow);
-      text-align: center;
-    }
-
-    .ly-modal h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .ly-modal p {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .ly-modal input {
-      width: 100%;
-      padding: 0.6rem 1rem;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
-      border-radius: var(--radius);
-      font-size: 1rem;
-      text-align: center;
-      letter-spacing: 4px;
-      outline: none;
-      transition: border 0.2s;
-      margin-bottom: 1rem;
-    }
-
-    .ly-modal input:focus {
-      border-color: #a855f7;
-    }
-
-    .ly-modal .btn-group {
-      display: flex;
-      gap: 0.8rem;
-      justify-content: center;
-    }
-
-    .ly-modal .btn-group button {
-      padding: 0.4rem 1.6rem;
-      border-radius: var(--radius);
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-
-    .ly-modal .btn-group .btn-cancel {
-      background: var(--border-color);
-      color: var(--text-secondary);
-    }
-
-    .ly-modal .btn-group .btn-cancel:hover {
-      background: var(--text-muted);
-      color: #fff;
-    }
-
-    .ly-modal .btn-group .btn-confirm {
-      background: #a855f7;
-      color: #fff;
-    }
-
-    .ly-modal .btn-group .btn-confirm:hover {
-      background: #7c3aed;
-      transform: scale(1.02);
-    }
-
-    .ly-error {
-      color: #f87171;
+    /* ===== 底部 ===== */
+    footer {
+      margin-top: 3.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
       font-size: 0.85rem;
-      min-height: 1.5rem;
-      margin-bottom: 0.5rem;
+      color: rgba(255, 255, 255, 0.3);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
-    /* ===== Toast 提示 ===== */
+    footer a {
+      color: rgba(255, 255, 255, 0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: none;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+
+    /* ===== Toast ===== */
     .custom-toast {
       position: fixed;
       bottom: 2rem;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--bg-card);
-      color: var(--text-primary);
-      padding: 0.8rem 2rem;
-      border-radius: 12px;
-      border: 1px solid var(--accent);
-      box-shadow: 0 4px 20px var(--shadow);
+      background: rgba(20, 18, 28, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      color: #f0ece4;
+      padding: 0.7rem 2rem;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
       z-index: 999;
       font-weight: 500;
       transition: opacity 0.3s;
       max-width: 90%;
       text-align: center;
+      pointer-events: none;
     }
 
-    /* ============================================================ */
-    /* ===== 响应式 - 移动端 ===== */
+    /* ===== 响应式 ===== */
     @media (max-width: 768px) {
-      body {
+      .glass-container {
+        padding: 1.2rem 1rem;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      header {
         flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
       }
 
-      .hamburger {
-        display: block;
+      nav {
+        gap: 1.2rem;
       }
 
-      .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 280px;
-        height: 100vh;
-        transform: translateX(-100%);
-        border-right: 1px solid var(--border-color);
-        border-bottom: none;
-        padding: 1.5rem 1.2rem;
-        gap: 1.5rem;
-        z-index: 150;
-        box-shadow: 4px 0 20px var(--shadow);
+      .hero h1 {
+        font-size: 2rem;
       }
 
-      .sidebar.open {
-        transform: translateX(0);
+      .quick-nav {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
       }
 
-      .sidebar-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 140;
-      }
-
-      .sidebar-overlay.active {
-        display: block;
-      }
-
-      .sidebar-brand {
-        font-size: 1.3rem;
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 0.5rem;
-      }
-
-      .sidebar-nav {
-        flex-direction: column;
-        gap: 0.3rem;
-      }
-
-      .sidebar-nav button {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.95rem;
-      }
-
-      .sidebar-footer {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .sidebar-footer .row {
-        flex-wrap: wrap;
-      }
-
-      .main {
-        padding: 1.2rem;
-        margin-top: 0.5rem;
+      .quick-nav a {
+        padding: 0.9rem 0.3rem;
       }
 
       .post-controls {
@@ -657,33 +567,28 @@
         justify-content: flex-end;
       }
 
-      .ly-mode-banner {
-        font-size: 0.8rem;
-        padding: 0.3rem 1rem;
-      }
-
-      .ly-mode-banner .close-ly {
-        font-size: 0.7rem;
+      footer {
+        flex-direction: column;
+        gap: 0.3rem;
       }
     }
 
     @media (max-width: 480px) {
-      .sidebar {
-        width: 260px;
-        padding: 1rem;
+      .glass-container {
+        padding: 0.8rem 0.6rem;
       }
 
-      .sidebar-brand {
-        font-size: 1.1rem;
+      .hero h1 {
+        font-size: 1.6rem;
       }
 
-      .sidebar-nav button {
-        font-size: 0.85rem;
-        padding: 0.4rem 0.7rem;
+      .quick-nav {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
       }
 
-      .main {
-        padding: 0.8rem;
+      .quick-nav a .icon {
+        font-size: 1.5rem;
       }
 
       .post-item {
@@ -698,106 +603,254 @@
 </head>
 <body>
 
-  <!-- ===== 侧边栏遮罩 (手机端) ===== -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <!-- ===== 自定义光标 ===== -->
+  <div class="custom-cursor" id="customCursor"></div>
 
-  <!-- ===== 汉堡菜单按钮 (手机端) ===== -->
-  <button class="hamburger" id="hamburgerBtn" aria-label="切换菜单">☰</button>
+  <!-- ===== 粒子背景 Canvas ===== -->
+  <canvas id="particles-canvas"></canvas>
 
-  <!-- ===== 侧边栏 ===== -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand">NOESCAPE-Z</div>
+  <!-- ===== 主内容（毛玻璃容器） ===== -->
+  <div class="glass-container">
 
-    <nav class="sidebar-nav">
-      <button class="active" data-page="home">🏠 首页</button>
-      <button data-page="posts">📄 文章专区</button>
-      <button data-page="comments">💬 评论</button>
-    </nav>
-
-    <div class="sidebar-footer">
-      <div class="row">
-        <button class="theme-toggle" id="themeToggle">🌓 切换主题</button>
-        <button class="ly-btn" id="lyToggle">✦ LY</button>
+    <!-- ===== 头部 ===== -->
+    <header>
+      <div class="logo">
+        <a href="#">cavez的小窝 <small>✦ 栖息地</small></a>
       </div>
-    </div>
-  </aside>
+      <nav>
+        <a href="#" class="active" data-page="home">🏠 首页</a>
+        <a href="#" data-page="posts">📄 文章</a>
+        <a href="#" data-page="comments">💬 评论</a>
+      </nav>
+    </header>
 
-  <!-- ===== LY 验证弹窗 ===== -->
-  <div class="ly-modal-overlay" id="lyModal">
-    <div class="ly-modal">
-      <h3>🔐 验证身份</h3>
-      <p>请输入 LY 的生日 <span style="color:var(--accent);font-weight:600;">(MMDD)</span></p>
-      <!-- placeholder 已清空，不再显示 "例: 0811" -->
-      <input type="password" id="lyPassword" placeholder="" maxlength="4" inputmode="numeric">
-      <div class="ly-error" id="lyError"></div>
-      <div class="btn-group">
-        <button class="btn-cancel" id="lyCancel">取消</button>
-        <button class="btn-confirm" id="lyConfirm">确认</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== 主内容 ===== -->
-  <main class="main">
-
-    <!-- LY 模式提示条 -->
-    <div class="ly-mode-banner" id="lyBanner">
-      <span>🔓 当前为 <strong>LY 管理模式</strong> — 你可以发布/删除文章</span>
-      <button class="close-ly" id="lyExit">退出管理</button>
-    </div>
-
-    <!-- ===== 首页 ===== -->
+    <!-- ========================================================= -->
+    <!-- ===== 页面1: 首页 ===== -->
+    <!-- ========================================================= -->
     <section id="page-home" class="page active">
-      <h2 style="margin-bottom: 1.2rem;">📌 更新动态</h2>
+      <!-- Hero -->
+      <div class="hero">
+        <h1>👋 欢迎来到 <span>cavez的小窝</span></h1>
+        <p>分享技术 · 折腾软件 · 记录生活</p>
+      </div>
+
+      <!-- 快速导航 -->
+      <div class="quick-nav">
+        <a href="#" data-page="home">
+          <span class="icon">🏠</span> 首页
+        </a>
+        <a href="#" data-page="posts">
+          <span class="icon">📄</span> 文章
+        </a>
+        <a href="#" data-page="comments">
+          <span class="icon">💬</span> 评论
+        </a>
+        <a href="#" id="loginTrigger">
+          <span class="icon">🔐</span> 登录 / 注册
+        </a>
+      </div>
+
+      <!-- 最新动态 -->
+      <h2 class="section-title">📌 最新动态</h2>
       <div class="update-list" id="updateList">
-        <!-- 由 JavaScript 动态渲染 -->
+        <!-- 由 JS 渲染 -->
       </div>
     </section>
 
-    <!-- ===== 文章专区 ===== -->
+    <!-- ========================================================= -->
+    <!-- ===== 页面2: 文章专区 ===== -->
+    <!-- ========================================================= -->
     <section id="page-posts" class="page">
-      <h2 style="margin-bottom: 1.2rem;">📝 文章专区</h2>
+      <h2 class="section-title">📝 文章专区</h2>
 
       <div class="post-controls" id="postControls">
         <input type="text" id="postTitle" placeholder="文章标题">
         <textarea id="postContent" placeholder="文章内容（支持 Markdown / HTML）"></textarea>
         <button class="btn" id="publishBtn">📤 发布文章</button>
+        <button class="btn btn-secondary" id="syncBtn">🔄 同步</button>
       </div>
 
       <div class="post-list" id="postList">
-        <!-- 由 JavaScript 动态渲染 -->
+        <!-- 由 JS 渲染 -->
       </div>
     </section>
 
-    <!-- ===== 评论 ===== -->
+    <!-- ========================================================= -->
+    <!-- ===== 页面3: 评论专区 ===== -->
+    <!-- ========================================================= -->
     <section id="page-comments" class="page">
-      <h2 style="margin-bottom: 1.2rem;">💬 评论 · Giscus</h2>
-      <div class="giscus-wrapper" id="giscusWrapper">
+      <h2 class="section-title">💬 评论 · Giscus</h2>
+      <div class="giscus-wrapper">
+        <!-- Giscus 会加载到这里 -->
         <div class="giscus"></div>
+        <!-- 占位提示（Giscus 加载后会覆盖） -->
+        <div class="coming-soon" id="giscusPlaceholder">
+          <span class="icon">💬</span>
+          <h3>评论系统加载中...</h3>
+          <p>请配置 Giscus 仓库信息后刷新页面</p>
+        </div>
       </div>
     </section>
 
-  </main>
+    <!-- ===== 底部 ===== -->
+    <footer>
+      <span>© 2026 cavez的小窝 · 用 ❤️ 和 Markdown 写作</span>
+      <span>
+        <a href="#">GitHub</a> &nbsp;·&nbsp;
+        <a href="#">Twitter</a> &nbsp;·&nbsp;
+        <a href="#">RSS</a>
+      </span>
+    </footer>
+
+  </div>
 
   <!-- ============================================================ -->
   <!-- ===== JavaScript ===== -->
   <script>
     (function() {
+      'use strict';
+
       // ============================================================
-      // 1. 数据层 (localStorage)
+      // 1. 自定义光标
       // ============================================================
-      const STORAGE_KEY = 'noescapez_blog_data';
-      const LY_SESSION_KEY = 'ly_mode_active';
+      const cursor = document.getElementById('customCursor');
+
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+      });
+
+      document.addEventListener('mouseenter', () => {
+        cursor.style.opacity = '1';
+      });
+
+      document.addEventListener('mouseleave', () => {
+        cursor.style.opacity = '0';
+      });
+
+      // 悬停时放大
+      document.querySelectorAll('a, button, .clickable').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+      });
+
+      // ============================================================
+      // 2. 动态粒子背景
+      // ============================================================
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let mouseX = 0;
+      let mouseY = 0;
+      let width, height;
+
+      function resizeCanvas() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+
+        reset() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.size = Math.random() * 3 + 1.5;
+          this.speedX = (Math.random() - 0.5) * 0.5;
+          this.speedY = (Math.random() - 0.5) * 0.5;
+          this.opacity = Math.random() * 0.5 + 0.2;
+          this.color = `hsla(${Math.random() * 60 + 320}, 70%, 65%, `;
+        }
+
+        update() {
+          const dx = mouseX - this.x;
+          const dy = mouseY - this.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 200) {
+            const force = (200 - dist) / 200 * 0.02;
+            this.x += dx * force;
+            this.y += dy * force;
+          }
+
+          this.x += this.speedX;
+          this.y += this.speedY;
+
+          if (this.x < 0 || this.x > width) this.speedX *= -1;
+          if (this.y < 0 || this.y > height) this.speedY *= -1;
+        }
+
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = this.color + this.opacity + ')';
+          ctx.fill();
+
+          if (this.size > 2.5) {
+            ctx.shadowColor = 'rgba(245, 87, 108, 0.15)';
+            ctx.shadowBlur = 12;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+        }
+      }
+
+      const particleCount = Math.min(120, Math.floor((width * height) / 8000));
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+
+      function drawLines() {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(180, 140, 220, ${0.08 * (1 - dist / 120)})`;
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function animateParticles() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        drawLines();
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
+
+      // ============================================================
+      // 3. 数据层 (localStorage)
+      // ============================================================
+      const STORAGE_KEY = 'cavez_blog_data';
 
       function getDefaultData() {
         return {
           updates: [
-            { id: Date.now() - 3600000, text: '🎉 博客正式上线，欢迎来访！' },
-            { id: Date.now() - 7200000, text: '📦 资源库更新：新增一批学习资料' },
+            { id: Date.now() - 3600000, text: '🎉 小窝正式开张，欢迎来做客！' },
+            { id: Date.now() - 7200000, text: '📦 软件专区即将上线，敬请期待' },
           ],
           posts: [
-            { id: Date.now() - 86400000, title: '📦 喂喂喂资源库更新啦！', content: '🎉 资源库又有新货了！<br>🔗 传送门：<a href="https://1838190346.share.123pan.cn/123pan/gfigTd-P1SLH?pwd=1145#" target="_blank">点击进入</a>', date: '2026-07-26' },
-            { id: Date.now() - 172800000, title: '在算法洪流中，打捞一艘木帆船', content: '当全世界都在追逐效率与增长，我选择退回书桌一角，用最原始的方式——文字，来对抗遗忘。', date: '2026-07-25' },
+            { id: Date.now() - 86400000, title: '📦 资源库大更新！', content: '🎉 又收集了一批好工具！<br>🔗 传送门：<a href="#" target="_blank">点击进入</a>', date: '2026-09-01' },
+            { id: Date.now() - 172800000, title: '在算法洪流中，打捞一艘木帆船', content: '当全世界都在追逐效率与增长，我选择退回书桌一角，用最原始的方式——文字，来对抗遗忘。', date: '2026-08-30' },
           ]
         };
       }
@@ -820,94 +873,8 @@
       }
 
       // ============================================================
-      // 2. LY 模式管理
-      // ============================================================
-      let isLyMode = false;
-
-      function checkLySession() {
-        try {
-          return sessionStorage.getItem(LY_SESSION_KEY) === 'true';
-        } catch (_) { return false; }
-      }
-
-      function setLySession(active) {
-        try {
-          if (active) {
-            sessionStorage.setItem(LY_SESSION_KEY, 'true');
-          } else {
-            sessionStorage.removeItem(LY_SESSION_KEY);
-          }
-        } catch (_) {}
-        isLyMode = active;
-        updateLyUI();
-      }
-
-      function updateLyUI() {
-        const banner = document.getElementById('lyBanner');
-        const controls = document.getElementById('postControls');
-        const publishBtn = document.getElementById('publishBtn');
-
-        if (isLyMode) {
-          banner.classList.add('active');
-          controls.style.display = 'flex';
-          publishBtn.style.display = 'inline-block';
-          document.querySelectorAll('.post-item .actions .del').forEach(el => {
-            el.style.display = 'inline-block';
-          });
-        } else {
-          banner.classList.remove('active');
-          controls.style.display = 'none';
-          publishBtn.style.display = 'none';
-          document.querySelectorAll('.post-item .actions .del').forEach(el => {
-            el.style.display = 'none';
-          });
-        }
-      }
-
-      function handleLyConfirm() {
-        const input = document.getElementById('lyPassword');
-        const error = document.getElementById('lyError');
-        const val = input.value.trim();
-
-        if (val === '0811') {
-          error.textContent = '';
-          setLySession(true);
-          document.getElementById('lyModal').classList.remove('active');
-          input.value = '';
-          renderPosts();
-          renderUpdates();
-          showToast('✅ LY 验证通过，已进入管理模式');
-        } else {
-          error.textContent = '❌ 生日不正确，请重试';
-          input.value = '';
-          input.focus();
-        }
-      }
-
-      function exitLyMode() {
-        setLySession(false);
-        renderPosts();
-        renderUpdates();
-        showToast('已退出 LY 管理模式');
-      }
-
-      // ============================================================
-      // 3. Toast 提示
-      // ============================================================
-      function showToast(msg) {
-        const old = document.querySelector('.custom-toast');
-        if (old) old.remove();
-        const toast = document.createElement('div');
-        toast.className = 'custom-toast';
-        toast.textContent = msg;
-        document.body.appendChild(toast);
-        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2000);
-      }
-
-      // ============================================================
       // 4. 渲染函数
       // ============================================================
-
       function renderUpdates() {
         const container = document.getElementById('updateList');
         const data = loadData();
@@ -935,38 +902,35 @@
 
         if (!posts.length) {
           container.innerHTML = `<div class="empty"><span class="icon">📝</span> 还没有文章，发布第一篇吧！</div>`;
-          updateLyUI();
           return;
         }
 
         const sorted = [...posts].sort((a, b) => b.id - a.id);
 
-        container.innerHTML = sorted.map(post => {
-          const showDelete = isLyMode ? 'inline-block' : 'none';
-          return `
+        container.innerHTML = sorted.map(post => `
           <div class="post-item" data-id="${post.id}">
             <div class="info">
               <div class="title">${post.title}</div>
               <div class="meta">${post.date || new Date(post.id).toLocaleDateString('zh-CN')}</div>
-              <div style="margin-top:0.3rem;font-size:0.9rem;color:var(--text-secondary);">${post.content}</div>
+              <div style="margin-top:0.3rem;font-size:0.9rem;color:rgba(255,255,255,0.5);">${post.content}</div>
             </div>
             <div class="actions">
-              <button class="del" data-id="${post.id}" style="display:${showDelete}">🗑️ 删除</button>
+              <button class="del" data-id="${post.id}">🗑️ 删除</button>
             </div>
           </div>
-        `}).join('');
+        `).join('');
 
         container.querySelectorAll('.del').forEach(btn => {
           btn.addEventListener('click', function(e) {
             e.stopPropagation();
-            if (!isLyMode) {
-              showToast('⚠️ 请先通过 LY 验证');
-              return;
-            }
             const id = parseInt(this.dataset.id);
             if (confirm('确定要删除这篇文章吗？')) {
               const data = loadData();
               data.posts = data.posts.filter(p => p.id !== id);
+              data.updates.push({
+                id: Date.now(),
+                text: '🗑️ 删除了文章'
+              });
               saveData(data);
               renderPosts();
               renderUpdates();
@@ -974,19 +938,12 @@
             }
           });
         });
-
-        updateLyUI();
       }
 
       // ============================================================
       // 5. 发布文章
       // ============================================================
       function publishPost() {
-        if (!isLyMode) {
-          showToast('⚠️ 请先通过 LY 验证');
-          return;
-        }
-
         const titleEl = document.getElementById('postTitle');
         const contentEl = document.getElementById('postContent');
         const title = titleEl.value.trim();
@@ -1019,64 +976,46 @@
       }
 
       // ============================================================
-      // 6. 页面切换
+      // 6. 页面切换（核心修复）
       // ============================================================
       function switchPage(pageId) {
-        document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-        const target = document.getElementById('page-' + pageId);
-        if (target) target.classList.add('active');
-
-        document.querySelectorAll('.sidebar-nav button').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.page === pageId);
+        // 隐藏所有页面
+        document.querySelectorAll('.page').forEach(el => {
+          el.classList.remove('active');
         });
 
-        closeSidebar();
-      }
-
-      // ============================================================
-      // 7. 主题切换
-      // ============================================================
-      function toggleTheme() {
-        const html = document.documentElement;
-        const current = html.getAttribute('data-theme');
-        const next = current === 'dark' ? '' : 'dark';
-        if (next) {
-          html.setAttribute('data-theme', 'dark');
-        } else {
-          html.removeAttribute('data-theme');
+        // 显示目标页面
+        const target = document.getElementById('page-' + pageId);
+        if (target) {
+          target.classList.add('active');
         }
-        try {
-          const iframe = document.querySelector('.giscus-frame');
-          if (iframe && iframe.contentWindow) {
-            const theme = next === 'dark' ? 'dark' : 'light';
-            iframe.contentWindow.postMessage({
-              giscus: { setConfig: { theme: theme } }
-            }, 'https://giscus.app');
-          }
-        } catch (_) {}
+
+        // 更新导航高亮
+        document.querySelectorAll('nav a').forEach(link => {
+          link.classList.toggle('active', link.dataset.page === pageId);
+        });
+
+        // 如果切换到评论页，触发 Giscus 重新加载（可选）
+        if (pageId === 'comments') {
+          // Giscus 会自动加载，无需额外操作
+        }
       }
 
       // ============================================================
-      // 8. 汉堡菜单 (手机端)
+      // 7. Toast
       // ============================================================
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebarOverlay');
-      const hamburger = document.getElementById('hamburgerBtn');
-
-      function toggleSidebar() {
-        sidebar.classList.toggle('open');
-        overlay.classList.toggle('active');
-        hamburger.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
-      }
-
-      function closeSidebar() {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('active');
-        hamburger.textContent = '☰';
+      function showToast(msg) {
+        const old = document.querySelector('.custom-toast');
+        if (old) old.remove();
+        const toast = document.createElement('div');
+        toast.className = 'custom-toast';
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2500);
       }
 
       // ============================================================
-      // 9. 初始化
+      // 8. 初始化
       // ============================================================
       function init() {
         const data = loadData();
@@ -1084,69 +1023,50 @@
         if (!data.posts) data.posts = getDefaultData().posts;
         saveData(data);
 
-        isLyMode = checkLySession();
-
         renderUpdates();
         renderPosts();
-        updateLyUI();
 
-        document.querySelectorAll('.sidebar-nav button').forEach(btn => {
-          btn.addEventListener('click', function() {
-            switchPage(this.dataset.page);
+        // ---- 导航切换（顶部导航） ----
+        document.querySelectorAll('nav a').forEach(el => {
+          el.addEventListener('click', function(e) {
+            e.preventDefault();
+            const page = this.dataset.page;
+            if (page) switchPage(page);
           });
         });
 
+        // ---- 快速导航卡片 ----
+        document.querySelectorAll('.quick-nav a[data-page]').forEach(el => {
+          el.addEventListener('click', function(e) {
+            e.preventDefault();
+            const page = this.dataset.page;
+            if (page) switchPage(page);
+          });
+        });
+
+        // ---- 登录触发 ----
+        document.getElementById('loginTrigger').addEventListener('click', function(e) {
+          e.preventDefault();
+          showToast('🔐 登录/注册功能开发中，请关注后续更新');
+        });
+
+        // ---- 发布文章 ----
         document.getElementById('publishBtn').addEventListener('click', publishPost);
 
-        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-
-        document.getElementById('lyToggle').addEventListener('click', function() {
-          if (isLyMode) {
-            if (confirm('当前已是 LY 管理模式，是否退出？')) {
-              exitLyMode();
-            }
-            return;
-          }
-          document.getElementById('lyModal').classList.add('active');
-          document.getElementById('lyPassword').value = '';
-          document.getElementById('lyError').textContent = '';
-          setTimeout(() => document.getElementById('lyPassword').focus(), 100);
+        // ---- 同步（本地） ----
+        document.getElementById('syncBtn').addEventListener('click', function() {
+          showToast('🔄 数据已同步到本地');
         });
 
-        document.getElementById('lyConfirm').addEventListener('click', handleLyConfirm);
-
-        document.getElementById('lyCancel').addEventListener('click', function() {
-          document.getElementById('lyModal').classList.remove('active');
-          document.getElementById('lyPassword').value = '';
-          document.getElementById('lyError').textContent = '';
-        });
-
-        document.getElementById('lyPassword').addEventListener('keydown', function(e) {
-          if (e.key === 'Enter') {
+        // ---- Ctrl+Enter 快捷发布 ----
+        document.getElementById('postTitle').addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && e.ctrlKey) {
             e.preventDefault();
-            handleLyConfirm();
+            publishPost();
           }
         });
 
-        document.getElementById('lyModal').addEventListener('click', function(e) {
-          if (e.target === this) {
-            this.classList.remove('active');
-            document.getElementById('lyPassword').value = '';
-            document.getElementById('lyError').textContent = '';
-          }
-        });
-
-        document.getElementById('lyExit').addEventListener('click', exitLyMode);
-
-        hamburger.addEventListener('click', toggleSidebar);
-        overlay.addEventListener('click', closeSidebar);
-
-        window.addEventListener('resize', function() {
-          if (window.innerWidth > 768) {
-            closeSidebar();
-          }
-        });
-
+        // ---- 默认显示首页 ----
         switchPage('home');
       }
 
