@@ -1232,6 +1232,42 @@
 
       console.log('✅欢迎进入控制台');
     })();
+    // ================================================================
+// 🛡️ 防 F12 防护（放在现有 JS 后面，不影响其他功能）
+// ================================================================
+
+// 1. 禁用 F12 和常用快捷键
+document.addEventListener('keydown', function(e) {
+    // 禁用 F12
+    if (e.key === 'F12') {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+    // 禁用 Ctrl+Shift+I (打开控制台)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+    // 禁用 Ctrl+Shift+J (控制台)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+    // 禁用 Ctrl+U (查看源代码)
+    if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+    // 禁用 Ctrl+S (保存页面)
+    if (e.ctrlKey && (e.key === 'S' || e.key === 's')) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
   </script>
 </body>
 </html>
