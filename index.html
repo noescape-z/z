@@ -3,25 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>cavez的小窝 · 毛玻璃</title>
-  <!-- Giscus 评论组件（需替换为你的仓库信息） -->
-  <script src="https://giscus.app/client.js"
-    data-repo="你的用户名/仓库名"
-    data-repo-id="你的仓库ID"
-    data-category="Announcements"
-    data-category-id="你的分类ID"
-    data-mapping="title"
-    data-strict="0"
-    data-reactions-enabled="1"
-    data-emit-metadata="1"
-    data-input-position="bottom"
-    data-theme="transparent_dark"
-    data-lang="zh-CN"
-    data-loading="lazy"
-    crossorigin="anonymous"
-    async>
-  </script>
+  <title>CAVEZ · 动态玻璃分站</title>
   <style>
+    /* ===== CSS 变量 (亮色/深色) ===== */
+    :root {
+      --bg-start: #f0edf7;
+      --bg-end: #ddd8e8;
+      --glass-bg: rgba(255, 255, 255, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      --glass-blur: blur(12px);
+      --text-primary: #1f1730;
+      --text-secondary: #3f3257;
+      --text-muted: #2f2542;
+      --badge-bg: #3d2b55;
+      --badge-text: #f0ebf7;
+      --featured-bg: rgba(215, 195, 240, 0.5);
+      --featured-border: #cbb7e6;
+      --shimmer-color: rgba(255, 255, 255, 0.5);
+      --cursor-color: rgba(245, 87, 108, 0.85);
+      --cursor-hover: rgba(168, 85, 247, 0.7);
+      --loading-bg: rgba(245, 245, 250, 0.8);
+    }
+
+    .dark-mode {
+      --bg-start: #1b172b;
+      --bg-end: #110f1d;
+      --glass-bg: rgba(30, 26, 50, 0.55);
+      --glass-border: rgba(100, 85, 140, 0.5);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      --text-primary: #e8e0f5;
+      --text-secondary: #c6bcdb;
+      --text-muted: #b0a4c9;
+      --badge-bg: #7a67a8;
+      --badge-text: #f0ebf7;
+      --featured-bg: rgba(80, 60, 120, 0.5);
+      --featured-border: #8a75b8;
+      --shimmer-color: rgba(255, 255, 255, 0.08);
+      --cursor-color: rgba(245, 87, 108, 0.85);
+      --cursor-hover: rgba(168, 85, 247, 0.7);
+      --loading-bg: rgba(48, 48, 48, 0.8);
+    }
+
     /* ===== 全局重置 ===== */
     * {
       margin: 0;
@@ -31,38 +54,144 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       min-height: 100vh;
-      background: #0a0a0f;
-      color: #f0ece4;
-      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      padding: 1.5rem;
+      margin: 0;
+      transition: background 0.3s;
+      background: radial-gradient(circle at 50% 50%, var(--bg-start), var(--bg-end));
+      background-attachment: fixed;
+    }
+
+    /* ===== 加载动画 ===== */
+    .loading {
+      position: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      background-color: var(--loading-bg);
+      transition: background-color 0.3s;
+      pointer-events: none;
+    }
+    .loading .scale {
+      transform: scale(1.8);
+    }
+    .sharingon {
       position: relative;
+      width: 6em;
+      height: 6em;
+      background-color: red;
+      border: 6px solid black;
+      border-radius: 50%;
+      animation: rot 1s ease-in-out infinite;
+    }
+    .animated-stop {
+      animation-play-state: paused;
+    }
+    .fadeout {
+      animation: fadeOut 1.5s forwards;
+    }
+    .scaleAndFadeout {
+      animation: scaleAndFadeOut 1.5s forwards;
+    }
+    .ring {
+      position: absolute;
+      content: "";
+      left: 50%;
+      top: 50%;
+      width: 3.5em;
+      height: 3.5em;
+      border: 4px solid rgba(110, 13, 13, 0.5);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .to, .circle {
+      position: absolute;
+      content: "";
+      border-radius: 50%;
+      width: 0.9em;
+      height: 0.9em;
+      background-color: black;
+    }
+    .to:nth-child(1) {
+      top: -0.5em;
+      left: 50%;
+      transform: translate(-40%);
+    }
+    .to::before {
+      content: "";
+      position: absolute;
+      top: -0.5em;
+      right: -0.2em;
+      width: 1.1em;
+      height: 0.9em;
+      box-sizing: border-box;
+      border-left: 16px solid black;
+      border-radius: 100% 0 0;
+    }
+    .to:nth-child(2) {
+      bottom: 0.5em;
+      left: -0.35em;
+      transform: rotate(-120deg);
+    }
+    .to:nth-child(3) {
+      bottom: 0.5em;
+      right: -0.35em;
+      transform: rotate(120deg);
+    }
+    .circle {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 20px 1px;
+      width: 1em;
+      height: 1em;
+    }
+    @keyframes rot {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes scaleAndFadeOut {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 1; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
     }
 
     /* ===== 自定义光标 ===== */
     .custom-cursor {
       position: fixed;
       pointer-events: none;
-      z-index: 9999;
+      z-index: 9998;
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: rgba(245, 87, 108, 0.85);
+      background: var(--cursor-color);
       box-shadow: 0 0 20px rgba(245, 87, 108, 0.4), 0 0 60px rgba(245, 87, 108, 0.15);
       transform: translate(-50%, -50%);
       transition: width 0.2s, height 0.2s, background 0.2s;
       will-change: transform;
       mix-blend-mode: difference;
     }
-
     .custom-cursor.hover {
       width: 36px;
       height: 36px;
-      background: rgba(168, 85, 247, 0.7);
+      background: var(--cursor-hover);
       box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
     }
 
-    /* ===== 动态粒子背景 ===== */
+    /* ===== 粒子背景 Canvas ===== */
     #particles-canvas {
       position: fixed;
       top: 0;
@@ -73,535 +202,543 @@
       pointer-events: none;
     }
 
-    /* ===== 毛玻璃主容器 ===== */
-    .glass-container {
+    /* ===== 主容器 ===== */
+    .hub {
       position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2rem 2rem 1.5rem;
-      min-height: 100vh;
-      backdrop-filter: blur(14px) saturate(1.4);
-      -webkit-backdrop-filter: blur(14px) saturate(1.4);
-      background: rgba(20, 18, 28, 0.45);
-      border-left: 1px solid rgba(255, 255, 255, 0.06);
-      border-right: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+      z-index: 2;
+      max-width: 1200px;
+      width: 100%;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-radius: 3.5rem;
+      padding: 2rem 2.8rem;
+      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.2);
+      border: 1px solid var(--glass-border);
+      transition: background 0.3s, border 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+    }
+    .hub::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        135deg,
+        transparent 30%,
+        var(--shimmer-color) 50%,
+        transparent 70%
+      );
+      opacity: 0.3;
+      pointer-events: none;
+      transform: rotate(25deg);
+      transition: opacity 0.3s;
+    }
+    .hub:hover::before {
+      animation: shimmerFlow 2.5s ease-in-out infinite;
+    }
+    @keyframes shimmerFlow {
+      0% { transform: rotate(25deg) translateX(-20%); }
+      100% { transform: rotate(25deg) translateX(20%); }
     }
 
-    /* ===== 头部 ===== */
-    header {
+    /* ===== 导航栏 ===== */
+    .navbar {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       flex-wrap: wrap;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      margin-bottom: 2rem;
+      margin-bottom: 1.8rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px dashed rgba(255,255,255,0.2);
+      position: relative;
+      z-index: 2;
     }
-
-    .logo a {
-      font-size: 2rem;
-      font-weight: 700;
-      text-decoration: none;
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.5px;
+    .logo h1 {
+      font-size: 2.4rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.3s;
     }
-
-    .logo small {
-      font-size: 0.85rem;
-      font-weight: 400;
-      color: rgba(255, 255, 255, 0.4);
-      -webkit-text-fill-color: rgba(255, 255, 255, 0.4);
-      margin-left: 0.3rem;
-    }
-
-    nav {
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: rgba(255, 255, 255, 0.6);
+    .logo h1 span {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 1.4rem;
       font-weight: 500;
-      padding: 0.3rem 0;
-      border-bottom: 2px solid transparent;
-      transition: all 0.25s ease;
+      padding: 0.1rem 0.9rem;
+      border-radius: 60px;
+      margin-left: 0.2rem;
+      transition: background 0.3s, color 0.3s;
+    }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      list-style: none;
+    }
+    .nav-menu li a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: 500;
+      padding: 0.4rem 1rem;
+      border-radius: 40px;
+      transition: background 0.2s, color 0.2s;
       font-size: 0.95rem;
-      cursor: none;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
-
-    nav a:hover,
-    nav a.active {
-      color: #fff;
-      border-bottom-color: #f5576c;
+    .nav-menu li a:hover {
+      background: rgba(255,255,255,0.25);
+      color: var(--text-primary);
     }
-
-    /* ===== 页面容器 ===== */
-    .page {
+    .nav-menu li a.active {
+      background: rgba(255,255,255,0.25);
+      color: var(--text-primary);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .theme-toggle {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid var(--glass-border);
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      transition: background 0.2s;
+      color: var(--text-primary);
+      line-height: 1;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    .hamburger {
       display: none;
-      animation: fadeIn 0.4s ease;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(12px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ===== Hero（首页专用） ===== */
-    .hero {
-      padding: 1.5rem 0 0.5rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .hero h1 {
-      font-size: 2.8rem;
-      font-weight: 600;
-      letter-spacing: -0.5px;
-      line-height: 1.2;
-    }
-
-    .hero h1 span {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero p {
-      font-size: 1.15rem;
-      color: rgba(255, 255, 255, 0.5);
-      margin-top: 0.2rem;
-    }
-
-    /* ===== 快速导航卡片（首页专用） ===== */
-    .quick-nav {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 1.2rem;
-      margin: 2rem 0 3rem;
-    }
-
-    .quick-nav a {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.2rem 0.5rem;
-      text-align: center;
-      text-decoration: none;
-      color: #f0ece4;
-      transition: all 0.3s ease;
-      font-weight: 500;
-      cursor: none;
-    }
-
-    .quick-nav a:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(245, 87, 108, 0.4);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-    }
-
-    .quick-nav a .icon {
-      font-size: 2rem;
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-
-    /* ===== 更新动态 & 文章列表（毛玻璃卡片） ===== */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 16px;
-      padding: 1.2rem 1.5rem;
-      transition: all 0.3s ease;
-    }
-
-    .glass-card:hover {
-      background: rgba(255, 255, 255, 0.07);
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .update-list {
-      display: flex;
       flex-direction: column;
-      gap: 1rem;
-    }
-
-    .update-item {
-      background: rgba(255, 255, 255, 0.03);
+      gap: 5px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid var(--glass-border);
+      cursor: pointer;
+      padding: 0.4rem 0.5rem;
       border-radius: 12px;
-      padding: 1rem 1.2rem;
-      border-left: 3px solid rgba(245, 87, 108, 0.3);
-      transition: all 0.2s;
+      transition: background 0.2s;
     }
-
-    .update-item:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-left-color: #f5576c;
+    .hamburger:hover {
+      background: rgba(255,255,255,0.25);
     }
-
-    .update-item .time {
-      font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.35);
-      margin-bottom: 0.2rem;
-    }
-
-    .update-item .content {
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-
-    /* ===== 文章专区 ===== */
-    .section-title {
-      font-size: 1.3rem;
-      font-weight: 500;
-      margin-bottom: 1.2rem;
-      letter-spacing: 0.3px;
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .post-controls {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-      align-items: center;
-    }
-
-    .post-controls input,
-    .post-controls textarea {
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #f0ece4;
-      padding: 0.7rem 1rem;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      outline: none;
+    .hamburger span {
+      display: block;
+      width: 28px;
+      height: 3px;
+      background: var(--text-primary);
+      border-radius: 6px;
       transition: all 0.25s;
-      font-family: inherit;
-      flex: 1 1 200px;
     }
-
-    .post-controls input:focus,
-    .post-controls textarea:focus {
-      border-color: rgba(245, 87, 108, 0.4);
-      background: rgba(255, 255, 255, 0.08);
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
     }
-
-    .post-controls textarea {
-      resize: vertical;
-      min-height: 80px;
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+    .mobile-dropdown {
+      display: none;
       flex-basis: 100%;
-    }
-
-    .btn {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      border: none;
-      color: #fff;
-      padding: 0.6rem 1.6rem;
-      border-radius: 30px;
-      font-weight: 600;
-      cursor: none;
-      transition: all 0.3s ease;
-      font-size: 0.9rem;
-      white-space: nowrap;
-      box-shadow: 0 4px 20px rgba(245, 87, 108, 0.25);
-    }
-
-    .btn:hover {
-      transform: scale(1.04);
-      box-shadow: 0 8px 30px rgba(245, 87, 108, 0.4);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: none;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.14);
-      box-shadow: none;
-    }
-
-    .post-list {
-      display: flex;
       flex-direction: column;
-      gap: 1rem;
-      margin-top: 0.5rem;
-    }
-
-    .post-item {
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-radius: 2rem;
       padding: 1.2rem 1.5rem;
-      transition: all 0.3s ease;
+      margin-top: 0.8rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      transition: background 0.3s;
+    }
+    .mobile-dropdown.open {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1rem;
-      flex-wrap: wrap;
     }
-
-    .post-item:hover {
-      background: rgba(255, 255, 255, 0.07);
-      border-color: rgba(255, 255, 255, 0.12);
-      transform: translateY(-2px);
-    }
-
-    .post-item .info {
-      flex: 1;
-    }
-
-    .post-item .title {
-      font-weight: 600;
-      font-size: 1.05rem;
-      margin-bottom: 0.2rem;
-    }
-
-    .post-item .title a {
-      color: #f0ece4;
+    .mobile-dropdown a {
       text-decoration: none;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
       transition: color 0.2s;
-      cursor: none;
+    }
+    .mobile-dropdown a:last-child {
+      border-bottom: none;
+    }
+    .mobile-dropdown a:hover {
+      color: #a786d0;
     }
 
-    .post-item .title a:hover {
-      color: #f5576c;
+    @media (max-width: 768px) {
+      .hub {
+        padding: 1.5rem 1.2rem;
+        border-radius: 2.5rem;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .logo h1 {
+        font-size: 2rem;
+      }
+      .logo h1 span {
+        font-size: 1.1rem;
+        padding: 0 0.7rem;
+      }
+    }
+    @media (min-width: 769px) {
+      .mobile-dropdown {
+        display: none !important;
+      }
     }
 
-    .post-item .meta {
-      font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.35);
+    /* ===== 卡片网格 ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.8rem;
+      margin: 2rem 0 2.4rem 0;
+      position: relative;
+      z-index: 2;
     }
 
-    .post-item .actions {
-      display: flex;
-      gap: 0.4rem;
-      flex-shrink: 0;
-    }
-
-    .post-item .actions button {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      color: rgba(255, 255, 255, 0.5);
-      padding: 0.2rem 0.8rem;
-      border-radius: 8px;
-      cursor: none;
-      font-size: 0.75rem;
-      transition: all 0.2s;
-    }
-
-    .post-item .actions button:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-    }
-
-    .post-item .actions .del:hover {
-      background: rgba(245, 87, 108, 0.2);
-      color: #f5576c;
-      border-color: rgba(245, 87, 108, 0.3);
-    }
-
-    /* ===== 评论专区 ===== */
-    .giscus-wrapper {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-radius: 16px;
-      padding: 1.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      min-height: 450px;
-    }
-
-    .giscus-wrapper .coming-soon {
+    .card {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-radius: 2.5rem;
+      padding: 1.6rem 1rem 1.4rem;
+      text-align: center;
+      transition: all 0.25s ease;
+      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.2);
+      border: 1px solid var(--glass-border);
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text-primary);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 300px;
-      color: rgba(255, 255, 255, 0.3);
-      text-align: center;
+      min-height: 140px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .giscus-wrapper .coming-soon .icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, var(--shimmer-color), transparent 70%);
+      opacity: 0.2;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .card:hover::before {
+      opacity: 0.5;
+      animation: shimmerRotate 3s linear infinite;
+    }
+    @keyframes shimmerRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
-    .giscus-wrapper .coming-soon h3 {
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
-      color: rgba(255, 255, 255, 0.5);
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+      background: rgba(255,255,255,0.55);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4);
+      border-color: rgba(255,255,255,0.8);
+    }
+    .dark-mode .card:hover {
+      background: rgba(60, 50, 90, 0.7);
+      border-color: rgba(180, 160, 220, 0.6);
+    }
+    .card:active {
+      transform: scale(0.97);
     }
 
-    .giscus-wrapper .coming-soon p {
-      font-size: 0.95rem;
-      max-width: 400px;
+    .card .icon {
+      font-size: 2.6rem;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.05));
+    }
+    .card h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.15rem;
+      transition: color 0.3s;
+    }
+    .card .desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      opacity: 0.7;
+      background: rgba(200, 185, 215, 0.15);
+      padding: 0.1rem 1rem;
+      border-radius: 40px;
+      margin-top: 0.1rem;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
     }
 
-    /* ===== 空状态 ===== */
-    .empty {
-      text-align: center;
-      padding: 2.5rem 1rem;
-      color: rgba(255, 255, 255, 0.3);
+    .card.featured {
+      background: var(--featured-bg);
+      border-color: var(--featured-border);
     }
 
-    .empty .icon {
-      font-size: 2.5rem;
-      display: block;
-      margin-bottom: 0.5rem;
+    /* ===== MC 服务器公告 ===== */
+    .mc-announce {
+      position: relative;
+      z-index: 2;
+      margin: 0.5rem 0 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-radius: 2.5rem;
+      padding: 1.2rem 2rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      transition: background 0.3s, border 0.3s;
+    }
+    .mc-announce .mc-left {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .mc-announce .mc-icon {
+      font-size: 2.4rem;
+      line-height: 1;
+    }
+    .mc-announce .mc-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .mc-announce .mc-ip {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 1.1rem;
+      background: rgba(255,255,255,0.1);
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      color: var(--text-secondary);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+    .mc-announce .mc-status {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      opacity: 0.7;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .mc-announce .mc-status .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #4caf50;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+      animation: pulse-dot 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+    .mc-announce .mc-copy {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .mc-announce .mc-copy:hover {
+      background: rgba(255,255,255,0.2);
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 600px) {
+      .mc-announce {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 1.2rem;
+      }
+      .mc-announce .mc-left {
+        width: 100%;
+      }
+      .mc-announce .mc-ip {
+        font-size: 0.95rem;
+        width: 100%;
+        text-align: center;
+      }
+      .mc-announce .mc-status {
+        width: 100%;
+        justify-content: center;
+      }
+      .mc-announce .mc-copy {
+        width: 100%;
+        text-align: center;
+      }
     }
 
     /* ===== 底部 ===== */
-    footer {
-      margin-top: 3.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.3);
+    .footer-note {
+      margin-top: 2.2rem;
       display: flex;
-      justify-content: space-between;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--glass-border);
+      padding-top: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      transition: color 0.3s;
+      position: relative;
+      z-index: 2;
     }
-
-    footer a {
-      color: rgba(255, 255, 255, 0.4);
-      text-decoration: none;
-      transition: color 0.2s;
-      cursor: none;
+    .path-hint {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      letter-spacing: 0.02em;
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
     }
-
-    footer a:hover {
-      color: #fff;
-    }
-
-    /* ===== Toast ===== */
-    .custom-toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(20, 18, 28, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      color: #f0ece4;
-      padding: 0.7rem 2rem;
+    .path-hint code {
+      background: rgba(0,0,0,0.05);
+      padding: 0.2rem 0.6rem;
       border-radius: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
-      z-index: 999;
       font-weight: 500;
-      transition: opacity 0.3s;
-      max-width: 90%;
-      text-align: center;
-      pointer-events: none;
+      color: var(--text-primary);
+    }
+    .deploy-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--text-muted);
+    }
+    .deploy-badge span {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      padding: 0.2rem 1.1rem;
+      border-radius: 60px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
     }
 
-    /* ===== 响应式 ===== */
-    @media (max-width: 768px) {
-      .glass-container {
-        padding: 1.2rem 1rem;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-      }
-
-      header {
-        flex-direction: column;
-        align-items: flex-start;
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
       }
-
-      nav {
-        gap: 1.2rem;
+      .card {
+        min-height: 120px;
+        padding: 1rem 0.5rem;
       }
-
-      .hero h1 {
-        font-size: 2rem;
+      .card .icon {
+        font-size: 2.2rem;
       }
-
-      .quick-nav {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.8rem;
+      .card h3 {
+        font-size: 1.2rem;
       }
-
-      .quick-nav a {
-        padding: 0.9rem 0.3rem;
-      }
-
-      .post-controls {
+      .footer-note {
         flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
       }
-
-      .post-controls input,
-      .post-controls textarea {
-        flex-basis: auto;
+      .path-hint {
         width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 0.7rem;
+        padding: 0.2rem 0.8rem;
       }
-
-      .post-item {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .post-item .actions {
-        justify-content: flex-end;
-      }
-
-      footer {
-        flex-direction: column;
-        gap: 0.3rem;
+    }
+    @media (max-width: 400px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
       }
     }
 
-    @media (max-width: 480px) {
-      .glass-container {
-        padding: 0.8rem 0.6rem;
+    /* ===== 表情包 ===== */
+    .emoji-burst {
+      position: fixed;
+      pointer-events: none;
+      font-size: 2.5rem;
+      z-index: 9997;
+      animation: flyOut 1.2s ease-out forwards;
+      user-select: none;
+    }
+    @keyframes flyOut {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0.5) rotate(0deg);
       }
-
-      .hero h1 {
-        font-size: 1.6rem;
-      }
-
-      .quick-nav {
-        grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
-      }
-
-      .quick-nav a .icon {
-        font-size: 1.5rem;
-      }
-
-      .post-item {
-        padding: 0.8rem 1rem;
-      }
-
-      .giscus-wrapper {
-        padding: 0.8rem;
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(1.8) rotate(360deg);
       }
     }
   </style>
 </head>
 <body>
+
+  <!-- ===== 加载动画 ===== -->
+  <div class="loading" id="loadingOverlay">
+    <div class="scale">
+      <div class="sharingon" id="sharingon">
+        <div class="ring">
+          <div class="to"></div>
+          <div class="to"></div>
+          <div class="to"></div>
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ===== 自定义光标 ===== -->
   <div class="custom-cursor" id="customCursor"></div>
@@ -609,110 +746,137 @@
   <!-- ===== 粒子背景 Canvas ===== -->
   <canvas id="particles-canvas"></canvas>
 
-  <!-- ===== 主内容（毛玻璃容器） ===== -->
-  <div class="glass-container">
+  <!-- ===== 主容器 ===== -->
+  <div class="hub" id="hubContainer">
 
-    <!-- ===== 头部 ===== -->
-    <header>
+    <!-- 导航栏 -->
+    <nav class="navbar">
       <div class="logo">
-        <a href="#">cavez的小窝 <small>✦ 栖息地</small></a>
-      </div>
-      <nav>
-        <a href="#" class="active" data-page="home">🏠 首页</a>
-        <a href="#" data-page="posts">📄 文章</a>
-        <a href="#" data-page="comments">💬 评论</a>
-      </nav>
-    </header>
-
-    <!-- ========================================================= -->
-    <!-- ===== 页面1: 首页 ===== -->
-    <!-- ========================================================= -->
-    <section id="page-home" class="page active">
-      <!-- Hero -->
-      <div class="hero">
-        <h1>👋 欢迎来到 <span>cavez的小窝</span></h1>
-        <p>分享技术 · 折腾软件 · 记录生活</p>
+        <h1>
+          🕸️ CAVEZ
+          <span>分站</span>
+        </h1>
       </div>
 
-      <!-- 快速导航 -->
-      <div class="quick-nav">
-        <a href="#" data-page="home">
-          <span class="icon">🏠</span> 首页
-        </a>
-        <a href="#" data-page="posts">
-          <span class="icon">📄</span> 文章
-        </a>
-        <a href="#" data-page="comments">
-          <span class="icon">💬</span> 评论
-        </a>
-        <a href="#" id="loginTrigger">
-          <span class="icon">🔐</span> 登录 / 注册
-        </a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="active">首页</a></li>
+        <li><a href="about.html">关于</a></li>
+        <li><a href="text.html">文章</a></li>
+        <li><a href="https://1838190346.share.123pan.cn/123pan/gfigTd-S5lyH?pwd=cave#" target="_blank">资源站</a></li>
+        <li><a href="contact.html">联系</a></li>
+        <li><a href="https://noescape-z.github.io/lab" target="_blank">实验室</a></li>   <!-- 已修改为外链 -->
+        <li><a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank">存档</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="切换主题">🌙</button>
+        <button class="hamburger" id="hamburgerBtn" aria-label="菜单">
+          <span></span><span></span><span></span>
+        </button>
       </div>
 
-      <!-- 最新动态 -->
-      <h2 class="section-title">📌 最新动态</h2>
-      <div class="update-list" id="updateList">
-        <!-- 由 JS 渲染 -->
+      <div class="mobile-dropdown" id="mobileDropdown">
+        <a href="index.html">🏠 首页</a>
+        <a href="about.html">📖 关于</a>
+        <a href="text.html">📝 文章</a>
+        <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-S5lyH?pwd=cave#" target="_blank">📦 资源站</a>
+        <a href="contact.html">📬 联系</a>
+        <a href="https://noescape-z.github.io/lab" target="_blank">🧪 实验室</a>   <!-- 已修改为外链 -->
+        <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank">🗂️ 存档</a>
       </div>
-    </section>
+    </nav>
 
-    <!-- ========================================================= -->
-    <!-- ===== 页面2: 文章专区 ===== -->
-    <!-- ========================================================= -->
-    <section id="page-posts" class="page">
-      <h2 class="section-title">📝 文章专区</h2>
+    <!-- 卡片网格 -->
+    <div class="grid">
+      <a href="about.html" class="card featured">
+        <div class="icon">📖</div>
+        <h3>关于</h3>
+        <div class="desc">about.html</div>
+      </a>
+      <a href="text.html" class="card">
+        <div class="icon">✍️</div>
+        <h3>文章</h3>
+        <div class="desc">text.html</div>
+      </a>
+      <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-S5lyH?pwd=cave#" target="_blank" class="card">
+        <div class="icon">📦</div>
+        <h3>资源站</h3>
+        <div class="desc">123云盘</div>
+      </a>
+      <a href="contact.html" class="card">
+        <div class="icon">📬</div>
+        <h3>联系</h3>
+        <div class="desc">contact.html</div>
+      </a>
+      <a href="https://noescape-z.github.io/lab" target="_blank" class="card">   <!-- 已修改为外链 -->
+        <div class="icon">🧪</div>
+        <h3>实验室</h3>
+        <div class="desc">外部站点</div>
+      </a>
+      <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank" class="card">
+        <div class="icon">🗂️</div>
+        <h3>存档</h3>
+        <div class="desc">123云盘</div>
+      </a>
+    </div>
 
-      <div class="post-controls" id="postControls">
-        <input type="text" id="postTitle" placeholder="文章标题">
-        <textarea id="postContent" placeholder="文章内容（支持 Markdown / HTML）"></textarea>
-        <button class="btn" id="publishBtn">📤 发布文章</button>
-        <button class="btn btn-secondary" id="syncBtn">🔄 同步</button>
+    <!-- MC 服务器公告 -->
+    <div class="mc-announce">
+      <div class="mc-left">
+        <span class="mc-icon">⛏️</span>
+        <span class="mc-title">🎮 MC 服务器</span>
       </div>
-
-      <div class="post-list" id="postList">
-        <!-- 由 JS 渲染 -->
-      </div>
-    </section>
-
-    <!-- ========================================================= -->
-    <!-- ===== 页面3: 评论专区 ===== -->
-    <!-- ========================================================= -->
-    <section id="page-comments" class="page">
-      <h2 class="section-title">💬 评论 · Giscus</h2>
-      <div class="giscus-wrapper">
-        <!-- Giscus 会加载到这里 -->
-        <div class="giscus"></div>
-        <!-- 占位提示（Giscus 加载后会覆盖） -->
-        <div class="coming-soon" id="giscusPlaceholder">
-          <span class="icon">💬</span>
-          <h3>评论系统加载中...</h3>
-          <p>请配置 Giscus 仓库信息后刷新页面</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 底部 ===== -->
-    <footer>
-      <span>© 2026 cavez的小窝 · 用 ❤️ 和 Markdown 写作</span>
-      <span>
-        <a href="#">GitHub</a> &nbsp;·&nbsp;
-        <a href="#">Twitter</a> &nbsp;·&nbsp;
-        <a href="#">RSS</a>
+      <span class="mc-ip" id="mcIpDisplay">sz.frp.one:43525</span>
+      <span class="mc-status">
+        <span class="dot"></span> 在线
       </span>
-    </footer>
+      <button class="mc-copy" id="copyIpBtn">📋 复制 IP</button>
+    </div>
+
+    <!-- 底部 -->
+    <div class="footer-note">
+      <div class="path-hint">
+        <code>index.html</code> 
+        <span style="margin:0 6px; opacity:0.5;">·</span> 
+        🐱 cavez的猫猫的小窝
+      </div>
+      <div class="deploy-badge">
+        <span>GitHub 分站</span>
+        <span style="background:transparent; color:var(--text-muted); padding:0; font-size:0.8rem;">🚀 2026</span>
+      </div>
+    </div>
 
   </div>
 
-  <!-- ============================================================ -->
-  <!-- ===== JavaScript ===== -->
   <script>
     (function() {
       'use strict';
 
-      // ============================================================
-      // 1. 自定义光标
-      // ============================================================
+      // ===== 加载动画 =====
+      function initLoading() {
+        const startTime = Date.now();
+        const loading = document.getElementById('loadingOverlay');
+        const sharingon = document.getElementById('sharingon');
+
+        document.addEventListener('DOMContentLoaded', function() {
+          const elapsed = Date.now() - startTime;
+          const delay = elapsed > 1050 ? 0 : 1050 - elapsed;
+
+          setTimeout(() => {
+            sharingon.classList.add('animated-stop');
+            const scale = document.querySelector('.loading .scale');
+            scale.classList.add('scaleAndFadeout');
+            loading.classList.add('fadeout');
+
+            setTimeout(() => {
+              loading.style.display = 'none';
+            }, 1500);
+          }, delay);
+        });
+      }
+      initLoading();
+
+      // ===== 自定义光标 =====
       const cursor = document.getElementById('customCursor');
 
       document.addEventListener('mousemove', (e) => {
@@ -728,20 +892,17 @@
         cursor.style.opacity = '0';
       });
 
-      // 悬停时放大
-      document.querySelectorAll('a, button, .clickable').forEach(el => {
+      const interactiveElements = document.querySelectorAll('a, button, .card, .theme-toggle, .hamburger, .mc-copy');
+      interactiveElements.forEach(el => {
         el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
         el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
       });
 
-      // ============================================================
-      // 2. 动态粒子背景
-      // ============================================================
+      // ===== 粒子背景 =====
       const canvas = document.getElementById('particles-canvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
-      let mouseX = 0;
-      let mouseY = 0;
+      let mouseX = 0, mouseY = 0;
       let width, height;
 
       function resizeCanvas() {
@@ -757,10 +918,7 @@
       });
 
       class Particle {
-        constructor() {
-          this.reset();
-        }
-
+        constructor() { this.reset(); }
         reset() {
           this.x = Math.random() * width;
           this.y = Math.random() * height;
@@ -770,7 +928,6 @@
           this.opacity = Math.random() * 0.5 + 0.2;
           this.color = `hsla(${Math.random() * 60 + 320}, 70%, 65%, `;
         }
-
         update() {
           const dx = mouseX - this.x;
           const dy = mouseY - this.y;
@@ -780,20 +937,16 @@
             this.x += dx * force;
             this.y += dy * force;
           }
-
           this.x += this.speedX;
           this.y += this.speedY;
-
           if (this.x < 0 || this.x > width) this.speedX *= -1;
           if (this.y < 0 || this.y > height) this.speedY *= -1;
         }
-
         draw() {
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
           ctx.fillStyle = this.color + this.opacity + ')';
           ctx.fill();
-
           if (this.size > 2.5) {
             ctx.shadowColor = 'rgba(245, 87, 108, 0.15)';
             ctx.shadowBlur = 12;
@@ -804,9 +957,7 @@
       }
 
       const particleCount = Math.min(120, Math.floor((width * height) / 8000));
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-      }
+      for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
       function drawLines() {
         for (let i = 0; i < particles.length; i++) {
@@ -828,256 +979,135 @@
 
       function animateParticles() {
         ctx.clearRect(0, 0, width, height);
-        particles.forEach(p => {
-          p.update();
-          p.draw();
-        });
+        particles.forEach(p => { p.update(); p.draw(); });
         drawLines();
         requestAnimationFrame(animateParticles);
       }
       animateParticles();
 
-      // ============================================================
-      // 3. 数据层 (localStorage)
-      // ============================================================
-      const STORAGE_KEY = 'cavez_blog_data';
+      // ===== 深色模式 =====
+      const themeToggle = document.getElementById('themeToggle');
+      const htmlElement = document.documentElement;
 
-      function getDefaultData() {
-        return {
-          updates: [
-            { id: Date.now() - 3600000, text: '🎉 小窝正式开张，欢迎来做客！' },
-            { id: Date.now() - 7200000, text: '📦 软件专区即将上线，敬请期待' },
-          ],
-          posts: [
-            { id: Date.now() - 86400000, title: '📦 资源库大更新！', content: '🎉 又收集了一批好工具！<br>🔗 传送门：<a href="#" target="_blank">点击进入</a>', date: '2026-09-01' },
-            { id: Date.now() - 172800000, title: '在算法洪流中，打捞一艘木帆船', content: '当全世界都在追逐效率与增长，我选择退回书桌一角，用最原始的方式——文字，来对抗遗忘。', date: '2026-08-30' },
-          ]
-        };
+      function getPreferredTheme() {
+        const stored = localStorage.getItem('cavez-theme');
+        if (stored === 'dark' || stored === 'light') return stored;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
 
-      function loadData() {
+      function setTheme(theme) {
+        if (theme === 'dark') {
+          htmlElement.classList.add('dark-mode');
+          themeToggle.textContent = '☀️';
+        } else {
+          htmlElement.classList.remove('dark-mode');
+          themeToggle.textContent = '🌙';
+        }
+        localStorage.setItem('cavez-theme', theme);
+      }
+
+      setTheme(getPreferredTheme());
+
+      themeToggle.addEventListener('click', function() {
+        const isDark = htmlElement.classList.contains('dark-mode');
+        setTheme(isDark ? 'light' : 'dark');
+      });
+
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        if (localStorage.getItem('cavez-theme') === null) {
+          setTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+
+      // ===== 汉堡菜单 =====
+      const hamburger = document.getElementById('hamburgerBtn');
+      const dropdown = document.getElementById('mobileDropdown');
+
+      hamburger.addEventListener('click', function() {
+        const isOpen = dropdown.classList.toggle('open');
+        hamburger.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', isOpen);
+      });
+
+      dropdown.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function() {
+          dropdown.classList.remove('open');
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+          dropdown.classList.remove('open');
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // ===== 复制 IP =====
+      const copyBtn = document.getElementById('copyIpBtn');
+      const ipDisplay = document.getElementById('mcIpDisplay');
+
+      copyBtn.addEventListener('click', function() {
+        const ip = ipDisplay.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(ip).then(() => {
+            const original = copyBtn.textContent;
+            copyBtn.textContent = '✅ 已复制';
+            setTimeout(() => { copyBtn.textContent = original; }, 2000);
+          }).catch(() => {
+            fallbackCopy(ip);
+          });
+        } else {
+          fallbackCopy(ip);
+        }
+      });
+
+      function fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
         try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (raw) {
-            const data = JSON.parse(raw);
-            if (data && typeof data === 'object') return data;
-          }
-        } catch (_) {}
-        const def = getDefaultData();
-        saveData(def);
-        return def;
-      }
-
-      function saveData(data) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      }
-
-      // ============================================================
-      // 4. 渲染函数
-      // ============================================================
-      function renderUpdates() {
-        const container = document.getElementById('updateList');
-        const data = loadData();
-        const updates = data.updates || [];
-
-        if (!updates.length) {
-          container.innerHTML = `<div class="empty"><span class="icon">📭</span> 暂无更新</div>`;
-          return;
+          document.execCommand('copy');
+          const original = copyBtn.textContent;
+          copyBtn.textContent = '✅ 已复制';
+          setTimeout(() => { copyBtn.textContent = original; }, 2000);
+        } catch (e) {
+          alert('复制失败，请手动复制：' + text);
         }
-
-        const sorted = [...updates].sort((a, b) => b.id - a.id);
-
-        container.innerHTML = sorted.map(item => `
-          <div class="update-item">
-            <div class="time">${new Date(item.id).toLocaleString('zh-CN')}</div>
-            <div class="content">${item.text}</div>
-          </div>
-        `).join('');
+        document.body.removeChild(textarea);
       }
 
-      function renderPosts() {
-        const container = document.getElementById('postList');
-        const data = loadData();
-        const posts = data.posts || [];
+      // ===== 点击弹出表情包 =====
+      const emojiList = ['🎉', '✨', '🌟', '💫', '😊', '🥳', '🎈', '🎁', '💖', '🌈', '🔥', '⭐', '🦄', '🍀', '🎶', '💥', '🤩', '😍', '👻', '🐱', '🌸'];
 
-        if (!posts.length) {
-          container.innerHTML = `<div class="empty"><span class="icon">📝</span> 还没有文章，发布第一篇吧！</div>`;
-          return;
-        }
-
-        const sorted = [...posts].sort((a, b) => b.id - a.id);
-
-        container.innerHTML = sorted.map(post => `
-          <div class="post-item" data-id="${post.id}">
-            <div class="info">
-              <div class="title">${post.title}</div>
-              <div class="meta">${post.date || new Date(post.id).toLocaleDateString('zh-CN')}</div>
-              <div style="margin-top:0.3rem;font-size:0.9rem;color:rgba(255,255,255,0.5);">${post.content}</div>
-            </div>
-            <div class="actions">
-              <button class="del" data-id="${post.id}">🗑️ 删除</button>
-            </div>
-          </div>
-        `).join('');
-
-        container.querySelectorAll('.del').forEach(btn => {
-          btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const id = parseInt(this.dataset.id);
-            if (confirm('确定要删除这篇文章吗？')) {
-              const data = loadData();
-              data.posts = data.posts.filter(p => p.id !== id);
-              data.updates.push({
-                id: Date.now(),
-                text: '🗑️ 删除了文章'
-              });
-              saveData(data);
-              renderPosts();
-              renderUpdates();
-              showToast('🗑️ 文章已删除');
-            }
-          });
+      function createEmojiBurst(e) {
+        const emoji = emojiList[Math.floor(Math.random() * emojiList.length)];
+        const el = document.createElement('div');
+        el.className = 'emoji-burst';
+        el.textContent = emoji;
+        el.style.left = e.clientX + 'px';
+        el.style.top = e.clientY + 'px';
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 80 + Math.random() * 150;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance - 80;
+        el.style.setProperty('--tx', tx + 'px');
+        el.style.setProperty('--ty', ty + 'px');
+        const size = 1.8 + Math.random() * 2.2;
+        el.style.fontSize = size + 'rem';
+        document.body.appendChild(el);
+        el.addEventListener('animationend', function() {
+          el.remove();
         });
       }
 
-      // ============================================================
-      // 5. 发布文章
-      // ============================================================
-      function publishPost() {
-        const titleEl = document.getElementById('postTitle');
-        const contentEl = document.getElementById('postContent');
-        const title = titleEl.value.trim();
-        const content = contentEl.value.trim();
+      document.addEventListener('click', createEmojiBurst);
 
-        if (!title) { showToast('请输入文章标题'); return; }
-        if (!content) { showToast('请输入文章内容'); return; }
-
-        const data = loadData();
-        data.posts.push({
-          id: Date.now(),
-          title: title,
-          content: content,
-          date: new Date().toLocaleDateString('zh-CN'),
-        });
-
-        data.updates.push({
-          id: Date.now(),
-          text: `📄 发布了新文章：${title}`
-        });
-
-        saveData(data);
-
-        titleEl.value = '';
-        contentEl.value = '';
-
-        renderPosts();
-        renderUpdates();
-        showToast('✅ 文章发布成功！');
-      }
-
-      // ============================================================
-      // 6. 页面切换（核心修复）
-      // ============================================================
-      function switchPage(pageId) {
-        // 隐藏所有页面
-        document.querySelectorAll('.page').forEach(el => {
-          el.classList.remove('active');
-        });
-
-        // 显示目标页面
-        const target = document.getElementById('page-' + pageId);
-        if (target) {
-          target.classList.add('active');
-        }
-
-        // 更新导航高亮
-        document.querySelectorAll('nav a').forEach(link => {
-          link.classList.toggle('active', link.dataset.page === pageId);
-        });
-
-        // 如果切换到评论页，触发 Giscus 重新加载（可选）
-        if (pageId === 'comments') {
-          // Giscus 会自动加载，无需额外操作
-        }
-      }
-
-      // ============================================================
-      // 7. Toast
-      // ============================================================
-      function showToast(msg) {
-        const old = document.querySelector('.custom-toast');
-        if (old) old.remove();
-        const toast = document.createElement('div');
-        toast.className = 'custom-toast';
-        toast.textContent = msg;
-        document.body.appendChild(toast);
-        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2500);
-      }
-
-      // ============================================================
-      // 8. 初始化
-      // ============================================================
-      function init() {
-        const data = loadData();
-        if (!data.updates) data.updates = getDefaultData().updates;
-        if (!data.posts) data.posts = getDefaultData().posts;
-        saveData(data);
-
-        renderUpdates();
-        renderPosts();
-
-        // ---- 导航切换（顶部导航） ----
-        document.querySelectorAll('nav a').forEach(el => {
-          el.addEventListener('click', function(e) {
-            e.preventDefault();
-            const page = this.dataset.page;
-            if (page) switchPage(page);
-          });
-        });
-
-        // ---- 快速导航卡片 ----
-        document.querySelectorAll('.quick-nav a[data-page]').forEach(el => {
-          el.addEventListener('click', function(e) {
-            e.preventDefault();
-            const page = this.dataset.page;
-            if (page) switchPage(page);
-          });
-        });
-
-        // ---- 登录触发 ----
-        document.getElementById('loginTrigger').addEventListener('click', function(e) {
-          e.preventDefault();
-          showToast('🔐 登录/注册功能开发中，请关注后续更新');
-        });
-
-        // ---- 发布文章 ----
-        document.getElementById('publishBtn').addEventListener('click', publishPost);
-
-        // ---- 同步（本地） ----
-        document.getElementById('syncBtn').addEventListener('click', function() {
-          showToast('🔄 数据已同步到本地');
-        });
-
-        // ---- Ctrl+Enter 快捷发布 ----
-        document.getElementById('postTitle').addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' && e.ctrlKey) {
-            e.preventDefault();
-            publishPost();
-          }
-        });
-
-        // ---- 默认显示首页 ----
-        switchPage('home');
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
-        init();
-      }
-
+      console.log('✅ CAVEZ · 实验室已改为外链 noescape-z.github.io/lab');
     })();
   </script>
-
 </body>
 </html>
