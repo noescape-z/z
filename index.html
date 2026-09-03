@@ -619,37 +619,6 @@
       }
     }
 
-    /* ===== 新增：图片预览区域 ===== */
-    .image-preview {
-      position: relative;
-      z-index: 2;
-      margin: 0.5rem 0 2rem;
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border-radius: 2.5rem;
-      padding: 1.5rem 2rem;
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.2);
-      text-align: center;
-      transition: background 0.3s, border 0.3s;
-    }
-    .image-preview .preview-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 0.8rem;
-    }
-    .image-preview img {
-      max-width: 100%;
-      max-height: 500px;
-      border-radius: 1.5rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-      border: 1px solid var(--glass-border);
-      display: block;
-      margin: 0 auto;
-    }
-
     /* ===== 底部 ===== */
     .footer-note {
       margin-top: 2.2rem;
@@ -714,12 +683,6 @@
       }
       .card h3 {
         font-size: 1.2rem;
-      }
-      .image-preview {
-        padding: 1rem 1rem;
-      }
-      .image-preview img {
-        max-height: 300px;
       }
       .footer-note {
         flex-direction: column;
@@ -801,10 +764,10 @@
         <li><a href="text.html">文章</a></li>
         <li><a href="https://1838190346.share.123pan.cn/123pan/gfigTd-S5lyH?pwd=cave#" target="_blank">资源站</a></li>
         <li><a href="contact.html">联系</a></li>
-        <li><a href="https://noescape-z.github.io/lab" target="_blank">实验室</a></li>
+        <!-- 实验室链接已更新 -->
+        <li><a href="https://noescape-z.github.io/z/lab" target="_blank">实验室</a></li>
         <li><a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank">存档</a></li>
         <li><a href="what.mp4" target="_blank">🎬 视频</a></li>
-        <li><a href="hyw.html">HYW</a></li>
       </ul>
 
       <div class="nav-actions">
@@ -820,10 +783,10 @@
         <a href="text.html">📝 文章</a>
         <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-S5lyH?pwd=cave#" target="_blank">📦 资源站</a>
         <a href="contact.html">📬 联系</a>
-        <a href="https://noescape-z.github.io/lab" target="_blank">🧪 实验室</a>
+        <!-- 实验室链接已更新 -->
+        <a href="https://noescape-z.github.io/z/lab" target="_blank">🧪 实验室</a>
         <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank">🗂️ 存档</a>
         <a href="what.mp4" target="_blank">🎬 视频</a>
-        <a href="hyw.html">HYW</a>
       </div>
     </nav>
 
@@ -849,7 +812,8 @@
         <h3>联系</h3>
         <div class="desc">contact.html</div>
       </a>
-      <a href="https://noescape-z.github.io/lab" target="_blank" class="card">
+      <!-- 实验室链接已更新 -->
+      <a href="https://noescape-z.github.io/z/lab" target="_blank" class="card">
         <div class="icon">🧪</div>
         <h3>实验室</h3>
         <div class="desc">外部站点</div>
@@ -864,11 +828,6 @@
         <h3>视频</h3>
         <div class="desc">what.mp4</div>
       </a>
-      <a href="hyw.html" class="card">
-        <div class="icon">🖼️</div>
-        <h3>HYW</h3>
-        <div class="desc">30张图片</div>
-      </a>
     </div>
 
     <!-- MC 服务器公告 -->
@@ -882,12 +841,6 @@
         <span class="dot"></span> 在线
       </span>
       <button class="mc-copy" id="copyIpBtn">📋 复制 IP</button>
-    </div>
-
-    <!-- ===== 新增：图片预览区域 ===== -->
-    <div class="image-preview">
-      <div class="preview-title">📷 BJD HYW 预览</div>
-      <img src="bjdhyw.jpg" alt="BJD HYW 图片">
     </div>
 
     <!-- 底部 -->
@@ -1163,7 +1116,7 @@
 
       document.addEventListener('click', createEmojiBurst);
 
-      console.log('✅ CAVEZ · 已添加图片预览 bjdhyw.jpg');
+      console.log('✅ CAVEZ · 实验室链接已更新为 noescape-z.github.io/z/lab');
     })();
   </script>
 </body>
