@@ -1230,9 +1230,9 @@
         }
       });
 
-      console.log('✅欢迎进入控制台');
+      console.log('✅ CAVEZ · 你还打开控制台了?!你想多了O(∩_∩)O~');
     })();
-    // ================================================================
+// ================================================================
 // 🛡️ 防 F12 防护（放在现有 JS 后面，不影响其他功能）
 // ================================================================
 
@@ -1268,6 +1268,37 @@ document.addEventListener('keydown', function(e) {
         e.stopPropagation();
         return false;
     }
+});
+
+// 2. 禁用右键菜单
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+});
+
+// 3. 可选：检测控制台是否打开（检测到后清空控制台）
+(function() {
+    let detectCount = 0;
+    let checkInterval = setInterval(function() {
+        const start = performance.now();
+        console.log('%c', 'font-size:0;');
+        const end = performance.now();
+        if (end - start > 50) {
+            detectCount++;
+            if (detectCount > 2) {
+                console.clear();
+                detectCount = 0;
+                // 如果想更狠一点，可以取消下面这行的注释：
+                // window.location.href = 'about:blank';
+            }
+        } else {
+            detectCount = 0;
+        }
+    }, 1000);
+})();
+
+console.log('🛡️ 防 F12 防护已启用');
   </script>
 </body>
 </html>
