@@ -5,28 +5,887 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CAVEZ · 动态玻璃分站</title>
   <style>
-    /* ===== 所有样式与之前完全一致，此处省略以节省篇幅 ===== */
-    /* 实际使用时请复制上一条回答中的完整样式，或告诉我需要单独提供 */
-    /* 下面是新增的“启用对话”按钮样式 */
-    .chat-popup .header .enable-btn {
+    /* ===== CSS 变量 (亮色/深色) ===== */
+    :root {
+      --bg-start: #f0edf7;
+      --bg-end: #ddd8e8;
+      --glass-bg: rgba(255, 255, 255, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      --glass-blur: blur(12px);
+      --text-primary: #1f1730;
+      --text-secondary: #3f3257;
+      --text-muted: #2f2542;
+      --badge-bg: #3d2b55;
+      --badge-text: #f0ebf7;
+      --featured-bg: rgba(215, 195, 240, 0.5);
+      --featured-border: #cbb7e6;
+      --shimmer-color: rgba(255, 255, 255, 0.5);
+      --cursor-color: rgba(245, 87, 108, 0.85);
+      --cursor-hover: rgba(168, 85, 247, 0.7);
+      --loading-bg: rgba(245, 245, 250, 0.8);
+    }
+
+    .dark-mode {
+      --bg-start: #1b172b;
+      --bg-end: #110f1d;
+      --glass-bg: rgba(30, 26, 50, 0.55);
+      --glass-border: rgba(100, 85, 140, 0.5);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      --text-primary: #e8e0f5;
+      --text-secondary: #c6bcdb;
+      --text-muted: #b0a4c9;
+      --badge-bg: #7a67a8;
+      --badge-text: #f0ebf7;
+      --featured-bg: rgba(80, 60, 120, 0.5);
+      --featured-border: #8a75b8;
+      --shimmer-color: rgba(255, 255, 255, 0.08);
+      --cursor-color: rgba(245, 87, 108, 0.85);
+      --cursor-hover: rgba(168, 85, 247, 0.7);
+      --loading-bg: rgba(48, 48, 48, 0.8);
+    }
+
+    /* ===== 全局重置 ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      cursor: none !important;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      padding: 1.5rem;
+      margin: 0;
+      transition: background 0.3s;
+      background: radial-gradient(circle at 50% 50%, var(--bg-start), var(--bg-end));
+      background-attachment: fixed;
+    }
+
+    /* ===== 加载动画 ===== */
+    .loading {
+      position: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      background-color: var(--loading-bg);
+      transition: background-color 0.3s;
+      pointer-events: none;
+    }
+    .loading .scale {
+      transform: scale(1.8);
+    }
+    .sharingon {
+      position: relative;
+      width: 6em;
+      height: 6em;
+      background-color: red;
+      border: 6px solid black;
+      border-radius: 50%;
+      animation: rot 1s ease-in-out infinite;
+    }
+    .animated-stop {
+      animation-play-state: paused;
+    }
+    .fadeout {
+      animation: fadeOut 1.5s forwards;
+    }
+    .scaleAndFadeout {
+      animation: scaleAndFadeOut 1.5s forwards;
+    }
+    .ring {
+      position: absolute;
+      content: "";
+      left: 50%;
+      top: 50%;
+      width: 3.5em;
+      height: 3.5em;
+      border: 4px solid rgba(110, 13, 13, 0.5);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .to, .circle {
+      position: absolute;
+      content: "";
+      border-radius: 50%;
+      width: 0.9em;
+      height: 0.9em;
+      background-color: black;
+    }
+    .to:nth-child(1) {
+      top: -0.5em;
+      left: 50%;
+      transform: translate(-40%);
+    }
+    .to::before {
+      content: "";
+      position: absolute;
+      top: -0.5em;
+      right: -0.2em;
+      width: 1.1em;
+      height: 0.9em;
+      box-sizing: border-box;
+      border-left: 16px solid black;
+      border-radius: 100% 0 0;
+    }
+    .to:nth-child(2) {
+      bottom: 0.5em;
+      left: -0.35em;
+      transform: rotate(-120deg);
+    }
+    .to:nth-child(3) {
+      bottom: 0.5em;
+      right: -0.35em;
+      transform: rotate(120deg);
+    }
+    .circle {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 20px 1px;
+      width: 1em;
+      height: 1em;
+    }
+    @keyframes rot {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes scaleAndFadeOut {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 1; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* ===== 自定义光标 ===== */
+    .custom-cursor {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--cursor-color);
+      box-shadow: 0 0 20px rgba(245, 87, 108, 0.4), 0 0 60px rgba(245, 87, 108, 0.15);
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+      will-change: transform;
+      mix-blend-mode: difference;
+    }
+    .custom-cursor.hover {
+      width: 36px;
+      height: 36px;
+      background: var(--cursor-hover);
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+    }
+
+    /* ===== 粒子背景 Canvas ===== */
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ===== 主容器 ===== */
+    .hub {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      width: 100%;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-radius: 3.5rem;
+      padding: 2rem 2.8rem;
+      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.2);
+      border: 1px solid var(--glass-border);
+      transition: background 0.3s, border 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+    }
+    .hub::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        135deg,
+        transparent 30%,
+        var(--shimmer-color) 50%,
+        transparent 70%
+      );
+      opacity: 0.3;
+      pointer-events: none;
+      transform: rotate(25deg);
+      transition: opacity 0.3s;
+    }
+    .hub:hover::before {
+      animation: shimmerFlow 2.5s ease-in-out infinite;
+    }
+    @keyframes shimmerFlow {
+      0% { transform: rotate(25deg) translateX(-20%); }
+      100% { transform: rotate(25deg) translateX(20%); }
+    }
+
+    /* ===== 导航栏 ===== */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 1.8rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px dashed rgba(255,255,255,0.2);
+      position: relative;
+      z-index: 2;
+    }
+    .logo h1 {
+      font-size: 2.4rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.3s;
+    }
+    .logo h1 span {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 1.4rem;
+      font-weight: 500;
+      padding: 0.1rem 0.9rem;
+      border-radius: 60px;
+      margin-left: 0.2rem;
+      transition: background 0.3s, color 0.3s;
+    }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      list-style: none;
+    }
+    .nav-menu li a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: 500;
+      padding: 0.4rem 1rem;
+      border-radius: 40px;
+      transition: background 0.2s, color 0.2s;
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .nav-menu li a:hover {
+      background: rgba(255,255,255,0.25);
+      color: var(--text-primary);
+    }
+    .nav-menu li a.active {
+      background: rgba(255,255,255,0.25);
+      color: var(--text-primary);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .theme-toggle {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid var(--glass-border);
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      transition: background 0.2s;
+      color: var(--text-primary);
+      line-height: 1;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid var(--glass-border);
+      cursor: pointer;
+      padding: 0.4rem 0.5rem;
+      border-radius: 12px;
+      transition: background 0.2s;
+    }
+    .hamburger:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .hamburger span {
+      display: block;
+      width: 28px;
+      height: 3px;
+      background: var(--text-primary);
+      border-radius: 6px;
+      transition: all 0.25s;
+    }
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+    .mobile-dropdown {
+      display: none;
+      flex-basis: 100%;
+      flex-direction: column;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-radius: 2rem;
+      padding: 1.2rem 1.5rem;
+      margin-top: 0.8rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      transition: background 0.3s;
+    }
+    .mobile-dropdown.open {
+      display: flex;
+    }
+    .mobile-dropdown a {
+      text-decoration: none;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      transition: color 0.2s;
+    }
+    .mobile-dropdown a:last-child {
+      border-bottom: none;
+    }
+    .mobile-dropdown a:hover {
+      color: #a786d0;
+    }
+
+    @media (max-width: 768px) {
+      .hub {
+        padding: 1.5rem 1.2rem;
+        border-radius: 2.5rem;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .logo h1 {
+        font-size: 2rem;
+      }
+      .logo h1 span {
+        font-size: 1.1rem;
+        padding: 0 0.7rem;
+      }
+    }
+    @media (min-width: 769px) {
+      .mobile-dropdown {
+        display: none !important;
+      }
+    }
+
+    /* ===== 卡片网格 ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.8rem;
+      margin: 2rem 0 2.4rem 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-radius: 2.5rem;
+      padding: 1.6rem 1rem 1.4rem;
+      text-align: center;
+      transition: all 0.25s ease;
+      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.2);
+      border: 1px solid var(--glass-border);
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 140px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, var(--shimmer-color), transparent 70%);
+      opacity: 0.2;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .card:hover::before {
+      opacity: 0.5;
+      animation: shimmerRotate 3s linear infinite;
+    }
+    @keyframes shimmerRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+      background: rgba(255,255,255,0.55);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4);
+      border-color: rgba(255,255,255,0.8);
+    }
+    .dark-mode .card:hover {
+      background: rgba(60, 50, 90, 0.7);
+      border-color: rgba(180, 160, 220, 0.6);
+    }
+    .card:active {
+      transform: scale(0.97);
+    }
+
+    .card .icon {
+      font-size: 2.6rem;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.05));
+    }
+    .card h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.15rem;
+      transition: color 0.3s;
+    }
+    .card .desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      opacity: 0.7;
+      background: rgba(200, 185, 215, 0.15);
+      padding: 0.1rem 1rem;
+      border-radius: 40px;
+      margin-top: 0.1rem;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+
+    .card.featured {
+      background: var(--featured-bg);
+      border-color: var(--featured-border);
+    }
+
+    /* ===== MC 服务器公告 ===== */
+    .mc-announce {
+      position: relative;
+      z-index: 2;
+      margin: 0.5rem 0 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-radius: 2.5rem;
+      padding: 1.2rem 2rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      transition: background 0.3s, border 0.3s;
+    }
+    .mc-announce .mc-left {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .mc-announce .mc-icon {
+      font-size: 2.4rem;
+      line-height: 1;
+    }
+    .mc-announce .mc-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .mc-announce .mc-ip {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 1.1rem;
+      background: rgba(255,255,255,0.1);
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      color: var(--text-secondary);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+    .mc-announce .mc-status {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      opacity: 0.7;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .mc-announce .mc-status .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #4caf50;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+      animation: pulse-dot 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+    .mc-announce .mc-copy {
       background: rgba(255,255,255,0.1);
       border: 1px solid var(--glass-border);
       color: var(--text-secondary);
-      padding: 0.2rem 0.8rem;
+      padding: 0.3rem 0.8rem;
       border-radius: 30px;
-      font-size: 0.7rem;
+      font-size: 0.8rem;
       cursor: pointer;
-      transition: 0.2s;
-      margin-right: 0.3rem;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
-    .chat-popup .header .enable-btn:hover {
+    .mc-announce .mc-copy:hover {
       background: rgba(255,255,255,0.2);
       color: var(--text-primary);
     }
-    .chat-popup .header .enable-btn.active {
-      background: rgba(76, 175, 80, 0.2);
-      border-color: #4caf50;
-      color: #4caf50;
+
+    @media (max-width: 600px) {
+      .mc-announce {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 1.2rem;
+      }
+      .mc-announce .mc-left {
+        width: 100%;
+      }
+      .mc-announce .mc-ip {
+        font-size: 0.95rem;
+        width: 100%;
+        text-align: center;
+      }
+      .mc-announce .mc-status {
+        width: 100%;
+        justify-content: center;
+      }
+      .mc-announce .mc-copy {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    /* ===== 图片展示 ===== */
+    .image-showcase {
+      position: relative;
+      z-index: 2;
+      margin: 1.5rem 0 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-radius: 2.5rem;
+      padding: 1.5rem 2rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.2);
+      text-align: center;
+      transition: background 0.3s, border 0.3s;
+    }
+    .image-showcase .image-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.8rem;
+    }
+    .image-showcase img {
+      max-width: 100%;
+      max-height: 500px;
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      border: 1px solid var(--glass-border);
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* ===== 底部 ===== */
+    .footer-note {
+      margin-top: 2.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--glass-border);
+      padding-top: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      transition: color 0.3s;
+      position: relative;
+      z-index: 2;
+    }
+    .path-hint {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      letter-spacing: 0.02em;
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+    .path-hint code {
+      background: rgba(0,0,0,0.05);
+      padding: 0.2rem 0.6rem;
+      border-radius: 30px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .deploy-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--text-muted);
+    }
+    .deploy-badge span {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      padding: 0.2rem 1.1rem;
+      border-radius: 60px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      .card {
+        min-height: 120px;
+        padding: 1rem 0.5rem;
+      }
+      .card .icon {
+        font-size: 2.2rem;
+      }
+      .card h3 {
+        font-size: 1.2rem;
+      }
+      .image-showcase {
+        padding: 1rem 1rem;
+      }
+      .image-showcase img {
+        max-height: 300px;
+      }
+      .footer-note {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+      .path-hint {
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 0.7rem;
+        padding: 0.2rem 0.8rem;
+      }
+    }
+    @media (max-width: 400px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* ===== 表情包 ===== */
+    .emoji-burst {
+      position: fixed;
+      pointer-events: none;
+      font-size: 2.5rem;
+      z-index: 9997;
+      animation: flyOut 1.2s ease-out forwards;
+      user-select: none;
+    }
+    @keyframes flyOut {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0.5) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(1.8) rotate(360deg);
+      }
+    }
+
+    /* ================================================================
+       🔐 管理员按钮
+    ================================================================ */
+    .admin-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 30px;
+      z-index: 999;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      user-select: none;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      opacity: 0.3;
+    }
+    .admin-btn:hover {
+      opacity: 1;
+      transform: scale(1.05);
+      border-color: rgba(245,87,108,0.3);
+    }
+
+    /* 密码弹窗 */
+    .admin-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .admin-modal.open { display: flex; }
+    .admin-modal .modal-box {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 2rem;
+      padding: 2rem 2.5rem;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: modalIn 0.3s ease;
+    }
+    @keyframes modalIn {
+      0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .admin-modal .modal-box h2 {
+      font-size: 1.4rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .admin-modal .modal-box p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      opacity: 0.7;
+      margin-bottom: 1.2rem;
+    }
+    .admin-modal .modal-box input {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      border-radius: 30px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.06);
+      color: var(--text-primary);
+      font-size: 1rem;
+      outline: none;
+      text-align: center;
+      margin-bottom: 1rem;
+      font-family: inherit;
+    }
+    .admin-modal .modal-box input:focus {
+      border-color: rgba(245,87,108,0.4);
+      background: rgba(255,255,255,0.1);
+    }
+    .admin-modal .modal-box .btn-row {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+    }
+    .admin-modal .modal-box .btn-row button {
+      padding: 0.5rem 2rem;
+      border-radius: 30px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .admin-modal .modal-box .btn-confirm {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      color: #fff;
+    }
+    .admin-modal .modal-box .btn-confirm:hover { transform: scale(1.04); }
+    .admin-modal .modal-box .btn-cancel {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-secondary);
+    }
+    .admin-modal .modal-box .btn-cancel:hover { background: rgba(255,255,255,0.2); }
+    .admin-modal .modal-box .error-msg {
+      color: #f5576c;
+      font-size: 0.85rem;
+      min-height: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    @media (max-width: 500px) {
+      .admin-btn { width: 38px; height: 38px; font-size: 1rem; bottom: 16px; left: 16px; }
+      .admin-modal .modal-box { padding: 1.5rem 1.5rem; }
     }
   </style>
 </head>
@@ -49,40 +908,99 @@
 
   <!-- ===== 主容器 ===== -->
   <div class="hub" id="hubContainer">
-    <!-- 导航栏、卡片网格、MC公告、图片展示等与之前完全一致，此处省略 -->
-    <!-- 实际使用时请粘贴完整的导航和网格内容 -->
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+      <div class="logo">
+        <h1>🕸️ CAVEZ <span>分站</span></h1>
+      </div>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="active">首页</a></li>
+        <li><a href="about.html">关于</a></li>
+        <li><a href="text.html">文章</a></li>
+        <li><a href="https://1838190346.share.123pan.cn/123pan/gfigTd-S5lyH?pwd=cave#" target="_blank">资源站</a></li>
+        <li><a href="contact.html">联系</a></li>
+        <li><a href="https://noescape-z.github.io/z/lab" target="_blank">实验室</a></li>
+        <li><a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank">存档</a></li>
+        <li><a href="what.mp4" target="_blank">🎬 视频</a></li>
+        <li><a href="hyw.html">HYW</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="切换主题">🌙</button>
+        <button class="hamburger" id="hamburgerBtn" aria-label="菜单">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <div class="mobile-dropdown" id="mobileDropdown">
+        <a href="index.html">🏠 首页</a>
+        <a href="about.html">📖 关于</a>
+        <a href="text.html">📝 文章</a>
+        <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-S5lyH?pwd=cave#" target="_blank">📦 资源站</a>
+        <a href="contact.html">📬 联系</a>
+        <a href="https://noescape-z.github.io/z/lab" target="_blank">🧪 实验室</a>
+        <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank">🗂️ 存档</a>
+        <a href="what.mp4" target="_blank">🎬 视频</a>
+        <a href="hyw.html">HYW</a>
+      </div>
+    </nav>
+
+    <!-- 卡片网格 -->
+    <div class="grid">
+      <a href="about.html" class="card featured"><div class="icon">📖</div><h3>关于</h3><div class="desc">about.html</div></a>
+      <a href="text.html" class="card"><div class="icon">✍️</div><h3>文章</h3><div class="desc">text.html</div></a>
+      <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-S5lyH?pwd=cave#" target="_blank" class="card"><div class="icon">📦</div><h3>资源站</h3><div class="desc">123云盘</div></a>
+      <a href="contact.html" class="card"><div class="icon">📬</div><h3>联系</h3><div class="desc">contact.html</div></a>
+      <a href="https://noescape-z.github.io/z/lab" target="_blank" class="card"><div class="icon">🧪</div><h3>实验室</h3><div class="desc">外部站点</div></a>
+      <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank" class="card"><div class="icon">🗂️</div><h3>存档</h3><div class="desc">123云盘</div></a>
+      <a href="what.mp4" target="_blank" class="card"><div class="icon">🎬</div><h3>视频</h3><div class="desc">what.mp4</div></a>
+      <a href="hyw.html" class="card"><div class="icon">🖼️</div><h3>HYW</h3><div class="desc">30张图片</div></a>
+    </div>
+
+    <!-- MC 服务器公告 -->
+    <div class="mc-announce">
+      <div class="mc-left"><span class="mc-icon">⛏️</span><span class="mc-title">🎮 MC 服务器</span></div>
+      <span class="mc-ip" id="mcIpDisplay">sz.frp.one:43525</span>
+      <span class="mc-status"><span class="dot"></span> 在线</span>
+      <button class="mc-copy" id="copyIpBtn">📋 复制 IP</button>
+    </div>
+
+    <!-- 图片展示 -->
+    <div class="image-showcase">
+      <div class="image-title">📷 BJD HYW</div>
+      <img src="bjdhyw.jpg" alt="BJD HYW 图片">
+    </div>
+
+    <!-- 底部 -->
+    <div class="footer-note">
+      <div class="path-hint"><code>index.html</code> <span style="margin:0 6px; opacity:0.5;">·</span> 🐱 cavez的猫猫的小窝</div>
+      <div class="deploy-badge"><span>GitHub 分站</span><span style="background:transparent; color:var(--text-muted); padding:0; font-size:0.8rem;">🚀 2026</span></div>
+    </div>
+
   </div>
 
-  <!-- ===== 🐋 小鲸鱼按钮 ===== -->
-  <div class="whale-btn" id="whaleBtn" title="戳我和 AI 聊天～">
-    <img src="https://fe-static.deepseek.com/chat/static/web-error-logo-light.89842be665.png" alt="🐋">
-  </div>
+  <!-- ===== 🔐 管理员按钮（左下角） ===== -->
+  <div class="admin-btn" id="adminBtn" title="管理员入口">🔐</div>
 
-  <!-- ===== 对话小窗（安全版） ===== -->
-  <div class="chat-popup" id="chatPopup">
-    <div class="header">
-      <div class="title" id="dragHandle">
-        <img src="https://fe-static.deepseek.com/chat/static/web-error-logo-light.89842be665.png" alt="🐋">
-        AI · 小窗
+  <!-- ===== 🔐 密码弹窗 ===== -->
+  <div class="admin-modal" id="adminModal">
+    <div class="modal-box">
+      <h2>🔐 管理员验证</h2>
+      <p>请输入管理员密码</p>
+      <div class="error-msg" id="adminError"></div>
+      <input type="password" id="adminPassword" placeholder="请输入密码..." autocomplete="off">
+      <div class="btn-row">
+        <button class="btn-cancel" id="adminCancel">取消</button>
+        <button class="btn-confirm" id="adminConfirm">确认</button>
       </div>
-      <div>
-        <button class="enable-btn" id="enableChatBtn">🔒 启用对话</button>
-        <button class="clear-btn" id="clearChatBtn" title="清空对话">🗑️</button>
-        <button class="close-btn" id="closePopup">✕</button>
-      </div>
-    </div>
-    <div class="chat-messages" id="chatMessages">
-      <div class="message assistant">🐋 嗨！点击「启用对话」后即可开始聊天～</div>
-    </div>
-    <div class="chat-input-area">
-      <input type="text" id="chatInput" placeholder="输入消息..." autofocus disabled>
-      <button class="send-btn" id="sendBtn" disabled>发送</button>
     </div>
   </div>
 
   <script>
     (function() {
       'use strict';
+
+      const ADMIN_PASSWORD = '167000aA';
+      const ADMIN_PAGE = 'indexadmin.html';
 
       // ===== 加载动画 =====
       function initLoading() {
@@ -110,7 +1028,7 @@
       });
       document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
       document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
-      document.querySelectorAll('a, button, input, .card, .theme-toggle, .hamburger, .mc-copy, .whale-btn, .close-btn, .send-btn, .clear-btn, .enable-btn').forEach(el => {
+      document.querySelectorAll('a, button, .card, .theme-toggle, .hamburger, .mc-copy, .admin-btn').forEach(el => {
         el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
         el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
       });
@@ -262,234 +1180,57 @@
       document.addEventListener('click', createEmojiBurst);
 
       // ================================================================
-      // 🐋 安全版对话小窗
+      // 🔐 管理员入口逻辑
       // ================================================================
 
-      const whaleBtn = document.getElementById('whaleBtn');
-      const popup = document.getElementById('chatPopup');
-      const closeBtn = document.getElementById('closePopup');
-      const clearBtn = document.getElementById('clearChatBtn');
-      const enableBtn = document.getElementById('enableChatBtn');
-      const messagesEl = document.getElementById('chatMessages');
-      const inputEl = document.getElementById('chatInput');
-      const sendBtn = document.getElementById('sendBtn');
+      const adminBtn = document.getElementById('adminBtn');
+      const adminModal = document.getElementById('adminModal');
+      const adminPassword = document.getElementById('adminPassword');
+      const adminConfirm = document.getElementById('adminConfirm');
+      const adminCancel = document.getElementById('adminCancel');
+      const adminError = document.getElementById('adminError');
 
-      // -------- 对话已暂时禁用，需要手动启用 --------
-      let chatEnabled = false;
-      let isLoading = false;
-      let lastMessageTime = 0;
-
-      // ---- 检查 URL 参数是否带 admin=1（管理员自动启用） ----
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('admin') === '1') {
-        chatEnabled = true;
-        enableBtn.textContent = '✅ 已启用';
-        enableBtn.classList.add('active');
-        inputEl.disabled = false;
-        sendBtn.disabled = false;
-        addMessage('assistant', '🔓 管理员模式已自动启用，可以开始聊天了。');
-      }
-
-      // ---- 启用/禁用对话 ----
-      enableBtn.addEventListener('click', function() {
-        chatEnabled = !chatEnabled;
-        if (chatEnabled) {
-          enableBtn.textContent = '✅ 已启用';
-          enableBtn.classList.add('active');
-          inputEl.disabled = false;
-          sendBtn.disabled = false;
-          addMessage('assistant', '🔓 对话已启用，你可以开始聊天了！');
-          inputEl.focus();
-        } else {
-          enableBtn.textContent = '🔒 启用对话';
-          enableBtn.classList.remove('active');
-          inputEl.disabled = true;
-          sendBtn.disabled = true;
-          addMessage('assistant', '🔒 对话已禁用，点击「启用对话」重新开启。');
-        }
-      });
-
-      // ---- 打开/关闭小窗 ----
-      whaleBtn.addEventListener('click', function(e) {
+      // 打开弹窗
+      adminBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        popup.classList.toggle('open');
-        if (popup.classList.contains('open') && chatEnabled) {
-          inputEl.focus();
+        adminModal.classList.add('open');
+        adminPassword.value = '';
+        adminError.textContent = '';
+        setTimeout(() => adminPassword.focus(), 100);
+      });
+
+      // 关闭弹窗
+      adminCancel.addEventListener('click', function() {
+        adminModal.classList.remove('open');
+      });
+      adminModal.addEventListener('click', function(e) {
+        if (e.target === adminModal) {
+          adminModal.classList.remove('open');
         }
       });
-      closeBtn.addEventListener('click', function() { popup.classList.remove('open'); });
-      document.addEventListener('click', function(e) {
-        if (popup.classList.contains('open')) {
-          if (!popup.contains(e.target) && e.target !== whaleBtn && !whaleBtn.contains(e.target)) {
-            popup.classList.remove('open');
-          }
-        }
-      });
 
-      // ---- 清空对话 ----
-      clearBtn.addEventListener('click', function() {
-        while (messagesEl.firstChild) {
-          messagesEl.removeChild(messagesEl.firstChild);
-        }
-        const welcomeMsg = document.createElement('div');
-        welcomeMsg.className = 'message assistant';
-        welcomeMsg.textContent = chatEnabled ? '🐋 对话已清空，继续聊吧！' : '🐋 对话已清空，点击「启用对话」开始聊天～';
-        messagesEl.appendChild(welcomeMsg);
-        isLoading = false;
-        inputEl.disabled = !chatEnabled;
-        sendBtn.disabled = !chatEnabled;
-        inputEl.focus();
-      });
-
-      // ---- 拖拽 ----
-      const dragHandle = document.getElementById('dragHandle');
-      let isDragging = false, offsetX = 0, offsetY = 0;
-      dragHandle.addEventListener('mousedown', function(e) {
-        if (e.target.closest('.close-btn') || e.target.closest('.clear-btn') || e.target.closest('.enable-btn')) return;
-        isDragging = true;
-        const rect = popup.getBoundingClientRect();
-        offsetX = e.clientX - rect.left;
-        offsetY = e.clientY - rect.top;
-        popup.style.cursor = 'grabbing';
-        e.preventDefault();
-      });
-      document.addEventListener('mousemove', function(e) {
-        if (!isDragging) return;
-        let left = e.clientX - offsetX, top = e.clientY - offsetY;
-        const maxX = window.innerWidth - 420, maxY = window.innerHeight - 560;
-        left = Math.max(10, Math.min(left, maxX - 10));
-        top = Math.max(10, Math.min(top, maxY - 10));
-        popup.style.left = left + 'px';
-        popup.style.top = top + 'px';
-        popup.style.right = 'auto';
-        popup.style.bottom = 'auto';
-      });
-      document.addEventListener('mouseup', function() {
-        if (isDragging) { isDragging = false; popup.style.cursor = ''; }
-      });
-
-      // ---- 对话逻辑 ----
-      function addMessage(role, content) {
-        const div = document.createElement('div');
-        div.className = `message ${role}`;
-        div.textContent = content;
-        messagesEl.appendChild(div);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
-        return div;
-      }
-
-      function getHistory() {
-        const msgs = [];
-        const items = messagesEl.querySelectorAll('.message');
-        items.forEach(el => {
-          const role = el.classList.contains('user') ? 'user' : 'assistant';
-          const content = el.textContent;
-          if (content === '...' || content === '…') return;
-          msgs.push({ role, content });
-        });
-        return msgs;
-      }
-
-      async function sendMessage() {
-        // ---- 安全检查 ----
-        if (!chatEnabled) {
-          addMessage('assistant', '🔒 对话未启用，请先点击「启用对话」按钮。');
-          return;
-        }
-        const text = inputEl.value.trim();
-        if (!text || isLoading) return;
-
-        // ---- 防刷：5秒冷却 ----
-        const now = Date.now();
-        if (now - lastMessageTime < 5000) {
-          const waitTime = Math.ceil((5000 - (now - lastMessageTime)) / 1000);
-          addMessage('assistant', `⏳ 请稍候 ${waitTime} 秒后再发送。`);
-          return;
-        }
-
-        inputEl.value = '';
-        inputEl.disabled = true;
-        sendBtn.disabled = true;
-        lastMessageTime = now;
-
-        addMessage('user', text);
-
-        const loadingEl = document.createElement('div');
-        loadingEl.className = 'message assistant';
-        loadingEl.textContent = '...';
-        loadingEl.style.opacity = '0.6';
-        messagesEl.appendChild(loadingEl);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
-
-        try {
-          const history = getHistory();
-          const recent = history.slice(-10);
-
-          // ---- 暂时禁用真实 API 调用，防止意外消耗 ----
-          // 直接返回提示，避免再次触发盗刷风险
-          loadingEl.remove();
-          addMessage('assistant', '🛡️ API 已暂时禁用（管理员正在维护）。如需使用，请稍后再试。');
-
-          // ---- 未来恢复时，取消下面注释，并注释掉上面的模拟回复 ----
-          /*
-          const response = await fetch('YOUR_SECURE_PROXY_URL', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + 'YOUR_SERVER_SIDE_KEY'
-            },
-            body: JSON.stringify({
-              model: 'glm-5.3-flash',
-              messages: [
-                { role: 'system', content: '你是一个友好的AI助手，请用中文回答。' },
-                ...recent
-              ],
-              stream: false,
-              max_tokens: 2048,
-              temperature: 0.7
-            })
-          });
-
-          loadingEl.remove();
-
-          if (!response.ok) {
-            const err = await response.json();
-            let errMsg = err.error?.message || '请求失败，请稍后重试';
-            if (errMsg.includes('balance') || errMsg.includes('quota')) {
-              errMsg = '⚠️ 账户余额不足，请联系管理员。';
-            } else if (errMsg.includes('api key') || errMsg.includes('unauthorized')) {
-              errMsg = '⚠️ API Key 无效，请联系管理员。';
-            }
-            addMessage('assistant', `❌ ${errMsg}`);
-            return;
-          }
-
-          const data = await response.json();
-          const reply = data.choices?.[0]?.message?.content || '没有收到回复，请再试一次。';
-          addMessage('assistant', reply);
-          */
-
-        } catch (err) {
-          loadingEl.remove();
-          addMessage('assistant', '⚠️ 网络连接失败，请检查网络后重试。');
-          console.error('[API] 请求失败:', err);
-        } finally {
-          isLoading = false;
-          inputEl.disabled = !chatEnabled;
-          sendBtn.disabled = !chatEnabled;
-          inputEl.focus();
+      // 验证密码
+      function verifyPassword() {
+        const input = adminPassword.value.trim();
+        if (input === ADMIN_PASSWORD) {
+          adminModal.classList.remove('open');
+          window.location.href = ADMIN_PAGE;
+        } else {
+          adminError.textContent = '❌ 密码错误，请重试';
+          adminPassword.value = '';
+          adminPassword.focus();
         }
       }
 
-      sendBtn.addEventListener('click', sendMessage);
-      inputEl.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
+      adminConfirm.addEventListener('click', verifyPassword);
+      adminPassword.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
           e.preventDefault();
-          sendMessage();
+          verifyPassword();
         }
       });
 
-      console.log('✅ CAVEZ · 安全版小窗已加载（对话默认禁用，需手动启用）');
+      console.log('✅ CAVEZ · 管理员入口已添加（密码：167000aA）');
     })();
   </script>
 </body>
