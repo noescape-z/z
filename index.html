@@ -619,6 +619,41 @@
       }
     }
 
+    /* ===== 图片展示区域（MC 公告下方） ===== */
+    .image-showcase {
+      position: relative;
+      z-index: 2;
+      margin: 1.5rem 0 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-radius: 2.5rem;
+      padding: 1.5rem 2rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.2);
+      text-align: center;
+      transition: background 0.3s, border 0.3s;
+    }
+    .image-showcase .image-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .image-showcase img {
+      max-width: 100%;
+      max-height: 500px;
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      border: 1px solid var(--glass-border);
+      display: block;
+      margin: 0 auto;
+    }
+
     /* ===== 底部 ===== */
     .footer-note {
       margin-top: 2.2rem;
@@ -683,6 +718,12 @@
       }
       .card h3 {
         font-size: 1.2rem;
+      }
+      .image-showcase {
+        padding: 1rem 1rem;
+      }
+      .image-showcase img {
+        max-height: 300px;
       }
       .footer-note {
         flex-direction: column;
@@ -815,7 +856,6 @@
       line-height: 1;
     }
     .chat-popup .header .close-btn:hover { color: #f5576c; transform: rotate(90deg); }
-    /* 新增清空按钮样式 */
     .chat-popup .header .clear-btn {
       background: none;
       border: none;
@@ -831,7 +871,6 @@
       color: #f5576c;
       opacity: 1;
     }
-
 
     .chat-messages {
       flex: 1;
@@ -983,6 +1022,12 @@
       <span class="mc-ip" id="mcIpDisplay">sz.frp.one:43525</span>
       <span class="mc-status"><span class="dot"></span> 在线</span>
       <button class="mc-copy" id="copyIpBtn">📋 复制 IP</button>
+    </div>
+
+    <!-- ===== 图片展示区域（MC 公告下方） ===== -->
+    <div class="image-showcase">
+      <div class="image-title">📷 BJD HYW</div>
+      <img src="bjdhyw.jpg" alt="BJD HYW 图片">
     </div>
 
     <!-- 底部 -->
@@ -1201,7 +1246,7 @@
       document.addEventListener('click', createEmojiBurst);
 
       // ================================================================
-      // 🐋 小鲸鱼 + 对话（适配您的第三方 API）
+      // 🐋 小鲸鱼 + 对话
       // ================================================================
 
       const whaleBtn = document.getElementById('whaleBtn');
@@ -1212,7 +1257,6 @@
       const inputEl = document.getElementById('chatInput');
       const sendBtn = document.getElementById('sendBtn');
 
-      // -------- 使用您提供的第三方 API 配置 --------
       const API_KEY = 'sk-903xqfkUoHL4VUJ7XSDku8Hoxh28tyzkQS2ZufJuVijKh2jo';
       const API_URL = 'https://api.t80nb.me/v1/chat/completions';
       const MODEL = 'glm-5.3-flash';
@@ -1236,16 +1280,13 @@
 
       // ---- 清空对话 ----
       clearBtn.addEventListener('click', function() {
-        // 移除所有消息节点
         while (messagesEl.firstChild) {
           messagesEl.removeChild(messagesEl.firstChild);
         }
-        // 添加一条欢迎消息
         const welcomeMsg = document.createElement('div');
         welcomeMsg.className = 'message assistant';
         welcomeMsg.textContent = '🐋 对话已清空，有什么想问的？';
         messagesEl.appendChild(welcomeMsg);
-        // 如果有加载状态也重置
         isLoading = false;
         inputEl.disabled = false;
         sendBtn.disabled = false;
@@ -1377,7 +1418,7 @@
         }
       });
 
-      console.log('✅ CAVEZ · 已配置第三方 API，模型: ' + MODEL + '，并添加了清空对话按钮');
+      console.log('✅ CAVEZ · 已添加 BJD HYW 图片展示');
     })();
   </script>
 </body>
