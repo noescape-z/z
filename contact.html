@@ -21,8 +21,6 @@
       --featured-bg: rgba(215, 195, 240, 0.5);
       --featured-border: #cbb7e6;
       --shimmer-color: rgba(255, 255, 255, 0.5);
-      --cursor-color: rgba(245, 87, 108, 0.85);
-      --cursor-hover: rgba(168, 85, 247, 0.7);
       --loading-bg: rgba(245, 245, 250, 0.8);
     }
 
@@ -40,8 +38,6 @@
       --featured-bg: rgba(80, 60, 120, 0.5);
       --featured-border: #8a75b8;
       --shimmer-color: rgba(255, 255, 255, 0.08);
-      --cursor-color: rgba(245, 87, 108, 0.85);
-      --cursor-hover: rgba(168, 85, 247, 0.7);
       --loading-bg: rgba(48, 48, 48, 0.8);
     }
 
@@ -50,7 +46,8 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      cursor: none !important;
+      /* 🔥 fire.png 光标 */
+      cursor: url('fire.png') 16 16, auto !important;
     }
 
     body {
@@ -167,28 +164,6 @@
     @keyframes fadeOut {
       0% { opacity: 1; }
       100% { opacity: 0; }
-    }
-
-    /* ===== 自定义光标 ===== */
-    .custom-cursor {
-      position: fixed;
-      pointer-events: none;
-      z-index: 9998;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--cursor-color);
-      box-shadow: 0 0 20px rgba(245, 87, 108, 0.4), 0 0 60px rgba(245, 87, 108, 0.15);
-      transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, background 0.2s;
-      will-change: transform;
-      mix-blend-mode: difference;
-    }
-    .custom-cursor.hover {
-      width: 36px;
-      height: 36px;
-      background: var(--cursor-hover);
-      box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
     }
 
     /* ===== 粒子背景 Canvas ===== */
@@ -639,9 +614,6 @@
     </div>
   </div>
 
-  <!-- ===== 自定义光标 ===== -->
-  <div class="custom-cursor" id="customCursor"></div>
-
   <!-- ===== 粒子背景 Canvas ===== -->
   <canvas id="particles-canvas"></canvas>
 
@@ -663,8 +635,10 @@
         <li><a href="text.html">文章</a></li>
         <li><a href="https://1838190346.share.123pan.cn/123pan/gfigTd-S5lyH?pwd=cave#" target="_blank">资源站</a></li>
         <li><a href="contact.html" class="active">联系</a></li>
-        <li><a href="lab.html">实验室</a></li>
-        <li><a href="archive.html">存档</a></li>
+        <li><a href="https://noescape-z.github.io/z/lab" target="_blank">实验室</a></li>
+        <li><a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank">存档</a></li>
+        <li><a href="what.mp4" target="_blank">🎬 视频</a></li>
+        <li><a href="hyw.html">HYW</a></li>
       </ul>
 
       <div class="nav-actions">
@@ -680,8 +654,10 @@
         <a href="text.html">📝 文章</a>
         <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-S5lyH?pwd=cave#" target="_blank">📦 资源站</a>
         <a href="contact.html">📬 联系</a>
-        <a href="lab.html">🧪 实验室</a>
-        <a href="archive.html">🗂️ 存档</a>
+        <a href="https://noescape-z.github.io/z/lab" target="_blank">🧪 实验室</a>
+        <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank">🗂️ 存档</a>
+        <a href="what.mp4" target="_blank">🎬 视频</a>
+        <a href="hyw.html">HYW</a>
       </div>
     </nav>
 
@@ -732,6 +708,12 @@
 
   </div>
 
+  <!-- ===== 隐藏音频播放器 ===== -->
+  <audio id="bgAudio" preload="auto">
+    <source src="anvil.ogg" type="audio/ogg">
+    您的浏览器不支持 audio 元素。
+  </audio>
+
   <script>
     (function() {
       'use strict';
@@ -759,28 +741,6 @@
         });
       }
       initLoading();
-
-      // ===== 自定义光标 =====
-      const cursor = document.getElementById('customCursor');
-
-      document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-      });
-
-      document.addEventListener('mouseenter', () => {
-        cursor.style.opacity = '1';
-      });
-
-      document.addEventListener('mouseleave', () => {
-        cursor.style.opacity = '0';
-      });
-
-      const interactiveElements = document.querySelectorAll('a, button, .theme-toggle, .hamburger, .contact-item');
-      interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-      });
 
       // ===== 粒子背景 =====
       const canvas = document.getElementById('particles-canvas');
@@ -955,7 +915,20 @@
 
       document.addEventListener('click', createEmojiBurst);
 
-      console.log('📬 contact.html · 联系方式已加载');
+      // ================================================================
+      // 🔊 每次点击都播放 anvil.ogg
+      // ================================================================
+
+      const audio = document.getElementById('bgAudio');
+
+      document.addEventListener('click', function() {
+        audio.currentTime = 0;
+        audio.play().catch(function(err) {
+          console.log('音频播放被阻止:', err);
+        });
+      });
+
+      console.log('📬 contact.html · 已更换 fire.png 光标 + 每次点击播放 anvil.ogg');
     })();
   </script>
 </body>
