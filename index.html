@@ -594,7 +594,7 @@
       }
     }
 
-    /* ===== 图片展示区域（MC 公告下方） ===== */
+    /* ===== 图片展示 ===== */
     .image-showcase {
       position: relative;
       z-index: 2;
@@ -614,10 +614,6 @@
       font-weight: 600;
       color: var(--text-primary);
       margin-bottom: 0.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
     }
     .image-showcase img {
       max-width: 100%;
@@ -740,15 +736,15 @@
     }
 
     /* ================================================================
-       🐋 小鲸鱼 + 对话小窗（适配第三方 API）
+       🔐 管理员按钮
     ================================================================ */
-    .whale-btn {
+    .admin-btn {
       position: fixed;
-      bottom: 30px;
-      right: 30px;
+      bottom: 20px;
+      left: 30px;
       z-index: 999;
-      width: 64px;
-      height: 64px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       background: var(--glass-bg);
       backdrop-filter: var(--glass-blur);
@@ -761,169 +757,110 @@
       transition: all 0.3s ease;
       cursor: pointer;
       user-select: none;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      opacity: 0.3;
     }
-    .whale-btn:hover {
-      transform: scale(1.08);
-      border-color: rgba(245,87,108,0.4);
-    }
-    .whale-btn img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      pointer-events: none;
+    .admin-btn:hover {
+      opacity: 1;
+      transform: scale(1.05);
+      border-color: rgba(245,87,108,0.3);
     }
 
-    .chat-popup {
+    /* 密码弹窗 */
+    .admin-modal {
       position: fixed;
-      bottom: 110px;
-      right: 30px;
-      z-index: 999;
-      width: 420px;
-      max-width: 90vw;
-      height: 560px;
-      max-height: 75vh;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .admin-modal.open { display: flex; }
+    .admin-modal .modal-box {
       background: var(--glass-bg);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
-      border-radius: 2rem;
       border: 1px solid var(--glass-border);
-      box-shadow: 0 16px 48px rgba(0,0,0,0.2);
-      overflow: hidden;
-      display: none;
-      flex-direction: column;
-      animation: popupIn 0.3s ease;
+      border-radius: 2rem;
+      padding: 2rem 2.5rem;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: modalIn 0.3s ease;
     }
-    .chat-popup.open { display: flex; }
-    @keyframes popupIn {
+    @keyframes modalIn {
       0% { opacity: 0; transform: scale(0.9) translateY(20px); }
       100% { opacity: 1; transform: scale(1) translateY(0); }
     }
-
-    .chat-popup .header {
-      padding: 0.7rem 1.2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--glass-border);
-      flex-shrink: 0;
-    }
-    .chat-popup .header .title {
-      font-weight: 600;
-      color: var(--text-primary);
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      cursor: grab;
-      user-select: none;
-      flex: 1;
-    }
-    .chat-popup .header .title:active { cursor: grabbing; }
-    .chat-popup .header .title img { width: 24px; height: 24px; border-radius: 50%; }
-    .chat-popup .header .close-btn {
-      background: none;
-      border: none;
-      color: var(--text-muted);
+    .admin-modal .modal-box h2 {
       font-size: 1.4rem;
-      cursor: pointer;
-      padding: 0 0.3rem;
-      transition: 0.2s;
-      line-height: 1;
-    }
-    .chat-popup .header .close-btn:hover { color: #f5576c; transform: rotate(90deg); }
-    .chat-popup .header .clear-btn {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.0rem;
-      cursor: pointer;
-      padding: 0 0.6rem;
-      transition: 0.2s;
-      line-height: 1;
-      opacity: 0.6;
-    }
-    .chat-popup .header .clear-btn:hover {
-      color: #f5576c;
-      opacity: 1;
-    }
-
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem 1.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-    .chat-messages::-webkit-scrollbar { width: 4px; }
-    .chat-messages::-webkit-scrollbar-thumb { background: rgba(245,87,108,0.3); border-radius: 4px; }
-
-    .message {
-      max-width: 85%;
-      padding: 0.6rem 1rem;
-      border-radius: 1.2rem;
-      font-size: 0.92rem;
-      line-height: 1.5;
-      word-break: break-word;
-      animation: msgIn 0.25s ease;
-    }
-    @keyframes msgIn {
-      0% { opacity: 0; transform: translateY(8px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .message.user {
-      align-self: flex-end;
-      background: linear-gradient(135deg, #f093fb, #f5576c);
-      color: #fff;
-      border-bottom-right-radius: 0.3rem;
-    }
-    .message.assistant {
-      align-self: flex-start;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--glass-border);
       color: var(--text-primary);
-      border-bottom-left-radius: 0.3rem;
+      margin-bottom: 0.5rem;
     }
-
-    .chat-input-area {
-      padding: 0.7rem 1.2rem 1rem;
-      border-top: 1px solid var(--glass-border);
-      display: flex;
-      gap: 0.6rem;
-      flex-shrink: 0;
+    .admin-modal .modal-box p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      opacity: 0.7;
+      margin-bottom: 1.2rem;
     }
-    .chat-input-area input {
-      flex: 1;
-      padding: 0.5rem 1rem;
+    .admin-modal .modal-box input {
+      width: 100%;
+      padding: 0.6rem 1rem;
       border-radius: 30px;
       border: 1px solid var(--glass-border);
       background: rgba(255,255,255,0.06);
       color: var(--text-primary);
+      font-size: 1rem;
       outline: none;
-      font-size: 0.9rem;
+      text-align: center;
+      margin-bottom: 1rem;
       font-family: inherit;
     }
-    .chat-input-area input:focus { border-color: rgba(245,87,108,0.4); background: rgba(255,255,255,0.1); }
-    .chat-input-area input::placeholder { color: var(--text-muted); opacity: 0.5; }
-    .chat-input-area .send-btn {
-      padding: 0.4rem 1.2rem;
+    .admin-modal .modal-box input:focus {
+      border-color: rgba(245,87,108,0.4);
+      background: rgba(255,255,255,0.1);
+    }
+    .admin-modal .modal-box .btn-row {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+    }
+    .admin-modal .modal-box .btn-row button {
+      padding: 0.5rem 2rem;
       border-radius: 30px;
       border: none;
-      background: linear-gradient(135deg, #f093fb, #f5576c);
-      color: #fff;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: 0.2s;
     }
-    .chat-input-area .send-btn:hover { transform: scale(1.04); }
-    .chat-input-area .send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
+    .admin-modal .modal-box .btn-confirm {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      color: #fff;
+    }
+    .admin-modal .modal-box .btn-confirm:hover { transform: scale(1.04); }
+    .admin-modal .modal-box .btn-cancel {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-secondary);
+    }
+    .admin-modal .modal-box .btn-cancel:hover { background: rgba(255,255,255,0.2); }
+    .admin-modal .modal-box .error-msg {
+      color: #f5576c;
+      font-size: 0.85rem;
+      min-height: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
     @media (max-width: 500px) {
-      .chat-popup { width: 95vw; height: 65vh; bottom: 90px; right: 2.5vw; border-radius: 1.5rem; }
-      .whale-btn { width: 54px; height: 54px; bottom: 20px; right: 20px; }
-      .whale-btn img { width: 34px; height: 34px; }
-      .chat-popup .header .clear-btn { font-size: 0.9rem; padding: 0 0.4rem; }
+      .admin-btn { width: 38px; height: 38px; font-size: 1rem; bottom: 16px; left: 16px; }
+      .admin-modal .modal-box { padding: 1.5rem 1.5rem; }
     }
   </style>
 </head>
@@ -958,6 +895,7 @@
         <li><a href="https://noescape-z.github.io/z/lab" target="_blank">实验室</a></li>
         <li><a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank">存档</a></li>
         <li><a href="what.mp4" target="_blank">🎬 视频</a></li>
+        <li><a href="hyw.html">HYW</a></li>
       </ul>
       <div class="nav-actions">
         <button class="theme-toggle" id="themeToggle" aria-label="切换主题">🌙</button>
@@ -974,6 +912,7 @@
         <a href="https://noescape-z.github.io/z/lab" target="_blank">🧪 实验室</a>
         <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank">🗂️ 存档</a>
         <a href="what.mp4" target="_blank">🎬 视频</a>
+        <a href="hyw.html">HYW</a>
       </div>
     </nav>
 
@@ -986,6 +925,7 @@
       <a href="https://noescape-z.github.io/z/lab" target="_blank" class="card"><div class="icon">🧪</div><h3>实验室</h3><div class="desc">外部站点</div></a>
       <a href="https://1838190346.share.123pan.cn/123pan/gfigTd-H6wVH?pwd=sysk#" target="_blank" class="card"><div class="icon">🗂️</div><h3>存档</h3><div class="desc">123云盘</div></a>
       <a href="what.mp4" target="_blank" class="card"><div class="icon">🎬</div><h3>视频</h3><div class="desc">what.mp4</div></a>
+      <a href="hyw.html" class="card"><div class="icon">🖼️</div><h3>HYW</h3><div class="desc">30张图片</div></a>
     </div>
 
     <!-- MC 服务器公告 -->
@@ -996,7 +936,7 @@
       <button class="mc-copy" id="copyIpBtn">📋 复制 IP</button>
     </div>
 
-    <!-- ===== 图片展示区域（MC 公告下方） ===== -->
+    <!-- 图片展示 -->
     <div class="image-showcase">
       <div class="image-title">📷 BJD HYW</div>
       <img src="bjdhyw.jpg" alt="BJD HYW 图片">
@@ -1010,29 +950,20 @@
 
   </div>
 
-  <!-- ===== 🐋 小鲸鱼按钮 ===== -->
-  <div class="whale-btn" id="whaleBtn" title="戳我和 AI 聊天～">
-    <img src="https://fe-static.deepseek.com/chat/static/web-error-logo-light.89842be665.png" alt="🐋">
-  </div>
+  <!-- ===== 🔐 管理员按钮（左下角） ===== -->
+  <div class="admin-btn" id="adminBtn" title="管理员入口">🔐</div>
 
-  <!-- ===== 对话小窗 ===== -->
-  <div class="chat-popup" id="chatPopup">
-    <div class="header">
-      <div class="title" id="dragHandle">
-        <img src="https://fe-static.deepseek.com/chat/static/web-error-logo-light.89842be665.png" alt="🐋">
-        AI · 小窗
+  <!-- ===== 🔐 密码弹窗 ===== -->
+  <div class="admin-modal" id="adminModal">
+    <div class="modal-box">
+      <h2>🔐 管理员验证</h2>
+      <p>请输入管理员密码</p>
+      <div class="error-msg" id="adminError"></div>
+      <input type="password" id="adminPassword" placeholder="请输入密码..." autocomplete="off">
+      <div class="btn-row">
+        <button class="btn-cancel" id="adminCancel">取消</button>
+        <button class="btn-confirm" id="adminConfirm">确认</button>
       </div>
-      <div>
-        <button class="clear-btn" id="clearChatBtn" title="清空对话">🗑️</button>
-        <button class="close-btn" id="closePopup">✕</button>
-      </div>
-    </div>
-    <div class="chat-messages" id="chatMessages">
-      <div class="message assistant">🐋 嗨！有什么想问的？</div>
-    </div>
-    <div class="chat-input-area">
-      <input type="text" id="chatInput" placeholder="输入消息..." autofocus>
-      <button class="send-btn" id="sendBtn">发送</button>
     </div>
   </div>
 
@@ -1045,6 +976,9 @@
   <script>
     (function() {
       'use strict';
+
+      const ADMIN_PASSWORD = '167000aA';
+      const ADMIN_PAGE = 'indexadmin.html';
 
       // ===== 加载动画 =====
       function initLoading() {
@@ -1211,175 +1145,53 @@
       document.addEventListener('click', createEmojiBurst);
 
       // ================================================================
-      // 🐋 小鲸鱼 + 对话
+      // 🔐 管理员入口逻辑
       // ================================================================
 
-      const whaleBtn = document.getElementById('whaleBtn');
-      const popup = document.getElementById('chatPopup');
-      const closeBtn = document.getElementById('closePopup');
-      const clearBtn = document.getElementById('clearChatBtn');
-      const messagesEl = document.getElementById('chatMessages');
-      const inputEl = document.getElementById('chatInput');
-      const sendBtn = document.getElementById('sendBtn');
+      const adminBtn = document.getElementById('adminBtn');
+      const adminModal = document.getElementById('adminModal');
+      const adminPassword = document.getElementById('adminPassword');
+      const adminConfirm = document.getElementById('adminConfirm');
+      const adminCancel = document.getElementById('adminCancel');
+      const adminError = document.getElementById('adminError');
 
-      const API_KEY = 'sk-903xqfkUoHL4VUJ7XSDku8Hoxh28tyzkQS2ZufJuVijKh2jo';
-      const API_URL = 'https://api.t80nb.me/v1/chat/completions';
-      const MODEL = 'glm-5.3-flash';
-
-      let isLoading = false;
-
-      // ---- 打开/关闭小窗 ----
-      whaleBtn.addEventListener('click', function(e) {
+      // 打开弹窗
+      adminBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        popup.classList.toggle('open');
-        if (popup.classList.contains('open')) { inputEl.focus(); }
+        adminModal.classList.add('open');
+        adminPassword.value = '';
+        adminError.textContent = '';
+        setTimeout(() => adminPassword.focus(), 100);
       });
-      closeBtn.addEventListener('click', function() { popup.classList.remove('open'); });
-      document.addEventListener('click', function(e) {
-        if (popup.classList.contains('open')) {
-          if (!popup.contains(e.target) && e.target !== whaleBtn && !whaleBtn.contains(e.target)) {
-            popup.classList.remove('open');
-          }
+
+      // 关闭弹窗
+      adminCancel.addEventListener('click', function() {
+        adminModal.classList.remove('open');
+      });
+      adminModal.addEventListener('click', function(e) {
+        if (e.target === adminModal) {
+          adminModal.classList.remove('open');
         }
       });
 
-      // ---- 清空对话 ----
-      clearBtn.addEventListener('click', function() {
-        while (messagesEl.firstChild) {
-          messagesEl.removeChild(messagesEl.firstChild);
-        }
-        const welcomeMsg = document.createElement('div');
-        welcomeMsg.className = 'message assistant';
-        welcomeMsg.textContent = '🐋 对话已清空，有什么想问的？';
-        messagesEl.appendChild(welcomeMsg);
-        isLoading = false;
-        inputEl.disabled = false;
-        sendBtn.disabled = false;
-        inputEl.focus();
-      });
-
-      // ---- 拖拽 ----
-      const dragHandle = document.getElementById('dragHandle');
-      let isDragging = false, offsetX = 0, offsetY = 0;
-      dragHandle.addEventListener('mousedown', function(e) {
-        if (e.target.closest('.close-btn') || e.target.closest('.clear-btn')) return;
-        isDragging = true;
-        const rect = popup.getBoundingClientRect();
-        offsetX = e.clientX - rect.left;
-        offsetY = e.clientY - rect.top;
-        popup.style.cursor = 'grabbing';
-        e.preventDefault();
-      });
-      document.addEventListener('mousemove', function(e) {
-        if (!isDragging) return;
-        let left = e.clientX - offsetX, top = e.clientY - offsetY;
-        const maxX = window.innerWidth - 420, maxY = window.innerHeight - 560;
-        left = Math.max(10, Math.min(left, maxX - 10));
-        top = Math.max(10, Math.min(top, maxY - 10));
-        popup.style.left = left + 'px';
-        popup.style.top = top + 'px';
-        popup.style.right = 'auto';
-        popup.style.bottom = 'auto';
-      });
-      document.addEventListener('mouseup', function() {
-        if (isDragging) { isDragging = false; popup.style.cursor = ''; }
-      });
-
-      // ---- 对话逻辑 ----
-      function addMessage(role, content) {
-        const div = document.createElement('div');
-        div.className = `message ${role}`;
-        div.textContent = content;
-        messagesEl.appendChild(div);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
-        return div;
-      }
-
-      function getHistory() {
-        const msgs = [];
-        const items = messagesEl.querySelectorAll('.message');
-        items.forEach(el => {
-          const role = el.classList.contains('user') ? 'user' : 'assistant';
-          const content = el.textContent;
-          if (content === '...' || content === '…') return;
-          msgs.push({ role, content });
-        });
-        return msgs;
-      }
-
-      async function sendMessage() {
-        const text = inputEl.value.trim();
-        if (!text || isLoading) return;
-        inputEl.value = '';
-        inputEl.disabled = true;
-        sendBtn.disabled = true;
-
-        addMessage('user', text);
-
-        const loadingEl = document.createElement('div');
-        loadingEl.className = 'message assistant';
-        loadingEl.textContent = '...';
-        loadingEl.style.opacity = '0.6';
-        messagesEl.appendChild(loadingEl);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
-
-        try {
-          const history = getHistory();
-          const recent = history.slice(-10);
-
-          const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${API_KEY}`
-            },
-            body: JSON.stringify({
-              model: MODEL,
-              messages: [
-                { role: 'system', content: '你是一个友好的AI助手，请用中文回答。' },
-                ...recent
-              ],
-              stream: false,
-              max_tokens: 2048,
-              temperature: 0.7
-            })
-          });
-
-          loadingEl.remove();
-
-          if (!response.ok) {
-            const err = await response.json();
-            let errMsg = err.error?.message || '请求失败，请稍后重试';
-            if (errMsg.includes('balance') || errMsg.includes('quota') || errMsg.includes('insufficient')) {
-              errMsg = '⚠️ 账户余额不足，请检查您的 API 额度。';
-            } else if (errMsg.includes('api key') || errMsg.includes('unauthorized') || errMsg.includes('auth')) {
-              errMsg = '⚠️ API Key 无效或未设置，请检查您的 API Key。';
-            }
-            addMessage('assistant', `❌ ${errMsg}`);
-            return;
-          }
-
-          const data = await response.json();
-          const reply = data.choices?.[0]?.message?.content || '没有收到回复，请再试一次。';
-          addMessage('assistant', reply);
-
-        } catch (err) {
-          loadingEl.remove();
-          addMessage('assistant', '⚠️ 网络连接失败，请检查网络后重试。');
-          console.error('[API] 请求失败:', err);
-        } finally {
-          isLoading = false;
-          inputEl.disabled = false;
-          sendBtn.disabled = false;
-          inputEl.focus();
+      // 验证密码
+      function verifyPassword() {
+        const input = adminPassword.value.trim();
+        if (input === ADMIN_PASSWORD) {
+          adminModal.classList.remove('open');
+          window.location.href = ADMIN_PAGE;
+        } else {
+          adminError.textContent = '❌ 密码错误，请重试';
+          adminPassword.value = '';
+          adminPassword.focus();
         }
       }
 
-      sendBtn.addEventListener('click', sendMessage);
-      inputEl.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
+      adminConfirm.addEventListener('click', verifyPassword);
+      adminPassword.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
           e.preventDefault();
-          sendMessage();
+          verifyPassword();
         }
       });
 
@@ -1390,15 +1202,13 @@
       const audio = document.getElementById('bgAudio');
 
       document.addEventListener('click', function() {
-        // 重置音频到开头并播放
         audio.currentTime = 0;
         audio.play().catch(function(err) {
-          // 如果播放失败（比如用户还没交互过），静默忽略
           console.log('音频播放被阻止:', err);
         });
       });
 
-      console.log('✅ CAVEZ · 已更换 fire.png 光标 + 每次点击播放 anvil.ogg');
+      console.log('✅ CAVEZ · 已更换 fire.png 光标 + 每次点击播放 anvil.ogg，管理员入口保留');
     })();
   </script>
 </body>
